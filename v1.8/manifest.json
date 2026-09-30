@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "archive_version": "1.8",
+  "package": "wannierberri",
+  "captured_at": "2026-09-30T11:32:32+08:00",
+  "source": {
+    "host": "SUSTech-Phys",
+    "path": "~/.conda/envs/wberri_v1.8/lib/python3.12/site-packages/wannierberri",
+    "installed_distribution": "wannierberri-1.8.0",
+    "python": "3.12"
+  },
+  "baseline": {
+    "kind": "PyPI wheel",
+    "filename": "wannierberri-1.8.0-py3-none-any.whl",
+    "url": "https://files.pythonhosted.org/packages/02/b1/c1b6f9c2fca668f438316bcf3542cd91f11d4c7a85fa22522d259efee618/wannierberri-1.8.0-py3-none-any.whl",
+    "sha256": "9c00e5813f88fa25d5db779d2575d62ccfad6391482b7a66de6d8bd30f595535",
+    "requires_python": ">=3.11",
+    "github_tag": "v1.7.0",
+    "github_commit": "50265d5d1cef184f8377f87ed691c8d9a2f6cdbf",
+    "github_package_tree_matches_wheel": true,
+    "note": "The Git tag is named v1.7.0, but its 94 wannierberri package files exactly match the PyPI 1.8.0 wheel."
+  },
+  "comparison": {
+    "baseline_file_count": 94,
+    "source_file_count": 94,
+    "changed_file_count": 3,
+    "added_files": [],
+    "missing_files": [],
+    "excluded": ["__pycache__", "*.pyc", "*.pyo"]
+  },
+  "files": {
+    "calculators/static.py": {
+      "baseline_sha256": "464fcbf7bda9e5f1d613bba1254e72fd16109b607cc4b33a7f22f098e1ea1a38",
+      "source_sha256": "24f98e280d4483b17b90848157afb7502d234ead1c2ed2ee115b2f82109889c8",
+      "archive_sha256": "24f98e280d4483b17b90848157afb7502d234ead1c2ed2ee115b2f82109889c8"
+    },
+    "formula/covariant.py": {
+      "baseline_sha256": "f47082123055b37d3fec4bbb21c7861275907bf590cd2f9d1b1a383f1dfb72b5",
+      "source_sha256": "88c4b86d53cd52f7344e387925565b18189099862566c90541705ed55a378d5c",
+      "archive_sha256": "88c4b86d53cd52f7344e387925565b18189099862566c90541705ed55a378d5c"
+    },
+    "system/needed_data.py": {
+      "baseline_sha256": "e320287440abdd92a3037554b618531d2daf133bf8a0665d1a1e0bc0d85f4656",
+      "source_sha256": "b9e0b005894b09043317006c14b6d0dc3a40468c40409a2cbea102314dfa3c73",
+      "archive_sha256": "b9e0b005894b09043317006c14b6d0dc3a40468c40409a2cbea102314dfa3c73"
+    }
+  },
+  "verification": {
+    "source_archive_hashes_match": true,
+    "patch_reconstruction": "passed",
+    "syntax": "passed",
+    "remote_import": "1.8.0 imports-symbols-parameters-ok"
+  }
+}

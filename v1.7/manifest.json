@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "archive_version": "1.7",
+  "package": "wannierberri",
+  "captured_at": "2026-09-30T11:32:32+08:00",
+  "source": {
+    "host": "SUSTech-Zhu",
+    "path": "~/bin/.conda/env/wberri_v1.7_test/lib/python3.12/site-packages/wannierberri",
+    "installed_distribution": "wannierberri-1.7.0",
+    "python": "3.12"
+  },
+  "baseline": {
+    "kind": "PyPI wheel",
+    "filename": "wannierberri-1.7.0-py3-none-any.whl",
+    "url": "https://files.pythonhosted.org/packages/2d/58/ed5075179f72dd55812846d27aa01bd39df097ff6276920b3a375c3d9f07/wannierberri-1.7.0-py3-none-any.whl",
+    "sha256": "c210f1ceffd3a66113753fa915f57b99c232fc4aa12c082366855df7443d247d",
+    "requires_python": ">=3.11",
+    "github_tag": "1.7.0",
+    "github_commit": "134a94a3188787efd5f6e2fe3ec22fe7cb26c424",
+    "github_package_tree_matches_wheel": true
+  },
+  "comparison": {
+    "baseline_file_count": 98,
+    "source_file_count": 98,
+    "changed_file_count": 5,
+    "added_files": [],
+    "missing_files": [],
+    "excluded": ["__pycache__", "*.pyc", "*.pyo"]
+  },
+  "files": {
+    "calculators/static.py": {
+      "baseline_sha256": "464fcbf7bda9e5f1d613bba1254e72fd16109b607cc4b33a7f22f098e1ea1a38",
+      "source_sha256": "09a16236080303704d1bc1416be4fd96a71b188529fd065dd4d0455a8ead1050",
+      "archive_sha256": "09a16236080303704d1bc1416be4fd96a71b188529fd065dd4d0455a8ead1050"
+    },
+    "calculators/tabulate.py": {
+      "baseline_sha256": "d18db13899432dbfeea59e6878a8a746298531b75fb7c10101dfac934489539a",
+      "source_sha256": "dc00c2ba0b881fa3d30de6fce9c3d6713a48809b3b7136ffb7b9d81293c28036",
+      "archive_sha256": "dc00c2ba0b881fa3d30de6fce9c3d6713a48809b3b7136ffb7b9d81293c28036"
+    },
+    "factors.py": {
+      "baseline_sha256": "0d2fce9c1f6c1d4cf46ced7cb624f04ed63f7a5c639658a7397a42a07d0935d0",
+      "source_sha256": "9ad75980c2a6b0a59ae90a3a83ede1ba0fe028eaca3e278d32f050ad67a831d9",
+      "archive_sha256": "9ad75980c2a6b0a59ae90a3a83ede1ba0fe028eaca3e278d32f050ad67a831d9"
+    },
+    "formula/covariant.py": {
+      "baseline_sha256": "f47082123055b37d3fec4bbb21c7861275907bf590cd2f9d1b1a383f1dfb72b5",
+      "source_sha256": "7c6cedd6ded790c3a4788522c074eb7793f2bb6761fb8221ec986073fc6aae73",
+      "archive_sha256": "7c6cedd6ded790c3a4788522c074eb7793f2bb6761fb8221ec986073fc6aae73"
+    },
+    "formula/covariant_basic.py": {
+      "baseline_sha256": "de278b315a80d51afc1c7a1253810be9465aff21dcd072026ca60c3d5f930c4f",
+      "source_sha256": "b6b8465f67e0673c8d30f1db37920cc6294ad38945ee0d3cd1899f86684a8a4c",
+      "archive_sha256": "b6b8465f67e0673c8d30f1db37920cc6294ad38945ee0d3cd1899f86684a8a4c"
+    }
+  },
+  "verification": {
+    "source_archive_hashes_match": true,
+    "patch_reconstruction": "passed",
+    "syntax": "passed",
+    "remote_import": "1.7.0 imports-and-symbols-ok"
+  }
+}

@@ -1,0 +1,1503 @@
+--- a/wannierberri/calculators/static.py
++++ b/wannierberri/calculators/static.py
+@@ -369,7 +369,14 @@
+         self.fder = 0
+         super().__init__(constant_factor=constant_factor, **kwargs)
+ 
++class AHC_test_Li(StaticCalculator):
+ 
++    def __init__(self, **kwargs):
++        self.Formula = frml_basic.tildeFc
++        self.fder = 0
++        super().__init__(**kwargs)
++
++
+ class Ohmic_FermiSea(StaticCalculator):
+     __doc__ = (r"""Ohmic conductivity (:math:`S/m`)
+ 
+\ No newline at end of file
+@@ -650,5 +657,295 @@
+ 
+     def __init__(self, constant_factor=-factors.factor_ahc / 2, **kwargs):
+         self.Formula = frml.SpinOmega
++        self.fder = 0
++        super().__init__(constant_factor=constant_factor, **kwargs)
++
++
++####################
++#  Quantum metric  #
++#  Add by Jiayu Li #
++####################
++
++class QMetric(StaticCalculator):
++    r"""Quantum Metric (:math:`s^3 \cdot A^2 / (kg \cdot m^3) = S/m`)
++
++        | With Fermi sea integral Eq(33) in `Ref <https://arxiv.org/abs/2303.10129>`__
++        | Output: :math:`O = \int [dk] G f`"""
++
++    def __init__(self, **kwargs):
++        "describe input parameters here"
++        self.Formula = frml.Metric
++        self.fder = 0
++        super().__init__(**kwargs)
++
++class QMetric_test(StaticCalculator):
++    r"""Quantum Metric test (:math:`s^3 \cdot A^2 / (kg \cdot m^3) = S/m`)
++
++        | With Fermi sea integral Eq(33) in `Ref <https://arxiv.org/abs/2303.10129>`__
++        | Output: :math:`O = \int [dk] G f`"""
++
++    def __init__(self, **kwargs):
++        "describe input parameters here"
++        self.Formula = frml.tildeFab
++        self.fder = 0
++        super().__init__(**kwargs)
++
++########################
++#   Berry connection   #
++#     polarizability   #
++#   Add by Jiayu Li    #
++########################
++        
++class BCPD_FermiSurf(StaticCalculator):
++    r"""Berry connection polarizability (:math:`S^2/A`)
++
++        | With Fermi surface integral Eq(1) in `Ref <https://journals.aps.org/prb/abstract/10.1103/PhysRevB.108.L201405>`__
++        | Output: :math:`\chi_{\alpha,\beta\gamma} = -e^3/\hbar \int [dk] v_\alpha G_\beta\gamma f'`"""
++
++    def __init__(self, constant_factor=factors.factor_BCPD, **kwargs):
++        "describe input parameters here"
++        self.Formula = frml.VelBCP
++        self.fder = 1
++        super().__init__(constant_factor=constant_factor, **kwargs)
++
++class BCPD_FermiSea(StaticCalculator):
++    r"""Berry connection polarizability (:math:`S^2/A`)
++        | With Fermi sea integral Eq(1) in `Ref <https://journals.aps.org/prb/abstract/10.1103/PhysRevB.108.L201405>`__
++        | Output: :math:`\chi_{\alpha,\beta\gamma} = -e^3/\hbar \int [dk] \partial_{\alpha} G_\beta\gamma f'`"""
++    
++    def __init__(self, constant_factor=factors.factor_BCPD, **kwargs):
++        self.Formula = frml.DerBCP
++        self.fder = 0
++        super().__init__(constant_factor=constant_factor, **kwargs)
++
++
++class BCPD_FermiSea_test(StaticCalculator):
++    r"""Berry connection polarizability (:math:`S^2/A`)
++        | With Fermi sea integral Eq(1) in `Ref <https://journals.aps.org/prb/abstract/10.1103/PhysRevB.108.L201405>`__
++        | Output: :math:`\chi_{\alpha,\beta\gamma} = -e^3/\hbar \int [dk] \partial_{\alpha} G_\beta\gamma f'`"""
++    
++    def __init__(self, constant_factor=factors.factor_BCPD, **kwargs):
++        self.Formula = frml.DerBCP_test
+         self.fder = 0
+         super().__init__(constant_factor=constant_factor, **kwargs)
++
++
++####################################
++#  Berry curvature quadrupole and  #
++#  BCP quadrupole contribution to  #
++#  third-order conductivity        #
++#   Add by Jiayu Li                #
++####################################
++
++class BerryQuadrupole_FermiSea(StaticCalculator):
++    r"""Berry curvature quadrupole contribution to third-order conductivity (:math:`A \cdot m / V^3`)
++        | With Fermi sea integral. 
++        | Output: :math:`Q_{\beta\delta\eta} = -\frac{e^4\tau^2}{\hbar^3} \int [dk] f \partial_{\beta}\partial_{\delta} \Omega_{\eta}`
++        | Instruction: :math:`j_\alpha = \epsilon_{\alpha\eta\gamma} Q_{\beta\delta\eta} E_\beta E_\delta E_\gamma`"""
++    
++    def __init__(self, constant_factor=factors.factor_BCQ3rd, **kwargs):
++        self.Formula = frml.Der2Omega
++        self.fder = 0
++        super().__init__(constant_factor=constant_factor, **kwargs)
++
++class BerryQuadrupole_FermiSea_chain(StaticCalculator):
++    r"""Berry curvature quadrupole contribution to third-order conductivity (:math:`A \cdot m / V^3`)
++        | With Fermi sea integral. 
++        | Output: :math:`Q_{\beta\delta\eta} = -\frac{e^4\tau^2}{\hbar^3} \int [dk] f \partial_{\beta}\partial_{\delta} \Omega_{\eta}`
++        | Instruction: :math:`j_\alpha = \epsilon_{\alpha\eta\gamma} Q_{\beta\delta\eta} E_\beta E_\delta E_\gamma`"""
++    
++    def __init__(self, constant_factor=factors.factor_BCQ3rd, **kwargs):
++        self.Formula = frml.Der2Omega_chain
++        self.fder = 0
++        super().__init__(constant_factor=constant_factor, **kwargs)
++
++class BCPQ_FermiSea(StaticCalculator):
++    r"""BCP quadrupole contribution to third-order conductivity (:math:`A \cdot m / V^3`)
++        | With Fermi sea integral. 
++        | Output: :math:`\sigma_{\alpha\beta\gamma\delta}=\frac{e^4\tau}{\hbar^2} \int [dk] f \partial_{\alpha} \partial_{\delta} G_{\beta\gamma}`
++        | Instruction: :math:`j_\alpha = \sigma_{\alpha\beta\gamma\delta} E_\beta E_\gamma E_\delta`"""
++    
++    def __init__(self, constant_factor=factors.factor_BCPQ3rd, **kwargs):
++        self.Formula = frml.Der2BCP
++        self.fder = 0
++        super().__init__(constant_factor=constant_factor, **kwargs)
++
++
++class BCPQ_FermiSea_test(StaticCalculator):
++    r"""BCP quadrupole contribution to third-order conductivity (:math:`A \cdot m / V^3`)
++        | With Fermi sea integral. 
++        | Output: :math:`\sigma_{\alpha\beta\gamma\delta}=\frac{e^4\tau}{\hbar^2} \int [dk] f \partial_{\alpha} \partial_{\delta} G_{\beta\gamma}`
++        | Instruction: :math:`j_\alpha = \sigma_{\alpha\beta\gamma\delta} E_\beta E_\gamma E_\delta`"""
++    
++    def __init__(self, constant_factor=factors.factor_BCPQ3rd, **kwargs):
++        self.Formula = frml.Der2BCP_test
++        self.fder = 0
++        super().__init__(constant_factor=constant_factor, **kwargs)
++
++
++# add by Jiayu Li
++
++class Qorb_IMD(StaticCalculator):
++    """Inverse mass dipole contribution to orbital magnetic quadrupole moment per unit cell
++    """
++
++    def __init__(self, **kwargs):
++        self.Formula = frml.Qorb_IMD
++        self.fder = 0
++        super().__init__(**kwargs)
++
++    def __call__(self, data_K):
++        return super().__call__(data_K) * data_K.cell_volume
++
++class Qorb_dG(StaticCalculator):
++    def __init__(self, **kwargs):
++        self.Formula = frml.Qorb_QMD
++        self.fder = 0
++        super().__init__(**kwargs)
++
++
++class Qorb_QMD(StaticCalculator):
++    """Quantum geometry contribution to orbital magnetic quadrupole moment per unit cell
++    """
++    def __init__(self, **kwargs):
++        self.Formula = frml.Qorb_QMDen
++        self.fder = 0
++        super().__init__(**kwargs)
++        self.dg = Qorb_dG(**kwargs)
++        
++    def __call__(self, data_K):
++        res = super().__call__(data_K)
++        dg_mu = self.dg(data_K).mul_array(self.Efermi, axes=0)
++        res.add((-1) * dg_mu)
++        return res * data_K.cell_volume
++
++class Qorb_IMD_FermiSurf(StaticCalculator):
++    def __init__(self, **kwargs):
++        self.Formula = frml.MassVel
++        self.fder = 1
++        super().__init__(**kwargs)
++
++class Qorb_QMD_FermiSea(StaticCalculator):
++    def __init__(self, **kwargs):
++        # self.Formula = frml.VelMetric
++        self.Formula = frml.MetricVel
++        self.fder = 0
++        super().__init__(**kwargs)
++    
++    def __call__(self, data_K):
++        return super().__call__(data_K) * (-2./3.)
++
++# For testing
++class Qorb_QMD_FermiSea_ndim3(StaticCalculator):
++    def __init__(self, **kwargs):
++        self.Formula = frml.MetricVel
++        self.fder = 0
++        super().__init__(**kwargs)
++    
++    def __call__(self, data_K):
++        return super().__call__(data_K) * (1./3.)
++
++class Qorb_dG_ndim3(StaticCalculator):
++    def __init__(self, **kwargs):
++        self.Formula = frml.Qorb_QMD_ndim3
++        self.fder = 0
++        super().__init__(**kwargs)
++
++class Qorb_QMD_Grand_ndim3(StaticCalculator):
++    """Quantum geometry contribution to orbital magnetic quadrupole moment
++    """
++    def __init__(self, **kwargs):
++        self.Formula = frml.Qorb_QMDen_ndim3
++        self.fder = 0
++        super().__init__(**kwargs)
++        self.dg = Qorb_dG_ndim3(**kwargs)
++        
++    def __call__(self, data_K):
++        res = super().__call__(data_K)
++        dg_mu = self.dg(data_K).mul_array(self.Efermi, axes=0)
++        res.add((-1) * dg_mu)
++        return res
++
++class Qorb_IMD_FermiSea_ndim3(StaticCalculator):
++    def __init__(self, **kwargs):
++        self.Formula = frml.Qorb_IMD_ndim3
++        self.fder = 0
++        super().__init__(**kwargs)
++
++class Qorb_IMD_FermiSurf_ndim3(StaticCalculator):
++    def __init__(self, **kwargs):
++        self.Formula = frml.Qorb_MassVel_ndim3
++        self.fder = 1
++        super().__init__(**kwargs)
++
++class Qorb_dG_ndim3_basic(StaticCalculator):
++    def __init__(self, **kwargs):
++        self.Formula = frml_basic.Qorb_QMD_basic
++        self.fder = 0
++        super().__init__(**kwargs)
++
++class Qorb_QMD_Grand_ndim3_basic(StaticCalculator):
++    
++    def __init__(self, **kwargs):
++        self.Formula = frml_basic.Qorb_QMDen_basic
++        self.fder = 0
++        super().__init__(**kwargs)
++        self.dg = Qorb_dG_ndim3_basic(**kwargs)
++        
++    def __call__(self, data_K):
++        res = super().__call__(data_K)
++        dg_mu = self.dg(data_K).mul_array(self.Efermi, axes=0)
++        res.add((-1) * dg_mu)
++        return res
++
++class Test_InvMass_FermiSea(StaticCalculator):
++    def __init__(self, **kwargs):
++        self.Formula = frml.InvMass
++        self.fder = 0
++        super().__init__(**kwargs)
++
++class Test_VelVel_FermiSurf(StaticCalculator):
++    def __init__(self, **kwargs):
++        self.Formula = frml.VelVel
++        self.fder = 1
++        super().__init__(**kwargs)
++
++class MetricDipole_FermiSea(StaticCalculator):
++    def __init__(self, **kwargs):
++        self.Formula = frml.DerMetric
++        self.fder = 0
++        super().__init__(**kwargs)
++
++class MetricQuadrupole_FermiSurf(StaticCalculator):
++    def __init__(self, **kwargs):
++        self.Formula = frml.VelDerMetric
++        self.fder = 1
++        super().__init__(**kwargs)
++
++class BerryQuadrupole_FermiSurf(StaticCalculator):
++    def __init__(self, constant_factor=factors.factor_BCQ3rd, **kwargs):
++        self.Formula = frml.VelDerOmega
++        self.fder = 1
++        super().__init__(constant_factor=constant_factor, **kwargs)
++
++class BCPQ_FermiSurf(StaticCalculator):
++    r"""BCP quadrupole contribution to third-order conductivity (:math:`A \cdot m / V^3`)
++        | With Fermi surface integral. 
++        | Output: :math:`\sigma_{\alpha\beta\gamma\delta}=\frac{e^4\tau}{\hbar^2} \int [dk]  v_{\alpha} \partial_{\delta} G_{\beta\gamma} f'`
++        | Instruction: :math:`j_\alpha = \sigma_{\alpha\beta\gamma\delta} E_\beta E_\gamma E_\delta`"""
++    
++    def __init__(self, constant_factor=factors.factor_BCPQ3rd, **kwargs):
++        self.Formula = frml.VelDerBCP
++        self.fder = 1
++        super().__init__(constant_factor=constant_factor, **kwargs)
++
++class IMQ_FermiSea(StaticCalculator):
++    r"""IMQ contribution to third-order conductivity (:math:`A \cdot m / V^3`)
++        | With Fermi sea integral. 
++        | Output: :math:`\sigma_{\alpha\beta\gamma\delta}= e^4/\hbar^3 \tau^3 \int [dk] f \partial_{\alpha\beta\gamma} v_{\delta} f`
++        | Instruction: :math:`j_\alpha = \sigma_{\alpha\beta\gamma\delta} E_\beta E_\gamma E_\delta`"""
++    
++    def __init__(self, constant_factor=factors.factor_IMQ3rd, **kwargs):
++        self.Formula = frml.Der4E
++        self.fder = 0
++        super().__init__(constant_factor=constant_factor, **kwargs)
+\ No newline at end of file
+--- a/wannierberri/calculators/tabulate.py
++++ b/wannierberri/calculators/tabulate.py
+@@ -207,3 +207,46 @@
+ 
+     def __init__(self, **kwargs):
+         super().__init__(frml.SpinOmega, **kwargs)
++
++
++# Add by Jiayu Li
++
++class BCP(Tabulator):
++
++    def __init__(self, **kwargs):
++        super().__init__(frml.BCP, **kwargs)
++
++class IMD(Tabulator):
++
++    def __init__(self, **kwargs):
++        super().__init__(frml.Der3E, **kwargs)
++
++class Metric(Tabulator):
++
++    def __init__(self, **kwargs):
++        super().__init__(frml.Metric, **kwargs)
++
++class QuantumMetric(Tabulator):
++
++    def __init__(self, **kwargs):
++        super().__init__(frml.QuantumMetric, **kwargs)
++
++class DerMetric(Tabulator):
++
++    def __init__(self, **kwargs):
++        super().__init__(frml.DerMetric, **kwargs)
++
++class DerBCP(Tabulator):
++
++    def __init__(self, **kwargs):
++        super().__init__(frml.DerBCP, **kwargs)
++
++class BerryQuadrupole(Tabulator):
++
++    def __init__(self, **kwargs):
++        super().__init__(frml.Der2Omega, **kwargs)
++
++class BCPQuadrupole(Tabulator):
++
++    def __init__(self, **kwargs):
++        super().__init__(frml.Der2BCP, **kwargs)
+--- a/wannierberri/factors.py
++++ b/wannierberri/factors.py
+@@ -27,6 +27,14 @@
+ factor_opt = -factor_ahc
+ factor_shc = -factor_ahc
+ 
++####################################################
++# Add by Jiayu Li
++factor_BCPD = - elementary_charge**3 / hbar / elementary_charge  # with  E^2 B^0   change energy unit from eV^-1 to J^-1
++factor_BCQ3rd = - elementary_charge**4 / hbar**3 * TAU_UNIT**2 * Ang_SI  # with  E^3 B^0
++factor_BCPQ3rd = elementary_charge**4 / hbar**3 * TAU_UNIT * Ang_SI * hbar / elementary_charge # with  E^2 B^0, change velocity unit from eV*m to m/s
++factor_IMQ3rd = elementary_charge**4 / hbar**3 * TAU_UNIT**3 * Ang_SI * elementary_charge / hbar # with tau^3 E^3 B^0, change velocity unit from eV*m to m/s
++####################################################
++
+ #########
+ # Oscar #
+ ###############################################################################
+--- a/wannierberri/formula/covariant.py
++++ b/wannierberri/formula/covariant.py
+@@ -52,7 +52,7 @@
+ 
+     def __init__(self, data_K):
+         self.W = data_K.covariant('Ham', commader=2)
+-        self.V = data_K.covariant('Ham', gender=1)
++        self.V = data_K.covariant('Ham', gender=1) # data_K.covariant('Ham', gender=1) = data_K.covariant('Ham', commader=1)
+         self.D = data_K.Dcov
+         self.dEinv = DEinv_ln(data_K)
+ 
+@@ -65,13 +65,174 @@
+         summ *= -self.dEinv.ln(ik, inn, out)[:, :, None, None]
+         return summ
+ 
++#
++######################################
+ 
++class Mcov(Formula_ln):
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.ndim = 1
++        self.D = Dcov(data_K)
++        if self.external_terms:
++            self.A = data_K.covariant('AA')
++    
++    def ln(self, ik, inn, out):
++        summ = np.zeros((len(out), len(inn), 3), dtype=complex)
++        if self.internal_terms:
++            summ += 1j * self.D.ln(ik, inn, out)
++        if self.external_terms:
++            summ += self.A.ln(ik, inn, out)
++        return summ
++        
++    def nn(self, ik, inn, out):
++        raise ValueError("Mln should not be called within inner states")
++
++
++class Ncov(Formula_ln):
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.ndim = 1
++        self.M = Mcov(data_K, **parameters)
++        self.dEinv = DEinv_ln(data_K)
++    
++    def ln(self, ik, inn, out):
++        return self.M.ln(ik, inn, out) * (self.dEinv.ln(ik, inn, out)[:, :, None])
++    
++    def nn(self, ik, inn, out):
++        raise ValueError("Nln should not be called within inner states")
++
++
++class DV_ln(Formula_ln):
++    # V^c_l - V^c_n
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.ndim = 1
++        self.V = data_K.covariant('Ham', commader=1)
++    
++    def ln(self, ik, inn, out):
++        V_l = cached_einsum("llc->lc", self.V.ll(ik, inn, out).real)
++        V_n = cached_einsum("nnc->nc", self.V.nn(ik, inn, inn).real)
++        deltaV_ln = V_l[:, None, :] - V_n[None, :, :]
++        return deltaV_ln
++    
++    def nn(self, ik, inn, out):
++        raise ValueError("DVln should not be called within inner states")
++
++
++class DerMcov(Formula_ln):
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.ndim = 2
++        self.dD = DerDcov(data_K)
++        if self.external_terms:
++            self.dA = data_K.covariant('AA', gender=1)
++    
++    def ln(self, ik, inn, out):
++        summ = np.zeros((len(out), len(inn), 3, 3), dtype=complex)
++        if self.internal_terms:
++            summ += 1j * self.dD.ln(ik, inn, out)
++        if self.external_terms:
++            summ += self.dA.ln(ik, inn, out)
++        return summ
++    
++    def nn(self, ik, inn, out):
++        raise ValueError("DerMcovln should not be called within inner states")
++
++
++class DerNcov(Formula_ln):
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.ndim = 2
++        self.dM = DerMcov(data_K, **parameters)
++        self.N = Ncov(data_K, **parameters)
++        self.DV = DV_ln(data_K)
++        self.dEinv = DEinv_ln(data_K)
++
++    def ln(self, ik, inn, out):
++        summ = self.dM.ln(ik, inn, out)
++        summ += -cached_einsum('lna,lnd->lnad', self.N.ln(ik, inn, out), self.DV.ln(ik, inn, out))
++        summ *= self.dEinv.ln(ik, inn, out)[:, :, None, None]
++        return summ
++    
++    def nn(self, ik, inn, out):
++        raise ValueError("DerNcovln should not be called within inner states")
++
++
++class DInvMass(Formula_ln):
++    # V^d:e_l - V^d:e_n
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.ndim = 2
++        self.dV = InvMass(data_K)
++    
++    def ln(self, ik, inn, out):
++        dV_l = cached_einsum("llcd->lcd", self.dV.ll(ik, inn, out))
++        dV_n = cached_einsum("nncd->ncd", self.dV.nn(ik, inn, inn))
++        DdV_ln = dV_l[:, None, :, :] - dV_n[None, :, :, :]
++        return DdV_ln
++    
++    def nn(self, ik, inn, out):
++        raise ValueError("DInvMassln should not be called within inner states")
++
++
++class Der2Mcov(Formula_ln):
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.ndim = 3
++        self.ddD = Der2Dcov(data_K)
++        if self.external_terms:
++            self.ddA = Der2A(data_K)
++    
++    def ln(self, ik, inn, out):
++        summ = np.zeros((len(out), len(inn), 3, 3, 3), dtype=complex)
++        if self.internal_terms:
++            summ += 1j * self.ddD.ln(ik, inn, out)
++        if self.external_terms:
++            summ += self.ddA.ln(ik, inn, out)
++        return summ
++
++    def nn(self, ik, inn, out):
++        raise ValueError("Der2Mcovln should not be called within inner states")
++
++
++class Der2Ncov(Formula_ln):
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.ndim = 3
++        self.ddM = Der2Mcov(data_K, **parameters)
++        self.N = Ncov(data_K, **parameters)
++        self.DInvMass = DInvMass(data_K)
++        self.dN = DerNcov(data_K, **parameters)
++        self.DV = DV_ln(data_K)
++        self.dEinv = DEinv_ln(data_K)
++    
++    def ln(self, ik, inn, out):
++        summ = self.ddM.ln(ik, inn, out)
++        summ += -cached_einsum('lna,lnde->lnade', self.N.ln(ik, inn, out), self.DInvMass.ln(ik, inn, out))
++        temp = -cached_einsum('lnad,lne->lnade', self.dN.ln(ik, inn, out), self.DV.ln(ik, inn, out))
++        summ += temp + temp.swapaxes(3, 4)
++        summ *= self.dEinv.ln(ik, inn, out)[:, :, None, None, None]
++        return summ
++    
++    def nn(self, ik, inn, out):
++        raise ValueError("Der2Ncovln should not be called within inner states")
++
++##########################################
++
+ class Der2Dcov(Formula_ln):
+ 
+     def __init__(self, data_K):
+         self.dD = DerDcov(data_K)
+-        self.WV = DerWln(data_K)
+-        self.dV = InvMass(data_K)
++        self.WV = DerWln(data_K)   # \overline{W}^{bc:d}
++        self.dV = InvMass(data_K)  # \overline{V}^{b:d}
+         self.V = data_K.covariant('Ham', commader=1)
+         self.D = Dcov(data_K)
+         self.dEinv = DEinv_ln(data_K)
+@@ -95,6 +256,51 @@
+     def nn(self, ik, inn, out):
+         raise ValueError("Dln should not be called within inner states")
+ 
++
++class Der2Dcov_chain(Formula_ln):
++    '''
++    Another implementation of Der2Dcov, but using the chain rule.
++    '''
++    def __init__(self, data_K):
++        self.dD = DerDcov(data_K)
++        self.WV = DerWln(data_K)   # \overline{W}^{bc:d}
++        self.dV = InvMass(data_K)  # \overline{V}^{b:d}
++        self.V = data_K.covariant('Ham', commader=1)
++        self.W = data_K.covariant('Ham', commader=2)
++        self.D = Dcov(data_K)
++        self.dEinv = DEinv_ln(data_K)
++        
++
++    def ln(self, ik, inn, out):
++        summ = self.WV.ln(ik, inn, out)
++        summ += cached_einsum("lpbe,pnd->lnbde", self.dV.ll(ik, inn, out), self.D.ln(ik, inn, out))
++        summ += cached_einsum("lpde,pnb->lnbde", self.dV.ll(ik, inn, out), self.D.ln(ik, inn, out))
++        summ += cached_einsum("lpb,pnde->lnbde", self.V.ll(ik, inn, out), self.dD.ln(ik, inn, out))
++        summ += cached_einsum("lpd,pnbe->lnbde", self.V.ll(ik, inn, out), self.dD.ln(ik, inn, out))
++        summ += -cached_einsum("lmbe,mnd->lnbde", self.dD.ln(ik, inn, out), self.V.nn(ik, inn, out))
++        summ += -cached_einsum("lmde,mnb->lnbde", self.dD.ln(ik, inn, out), self.V.nn(ik, inn, out))
++        summ += -cached_einsum("lmb,mnde->lnbde", self.D.ln(ik, inn, out), self.dV.nn(ik, inn, out))
++        summ += -cached_einsum("lmd,mnbe->lnbde", self.D.ln(ik, inn, out), self.dV.nn(ik, inn, out))
++        Vn = cached_einsum("nnc->nc", self.V.nn(ik, inn, inn).real)
++        Vl = cached_einsum("llc->lc", self.V.ll(ik, out, out).real)
++        deltaV_ln = Vl[:, None, :] - Vn[None, :, :]
++        temp = deltaV_ln * ( self.dEinv.ln(ik, inn, out)[:, :, None] )
++        summ += -cached_einsum("lnbd,lne->lnbde", self.W.ln(ik, inn, out), temp)
++        prod = cached_einsum("lmd,mnb->lndb", self.D.ln(ik, inn, out), self.V.nn(ik, inn, out))
++        summ += cached_einsum("lndb,lne->lnbde", prod, temp)
++        prod = cached_einsum("lmb,mnd->lnbd", self.D.ln(ik, inn, out), self.V.nn(ik, inn, out))
++        summ += cached_einsum("lnbd,lne->lnbde", prod, temp)
++        prod = -cached_einsum("lpb,pnd->lnbd", self.V.ll(ik, inn, out), self.D.ln(ik, inn, out))
++        summ += cached_einsum("lnbd,lne->lnbde", prod, temp)
++        prod = -cached_einsum("lpd,pnb->lndb", self.V.ll(ik, inn, out), self.D.ln(ik, inn, out))
++        summ += cached_einsum("lndb,lne->lnbde", prod, temp)
++        summ *= -self.dEinv.ln(ik, inn, out)[:, :, None, None, None]
++        return summ
++
++    def nn(self, ik, inn, out):
++        raise ValueError("Dln should not be called within inner states")
++
++
+ # TODO Der2A,B,O,H,S can be merged to one class.
+ 
+ 
+@@ -246,6 +452,102 @@
+         raise NotImplementedError()
+ 
+ 
++##############################
++#   Fourth derivative of  E  #
++#   Add by Jiayu Li          #
++##############################
++
++class DerYln(Matrix_GenDer_ln):
++    r""" :math:`\overline{Y}^{abc:d}`"""
++
++    def __init__(self, data_K):
++        super().__init__(data_K.covariant('Ham', 3), data_K.covariant('Ham', 4), data_K.Dcov)
++        self.transformTR = transform_ident
++        self.transformInv = transform_ident
++
++class Der2Wnn(Formula_ln):
++    r""" :math:`\overline{W}^{ab:cd}`"""
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.dY = DerYln(data_K)
++        self.dW = DerWln(data_K)
++        self.W = data_K.covariant('Ham', commader=2)
++        self.D = Dcov(data_K)
++        self.dD = DerDcov(data_K)
++        self.ndim = 4
++        self.transformTR = transform_ident
++        self.transformInv = transform_ident
++
++    def nn(self, ik, inn, out):
++        summ = self.dY.nn(ik, inn, out)
++        summ += cached_einsum('mlabd,lnc->mnabcd', self.dW.nl(ik, inn, out), self.D.ln(ik, inn, out))
++        summ += cached_einsum('mlab,lncd->mnabcd', self.W.nl(ik, inn, out), self.dD.ln(ik, inn, out))
++        summ -= cached_einsum('mlcd,lnab->mnabcd', self.dD.nl(ik, inn, out), self.W.ln(ik, inn, out))
++        summ -= cached_einsum('mlc,lnabd->mnabcd', self.D.nl(ik, inn, out), self.dW.ln(ik, inn, out))
++        return summ
++    
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
++
++class Der2Vln(Formula_ln):
++    r""" :math:`\overline{V}^{a:cd}`"""
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.dW = DerWln(data_K)
++        self.dV = InvMass(data_K)
++        self.D = Dcov(data_K)
++        self.dD = DerDcov(data_K)
++        self.V = data_K.covariant('Ham', commader=1)
++        self.ndim = 3
++        self.transformTR = transform_odd
++        self.transformInv = transform_odd
++    
++    def ln(self, ik, inn, out):
++        summ = self.dW.ln(ik, inn, out)
++        summ += cached_einsum('lpad,pnc->lnacd', self.dV.ll(ik, inn, out), self.D.ln(ik, inn, out))
++        summ += cached_einsum('lpa,pncd->lnacd', self.V.ll(ik, inn, out), self.dD.ln(ik, inn, out))
++        summ -= cached_einsum('lmcd,mna->lnacd', self.dD.ln(ik, inn, out), self.V.nn(ik, inn, out))
++        summ -= cached_einsum('lmc,mnad->lnacd', self.D.ln(ik, inn, out), self.dV.nn(ik, inn, out))
++        return summ
++    
++    def nn(self, ik, inn, out):
++        raise NotImplementedError()
++
++
++class Der4E(Formula_ln):
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.ddW = Der2Wnn(data_K)
++        self.ddV = Der2Vln(data_K)
++        self.D = Dcov(data_K)
++        self.dV = InvMass(data_K)
++        self.dD = DerDcov(data_K)
++        self.ddD = Der2Dcov(data_K)
++        self.V = data_K.covariant('Ham', commader=1)
++        self.ndim = 4
++        self.transformTR = transform_ident
++        self.transformInv = transform_ident
++    
++    def nn(self, ik, inn, out):
++        summ = self.ddW.nn(ik, inn, out)
++        summ += cached_einsum('mlacd,lnb->mnabcd', self.ddV.nl(ik, inn, out), self.D.ln(ik, inn, out))
++        summ += cached_einsum('mlac,lnbd->mnabcd', self.dV.nl(ik, inn, out), self.dD.ln(ik, inn, out))
++        summ += cached_einsum('mlad,lnbc->mnabcd', self.dV.nl(ik, inn, out), self.dD.ln(ik, inn, out))
++        summ += cached_einsum('mla,lnbcd->mnabcd', self.V.nl(ik, inn, out), self.ddD.ln(ik, inn, out))
++        summ -= cached_einsum('mlbcd,lna->mnabcd', self.ddD.nl(ik, inn, out), self.V.ln(ik, inn, out))
++        summ -= cached_einsum('mlbc,lnad->mnabcd', self.dD.nl(ik, inn, out), self.dV.ln(ik, inn, out))
++        summ -= cached_einsum('mlbd,lnac->mnabcd', self.dD.nl(ik, inn, out), self.dV.ln(ik, inn, out))
++        summ -= cached_einsum('mlb,lnacd->mnabcd', self.D.nl(ik, inn, out), self.ddV.ln(ik, inn, out))
++        return summ
++    
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
++
+ ########################
+ #   Berry curvature    #
+ ########################
+@@ -295,8 +597,195 @@
+     def ln(self, ik, inn, out):
+         raise NotImplementedError()
+ 
++########################
++#   Quantum metric     #
++#   Add by Jiayu Li    #
++########################
+ 
++class Metric(Formula_ln):
++
++    def __init__(self, data_K, **parameters):
++        r"""  :math:`(1/2) * \tildeF _{ab} + \tildeF _{ba}` """
++        super().__init__(data_K, **parameters)
++        self.D = data_K.Dcov
++
++        if self.external_terms:
++            self.A = data_K.covariant('AA')
++            self.F = data_K.covariant('FF')
++
++        self.ndim = 2
++        self.transformTR=transform_ident
++        self.transformInv=transform_ident
++
++    def nn(self, ik, inn, out):
++        summ = np.zeros((len(inn), len(inn), 3, 3), dtype=complex)
++
++        if self.internal_terms:
++            summ += - (1/2) * cached_einsum(
++                "mla,lnb->mnab",
++                self.D.nl(ik, inn, out),
++                self.D.ln(ik, inn, out))
++        
++        if self.external_terms:
++            summ += (1/2) * self.F.nn(ik, inn, out)
++            summ += (1j/2) * cached_einsum(
++                "mla,lnb->mnab",
++                self.D.nl(ik, inn, out),
++                self.A.ln(ik, inn, out))
++            summ += (1j/2) * cached_einsum(
++                "mla,lnb->mnab",
++                self.A.nl(ik, inn, out),
++                self.D.ln(ik, inn, out))
++            summ += -(1/2) * cached_einsum(
++                "mla,lnb->mnab",
++                self.A.nn(ik, inn, out),
++                self.A.nn(ik, inn, out))
++
++        summ += summ.swapaxes(0, 1).conj()
++        return summ
++
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
++
++class tildeFab(Formula_ln):
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.D = data_K.Dcov
++
++        if self.external_terms:
++            self.A = data_K.covariant('AA')
++            self.F = data_K.covariant('FF')
++        
++        self.ndim = 2
++        self.transformTR=transform_ident
++        self.transformInv=transform_ident
++    
++    def nn(self, ik, inn, out):
++        summ = np.zeros((len(inn), len(inn), 3, 3), dtype=complex)
++
++        if self.external_terms:
++            summ += -1 * np.einsum(
++                "mla,lnb->mnab",
++                self.D.nl(ik, inn, out),
++                self.D.ln(ik, inn, out))
++        
++        if self.external_terms:
++            summ += self.F.nn(ik, inn, out)
++            summ += 1j * np.einsum(
++                "mla,lnb->mnab",
++                self.D.nl(ik, inn, out),
++                self.A.ln(ik, inn, out))
++            summ += 1j * np.einsum(
++                "mla,lnb->mnab",
++                self.A.nl(ik, inn, out),
++                self.D.ln(ik, inn, out))
++            summ += -1 * np.einsum(
++                "mla,lnb->mnab",
++                self.A.nn(ik, inn, out),
++                self.A.nn(ik, inn, out))
++        
++        return summ
++
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
++
++class QuantumMetric(Formula_ln):
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.D = data_K.Dcov
++        self.dEinv = DEinv_ln(data_K)
++
++        if self.external_terms:
++            self.A = data_K.covariant('AA')
++
++        self.ndim = 2
++        self.transformTR=transform_ident
++        self.transformInv=transform_ident
++
++    def nn(self, ik, inn, out):
++        summ = np.zeros((len(inn), len(inn), 3, 3), dtype=complex)
++
++        if self.internal_terms:
++            summ += -1 * np.einsum(
++                "mla,lnb->mnab",
++                self.D.nl(ik, inn, out),
++                self.D.ln(ik, inn, out))
++            
++        if self.external_terms:
++            summ += np.einsum(
++                "mla,lnb->mnab",
++                self.A.nl(ik, inn, out),
++                self.A.ln(ik, inn, out))
++            summ += 1j * np.einsum(
++                "mla,lnb->mnab",
++                self.D.nl(ik, inn, out),
++                self.A.ln(ik, inn, out))
++            summ += 1j * np.einsum(
++                "mla,lnb->mnab",
++                self.A.nl(ik, inn, out),
++                self.D.ln(ik, inn, out))
++        
++        summ += summ.swapaxes(0, 1).conj()
++        return summ
++
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
+ ########################
++#   Berry connection   #
++#     polarizability   #
++#   Add by Jiayu Li    #
++########################
++
++class BCP(Formula_ln):
++    """
++    the symmetric version (v2.0)
++    """
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.D = data_K.Dcov
++        self.dEinv = DEinv_ln(data_K)
++
++        if self.external_terms:
++            self.A = data_K.covariant('AA')
++
++        self.ndim = 2
++        self.transformTR=transform_ident
++        self.transformInv=transform_ident
++
++    def nn(self, ik, inn, out):
++        summ = np.zeros((len(inn), len(inn), 3, 3), dtype=complex)
++
++        if self.internal_terms:
++            M_nl = 1j * self.D.nl(ik, inn, out)
++            M_ln = 1j * self.D.ln(ik, inn, out)
++
++            if self.external_terms:
++                M_nl += self.A.nl(ik, inn, out)
++                M_ln += self.A.ln(ik, inn, out)
++            
++            N_nl = M_nl * self.dEinv.nl(ik, inn, out)[:, :, None]
++            N_ln = M_ln * self.dEinv.ln(ik, inn, out)[:, :, None]
++
++            summ += cached_einsum(
++                "mla,lnb->mnab", N_nl, M_ln)
++            summ -= cached_einsum(
++                "mla,lnb->mnab", M_nl, N_ln)
++
++        summ += summ.swapaxes(0, 1).conj()
++        summ = summ / 4  # a factor 2 for symmetrization of ab and the other 2 for mn
++        return summ
++
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
++
++
++########################
+ #   derivative of      #
+ #   Berry curvature    #
+ ########################
+@@ -351,6 +840,160 @@
+     def ln(self, ik, inn, out):
+         raise NotImplementedError()
+ 
++# Add by Jiayu Li
++
++########################
++#   derivative of      #
++#   Metric             #
++########################
++
++class DerMetric(Formula_ln):
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.dD = DerDcov(data_K)
++        self.D = Dcov(data_K)
++        if self.external_terms:
++            self.A = data_K.covariant('AA')
++            self.dA = data_K.covariant('AA', gender=1)
++            self.dF = data_K.covariant('FF', gender=1)
++        self.ndim = 3
++        self.transformTR = transform_odd
++        self.transformInv = transform_odd
++
++    def nn(self, ik, inn, out):
++        summ = np.zeros((len(inn), len(inn), 3, 3, 3), dtype=complex)
++        if self.internal_terms:
++            summ += -0.5 * cached_einsum(
++                "mla,lnbd->mnabd", 
++                self.D.nl(ik, inn, out),
++                self.dD.ln(ik, inn, out))
++            summ += -0.5 * cached_einsum(
++                "mlad,lnb->mnabd",
++                self.dD.nl(ik, inn, out),
++                self.D.ln(ik, inn, out))
++            pass
++        
++        if self.external_terms:
++            summ += 0.5 * self.dF.nn(ik, inn, out)
++            summ += 0.5j * cached_einsum(
++                "mlad,lnb->mnabd",
++                self.dD.nl(ik, inn, out),
++                self.A.ln(ik, inn, out))
++            summ += 0.5j * cached_einsum(
++                "mla,lnbd->mnabd",
++                self.D.nl(ik, inn, out),
++                self.dA.ln(ik, inn, out))
++            summ += 0.5j * cached_einsum(
++                "mlad,lnb->mnabd",
++                self.dA.nl(ik, inn, out),
++                self.D.ln(ik, inn, out))
++            summ += 0.5j * cached_einsum(
++                "mla,lnbd->mnabd",
++                self.A.nl(ik, inn, out),
++                self.dD.ln(ik, inn, out))
++            summ += -0.5 * cached_einsum(
++                "mlad,lnb->mnabd",
++                self.dA.nl(ik, inn, out),
++                self.A.ln(ik, inn, out))
++            summ += -0.5 * cached_einsum(
++                "mla,lnbd->mnabd",
++                self.A.nl(ik, inn, out),
++                self.dA.ln(ik, inn, out))
++            pass
++
++        summ += summ.swapaxes(0, 1).conj()
++        return summ
++
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
++class DerBCP(Formula_ln):
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.dD = DerDcov(data_K)
++        self.D = Dcov(data_K)
++        self.dEinv = DEinv_ln(data_K)
++        self.V = data_K.covariant('Ham', gender=1)
++
++        if self.external_terms:
++            self.A = data_K.covariant('AA')
++            self.dA = data_K.covariant('AA', gender=1)
++        self.ndim = 3
++        self.transformTR = transform_odd
++        self.transformInv = transform_odd
++    
++    def nn(self, ik, inn, out):
++        summ = np.zeros((len(inn), len(inn), 3, 3, 3), dtype=complex)
++        if self.internal_terms:
++            M_nl = 1j * self.D.nl(ik, inn, out)
++            M_ln = 1j * self.D.ln(ik, inn, out)
++            dM_nl = 1j * self.dD.nl(ik, inn, out)
++            dM_ln = 1j * self.dD.ln(ik, inn, out)
++
++            if self.external_terms:
++                M_nl += self.A.nl(ik, inn, out)
++                M_ln += self.A.ln(ik, inn, out)
++                dM_nl += self.dA.nl(ik, inn, out)
++                dM_ln += self.dA.ln(ik, inn, out)
++                pass
++            
++            N_nl = M_nl * self.dEinv.nl(ik, inn, out)[:, :, None]
++            N_ln = M_ln * self.dEinv.ln(ik, inn, out)[:, :, None]
++            dN_nl = dM_nl * self.dEinv.nl(ik, inn, out)[:, :, None, None]
++            dN_ln = dM_ln * self.dEinv.ln(ik, inn, out)[:, :, None, None]
++
++            Vn = cached_einsum("nnc->nc", self.V.nn(ik, inn, inn).real)
++            Vl = cached_einsum("llc->lc", self.V.ll(ik, out, out).real)
++            deltaV_nl = Vn[:, None, :] - Vl[None, :, :]
++            deltaV_ln = Vl[:, None, :] - Vn[None, :, :]
++            # dEinv2_nl = self.dEinv.nl(ik, inn, out) ** 2
++            # dEinv2_ln = self.dEinv.ln(ik, inn, out) ** 2
++            dN_nl -= cached_einsum("nla,nld->nlad", N_nl, deltaV_nl * (self.dEinv.nl(ik, inn, out)[:, :, None]) )
++            dN_ln -= cached_einsum("lna,lnd->lnad", N_ln, deltaV_ln * (self.dEinv.ln(ik, inn, out)[:, :, None]) )
++            # dN_nl -= M_nl * dV_nl * (dEinv2_nl[:, :, None])
++            # dN_ln -= M_ln * dV_ln * (dEinv2_ln[:, :, None])
++
++            summ += cached_einsum("mlad,lnb->mnabd", dN_nl, M_ln)
++            summ += cached_einsum("mla,lnbd->mnabd", N_nl, dM_ln)
++            summ -= cached_einsum("mlad,lnb->mnabd", dM_nl, N_ln)
++            summ -= cached_einsum("mla,lnbd->mnabd", M_nl, dN_ln)
++
++        summ += summ.swapaxes(0, 1).conj()
++        summ = summ / 4 # 2 for symmetrization of ab and the other 2 for mn
++        return summ
++    
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
++class DerBCP_test(Formula_ln):
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.M = Mcov(data_K)
++        self.dM = DerMcov(data_K)
++        self.N = Ncov(data_K)
++        self.dN = DerNcov(data_K)
++        self.dEinv = DEinv_ln(data_K)
++
++        self.ndim = 3
++        self.transformTR = transform_odd
++        self.transformInv = transform_odd
++    
++    def nn(self, ik, inn, out):
++        summ = cached_einsum('mlad,lnb->mnabd', self.dN.nl(ik, inn, out), self.M.ln(ik, inn, out))
++        summ += cached_einsum('mla,lnbd->mnabd', self.N.nl(ik, inn, out), self.dM.ln(ik, inn, out))
++        summ += -cached_einsum('mlad,lnb->mnabd', self.dM.nl(ik, inn, out), self.N.ln(ik, inn, out))
++        summ += -cached_einsum('mla,lnbd->mnabd', self.M.nl(ik, inn, out), self.dN.ln(ik, inn, out))
++
++        summ += summ.swapaxes(0, 1).conj()
++        summ = summ / 4 # 2 for symmetrization of ab and the other 2 for mn
++        return summ
++    
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
++
++
+ ###############################
+ ###  second derivative of  ####
+ ###  Berry curvature       ####
+@@ -404,6 +1047,173 @@
+         raise NotImplementedError()
+ 
+ 
++class Der2Omega_chain(Formula_ln):
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.ddD = Der2Dcov_chain(data_K)
++        self.dD = DerDcov(data_K)
++        self.D = Dcov(data_K)
++
++        if self.external_terms:
++            self.A = data_K.covariant('AA')
++            self.dA = data_K.covariant('AA', gender=1)
++            self.ddA = Der2A(data_K)
++            self.ddO = Der2O(data_K)
++        self.ndim = 3
++        self.transformTR = transform_odd
++        self.transformInv = transform_ident
++
++    def nn(self, ik, inn, out):
++        summ = np.zeros((len(inn), len(inn), 3, 3, 3), dtype=complex)
++        if self.external_terms:
++            summ += 0.5 * self.ddO.nn(ik, inn, out)
++
++        for s, a, b in (+1, alpha_A, beta_A), (-1, beta_A, alpha_A):
++            if self.internal_terms:
++                summ += -1j * s * cached_einsum("mlce,lncd->mncde", self.dD.nl(ik, inn, out)[:, :, a], self.dD.ln(ik, inn, out)[:, :, b])
++                summ += -1j * s * cached_einsum("mlc,lncde->mncde", self.D.nl(ik, inn, out)[:, :, a], self.ddD.ln(ik, inn, out)[:, :, b])
++                pass
++
++            if self.external_terms:
++                summ += -1 * s * cached_einsum("mlce,lncd->mncde", self.dD.nl(ik, inn, out)[:, :, a], self.dA.ln(ik, inn, out)[:, :, b, :])
++                summ += -1 * s * cached_einsum("mlc,lncde->mncde", self.D.nl(ik, inn, out)[:, :, a], self.ddA.ln(ik, inn, out)[:, :, b, :])
++                summ += -1 * s * cached_einsum("mlcde,lnc->mncde", self.ddD.nl(ik, inn, out)[:, :, a, :],
++                        self.A.ln(ik, inn, out)[:, :, b])
++                summ += -1 * s * cached_einsum("mlcd,lnce->mncde", self.dD.nl(ik, inn, out)[:, :, a, :],
++                        self.dA.ln(ik, inn, out)[:, :, b])
++                summ += -1j * s * cached_einsum("mlce,lncd->mncde", self.dA.nn(ik, inn, out)[:, :, a], self.dA.nn(ik, inn, out)[:, :, b, :])
++                summ += -1j * s * cached_einsum("mlc,lncde->mncde", self.A.nn(ik, inn, out)[:, :, a], self.ddA.nn(ik, inn, out)[:, :, b, :])
++                pass
++
++        summ += summ.swapaxes(0, 1).conj()
++        return summ
++
++
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
++# Add by Jiayu Li
++########################
++#   second derivative of  #
++#   BCP                   #
++########################
++
++
++class Der2BCP(Formula_ln):
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.ddD = Der2Dcov(data_K)
++        self.dD = DerDcov(data_K)
++        self.D = Dcov(data_K)
++        self.dEinv = DEinv_ln(data_K)
++        self.V = data_K.covariant('Ham', commader=1)
++        self.dV = InvMass(data_K)
++        # self.dV = data_K.covariant('Ham', commader=2)
++
++        if self.external_terms:
++            self.A = data_K.covariant('AA')
++            self.dA = data_K.covariant('AA', gender=1)
++            self.ddA = Der2A(data_K)
++        
++        self.ndim = 4
++        self.transformTR = transform_ident
++        self.transformInv = transform_ident
++
++    def nn(self, ik, inn, out):
++        summ = np.zeros((len(inn), len(inn), 3, 3, 3, 3), dtype=complex)
++        if self.internal_terms:
++            M_nl = 1j * self.D.nl(ik, inn, out)
++            M_ln = 1j * self.D.ln(ik, inn, out)
++            dM_nl = 1j * self.dD.nl(ik, inn, out)
++            dM_ln = 1j * self.dD.ln(ik, inn, out)
++            ddM_nl = 1j * self.ddD.nl(ik, inn, out)
++            ddM_ln = 1j * self.ddD.ln(ik, inn, out)
++
++            if self.external_terms:
++                M_nl += self.A.nl(ik, inn, out)
++                M_ln += self.A.ln(ik, inn, out)
++                dM_nl += self.dA.nl(ik, inn, out)
++                dM_ln += self.dA.ln(ik, inn, out)
++                ddM_nl += self.ddA.nl(ik, inn, out)
++                ddM_ln += self.ddA.ln(ik, inn, out)
++                pass
++            
++            N_nl = M_nl * self.dEinv.nl(ik, inn, out)[:, :, None]
++            N_ln = M_ln * self.dEinv.ln(ik, inn, out)[:, :, None]
++            dN_nl = dM_nl * self.dEinv.nl(ik, inn, out)[:, :, None, None]
++            dN_ln = dM_ln * self.dEinv.ln(ik, inn, out)[:, :, None, None]
++            ddN_nl = ddM_nl * self.dEinv.nl(ik, inn, out)[:, :, None, None, None]
++            ddN_ln = ddM_ln * self.dEinv.ln(ik, inn, out)[:, :, None, None, None]
++
++            Vn = cached_einsum("nnc->nc", self.V.nn(ik, inn, inn))
++            Vl = cached_einsum("llc->lc", self.V.ll(ik, out, out))
++            deltaV_nl = Vn[:, None, :] - Vl[None, :, :]
++            deltaV_ln = Vl[:, None, :] - Vn[None, :, :]
++            dVn = cached_einsum("nncd->ncd", self.dV.nn(ik, inn, inn))
++            dVl = cached_einsum("llcd->lcd", self.dV.ll(ik, out, out))
++            deltadV_nl = dVn[:, None, :, :] - dVl[None, :, :, :]
++            deltadV_ln = dVl[:, None, :, :] - dVn[None, :, :, :]
++
++            dN_nl -= cached_einsum("nla,nld->nlad", N_nl, deltaV_nl * (self.dEinv.nl(ik, inn, out)[:, :, None]) )
++            dN_ln -= cached_einsum("lna,lnd->lnad", N_ln, deltaV_ln * (self.dEinv.ln(ik, inn, out)[:, :, None]) )
++
++            ddN_nl -= cached_einsum("nlae,nld->nlade", dN_nl, deltaV_nl * (self.dEinv.nl(ik, inn, out)[:, :, None]))
++            ddN_ln -= cached_einsum("lnae,lnd->lnade", dN_ln, deltaV_ln * (self.dEinv.ln(ik, inn, out)[:, :, None]))
++            ddN_nl -= cached_einsum("nlad,nle->nlade", dN_nl, deltaV_nl * (self.dEinv.nl(ik, inn, out)[:, :, None]))
++            ddN_ln -= cached_einsum("lnad,lne->lnade", dN_ln, deltaV_ln * (self.dEinv.ln(ik, inn, out)[:, :, None]))
++            ddN_nl -= cached_einsum("nla,nlde->nlade", N_nl, deltadV_nl * (self.dEinv.nl(ik, inn, out)[:, :, None, None]))
++            ddN_ln -= cached_einsum("lna,lnde->lnade", N_ln, deltadV_ln * (self.dEinv.ln(ik, inn, out)[:, :, None, None]))
++
++            summ += cached_einsum("mlade,lnb->mnabde", ddN_nl, M_ln)
++            summ += cached_einsum("mlad,lnbe->mnabde", dN_nl, dM_ln)
++            summ += cached_einsum("mlae,lnbd->mnabde", dN_nl, dM_ln)
++            summ += cached_einsum("mla,lnbde->mnabde", N_nl, ddM_ln)
++            summ -= cached_einsum("mlade,lnb->mnabde", ddM_nl, N_ln)
++            summ -= cached_einsum("mlad,lnbe->mnabde", dM_nl, dN_ln)
++            summ -= cached_einsum("mlae,lnbd->mnabde", dM_nl, dN_ln)
++            summ -= cached_einsum("mla,lnbde->mnabde", M_nl, ddN_ln)
++
++        summ += summ.swapaxes(0, 1).conj()
++        summ = summ / 4
++        return summ
++    
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
++class Der2BCP_test(Formula_ln):
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.M = Mcov(data_K, **parameters)
++        self.N = Ncov(data_K, **parameters)
++        self.dM = DerMcov(data_K, **parameters)
++        self.dN = DerNcov(data_K, **parameters)
++        self.ddM = Der2Mcov(data_K, **parameters)
++        self.ddN = Der2Ncov(data_K, **parameters)
++
++        self.ndim = 4
++        self.transformTR = transform_ident
++        self.transformInv = transform_ident
++    
++    def nn(self, ik, inn, out):
++        summ = cached_einsum('mlade,lnb->mnabde', self.ddN.nl(ik, inn, out), self.M.ln(ik, inn, out))
++        summ += cached_einsum('mlad,lnbe->mnabde', self.dN.nl(ik, inn, out), self.dM.ln(ik, inn, out))
++        summ += cached_einsum('mlae,lnbd->mnabde', self.dN.nl(ik, inn, out), self.dM.ln(ik, inn, out))
++        summ += cached_einsum('mla,lnbde->mnabde', self.N.nl(ik, inn, out), self.ddM.ln(ik, inn, out))
++        summ += -cached_einsum('mlade,lnb->mnabde', self.ddM.nl(ik, inn, out), self.N.ln(ik, inn, out))
++        summ += -cached_einsum('mlad,lnbe->mnabde', self.dM.nl(ik, inn, out), self.dN.ln(ik, inn, out))
++        summ += -cached_einsum('mlae,lnbd->mnabde', self.dM.nl(ik, inn, out), self.dN.ln(ik, inn, out))
++        summ += -cached_einsum('mla,lnbde->mnabde', self.M.nl(ik, inn, out), self.ddN.ln(ik, inn, out))
++
++        summ /= 4
++        summ += summ.swapaxes(0, 1).conj()
++        return summ
++    
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
++
+ class Hamiltonian(Matrix_ln):
+ 
+     def __init__(self, data_K):
+@@ -764,8 +1574,164 @@
+ 
+     def __init__(self, data_K, **parameters):
+         super().__init__(data_K, sign=-1, **parameters)
++
++
++# Add by Jiayu Li
++#########################################
++#   orbital magnetic quadrupole moment  #
++#########################################
++
++class Qorb_IMD(Formula_ln):
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.Der3E = Der3E(data_K, **parameters)
++        self.ndim = 2
++        self.transformTR = transform_odd
++        self.transformInv = transform_odd
+ 
++    def nn(self, ik, inn, out):
++        summ = np.zeros((len(inn), len(inn), 3, 3), dtype=complex)
++        for s, a, b in (+1, alpha_A, beta_A), (-1, beta_A, alpha_A):
++            summ += (1/12) * s * self.Der3E.nn(ik, inn, out)[:, :, :, a, b]
++        return summ
++    
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
+ 
++class Qorb_QMD(Formula_ln):
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.dg = DerMetric(data_K, **parameters)
++        self.ndim = 2
++        self.transformTR = transform_odd
++        self.transformInv = transform_odd
++        
++    def nn(self, ik, inn, out):
++        summ = np.zeros((len(inn), len(inn), 3, 3), dtype=complex)
++        for s, a, b in (+1, alpha_A, beta_A), (-1, beta_A, alpha_A):
++            summ += (1/3) * s * self.dg.nn(ik, inn, out)[:, :, :, a, b]
++        return summ
++
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++    
++    @property
++    def additive(self):
++        return False
++
++class Qorb_QMDen(Formula_ln):
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.dg_res = Qorb_QMD(data_K, **parameters)
++        self.Eav = Eavln(data_K)
++        self.ndim = 2
++        self.transformTR = transform_odd
++        self.transformInv = transform_odd
++        
++    @property
++    def additive(self):
++        return False
++    
++    def nn(self, ik, inn, out):
++        res = self.dg_res.nn(ik, inn, out)
++        res *= self.Eav.nn(ik, inn, out)[:, :, None, None]
++        return res
++    
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++    
++
++## testing 
++## ndim = 3, Fermi sea
++
++class Qorb_QMD_ndim3(Formula_ln):
++    """Using Gao-Xiao convention
++    """
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.dg = DerMetric(data_K, **parameters)
++        self.ndim = 3
++        self.transformTR = transform_odd
++        self.transformInv = transform_odd
++        
++    def nn(self, ik, inn, out):
++        summ = np.zeros((len(inn), len(inn), 3, 3, 3), dtype=complex)
++        summ += (-1/3) *self.dg.nn(ik, inn, out)
++        return summ
++
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++    
++    @property
++    def additive(self):
++        return False
++
++class Qorb_QMDen_ndim3(Formula_ln):
++    """Using Gao-Xiao convention
++    """
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.dg_res = Qorb_QMD_ndim3(data_K, **parameters)
++        self.Eav = Eavln(data_K)
++        self.ndim = 3
++        self.transformTR = transform_odd
++        self.transformInv = transform_odd
++        
++    @property
++    def additive(self):
++        return False
++    
++    def nn(self, ik, inn, out):
++        res = self.dg_res.nn(ik, inn, out)
++        res *= self.Eav.nn(ik, inn, out)[:, :, None, None, None]
++        return res
++    
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
++class Qorb_IMD_ndim3(Formula_ln):
++    r""":math:`Q_IMD_{ilj} = \partial_i \langle u_n | \partial_{lj} H | u_n \rangle`
++    """
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        # DerWln :math:`\overline{W}^{lj:i}`
++        self.DerWln = DerWln(data_K, **parameters)
++        self.ndim = 3
++        self.transformTR = transform_odd
++        self.transformInv = transform_odd
++    
++    def nn(self, ik, inn, out):
++        summ = np.zeros((len(inn), len(inn), 3, 3, 3), dtype=complex)
++        temp = (-1/12) * self.DerWln.nn(ik, inn, out) # mnlji
++        summ += cached_einsum('mnlji->mnilj', temp) # mnlji -> mnilj
++        # summ += np.transpose(temp, axes=(0, 1, 4, 2, 3)) # mnlji -> mnilj
++        return summ
++
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
++class Qorb_MassVel_ndim3(Formula_ln):
++    r""":math:`Q_IMD_{ilj} = - \langle u_n | \partial_{lj} H | u_n \rangle * v_n_i`
++    """
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.MassVel = MassVel(data_K, **parameters)
++        self.ndim = 3
++        self.transformTR = transform_odd
++        self.transformInv = transform_odd
++    
++    def nn(self, ik, inn, out):
++        summ = np.zeros((len(inn), len(inn), 3, 3, 3), dtype=complex)
++        temp = (1/12) * self.MassVel.nn(ik, inn, out) # mnlji
++        summ += cached_einsum('mnlji->mnilj', temp) # mnlji -> mnilj
++        # summ += np.transpose(temp, axes=(0, 1, 4, 2, 3))
++        return summ
++    
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++        
++
++
+ ########################
+ #   spin transport     #
+ ########################
+@@ -903,7 +1869,34 @@
+     def __init__(self, data_K, **kwargs_formula):
+         super().__init__([data_K.covariant('Ham', commader=1), data_K.covariant('Ham', commader=1)], name='VelVel')
+ 
++# add by Jiayu Li
++class VelMetric(FormulaProduct):
++    def __init__(self, data_K, **kwargs_formula):
++        super().__init__([data_K.covariant('Ham', commader=1), Metric(data_K, **kwargs_formula)], name='VelMetric')
+ 
++class MetricVel(FormulaProduct):
++    def __init__(self, data_K, **kwargs_formula):
++        super().__init__([Metric(data_K, **kwargs_formula), data_K.covariant('Ham', commader=1)], name='MetricVel')
++
++class VelDerMetric(FormulaProduct):
++    def __init__(self, data_K, **kwargs_formula):
++        super().__init__([data_K.covariant('Ham', commader=1), DerMetric(data_K, **kwargs_formula)], name='VelDerMetric')
++
++class VelDerOmega(FormulaProduct):
++    def __init__(self, data_K, **kwargs_formula):
++        super().__init__([data_K.covariant('Ham', commader=1), DerOmega(data_K, **kwargs_formula)], name='VelDerOmega')
++
++class VelBCP(FormulaProduct):
++    def __init__(self, data_K, **kwargs_formula):
++        super().__init__([data_K.covariant('Ham', commader=1), BCP(data_K, **kwargs_formula)], name='VelBCP')
++
++class VelDerBCP(FormulaProduct):
++    def __init__(self, data_K, **kwargs_formula):
++        super().__init__([data_K.covariant('Ham', commader=1), DerBCP(data_K, **kwargs_formula)], name='VelDerBCP')
++
++
++
++
+ class VelVelVel(FormulaProduct):
+ 
+     def __init__(self, data_K, **kwargs_formula):
+--- a/wannierberri/formula/covariant_basic.py
++++ b/wannierberri/formula/covariant_basic.py
+@@ -323,3 +323,45 @@
+ 
+     def __init__(self, data_K, **parameters):
+         super().__init__(data_K, sign=-1, **parameters)
++
++
++# add by Jiayu Li
++class Qorb_QMD_basic(Formula_ln):
++
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.tildeFab_d = tildeFab_d(data_K, **parameters)
++        self.ndim = 3
++        self.transformTR = transform_odd
++        self.transformInv = transform_odd
++
++    def nn(self, ik, inn, out):
++        summ = np.zeros((len(inn), len(inn), 3, 3, 3), dtype=complex)
++        temp = self.tildeFab_d.nn(ik, inn, out) # mnabd
++        summ += (temp + temp.swapaxes(2, 3) ) / 2.0 # mnabd + mnbad
++        summ = (-1/3) * cached_einsum("mnlji->mnilj", summ)
++        return summ
++    
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
++
++class Qorb_QMDen_basic(Formula_ln):
++    def __init__(self, data_K, **parameters):
++        super().__init__(data_K, **parameters)
++        self.dg = Qorb_QMD_basic(data_K, **parameters)
++        self.Eav = Eavln(data_K)
++        self.ndim = 3
++        self.transformTR = transform_odd
++        self.transformInv = transform_odd
++    
++    @property
++    def additive(self):
++        return False
++    
++    def nn(self, ik, inn, out):
++        res = self.dg.nn(ik, inn, out)
++        res *= self.Eav.nn(ik, inn, out)[:, :, None, None, None]
++        return res
++    
++    def ln(self, ik, inn, out):
++        raise NotImplementedError()
