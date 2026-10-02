@@ -4,6 +4,8 @@
 
 详细的类、函数、物理含义和已知限制见 [CHANGE_REPORT.md](CHANGE_REPORT.md)。
 
+> **张量指标提示：** 部分 FermiSurf 与 FermiSea 实现虽然描述同一物理响应，但原始数组的指标轴顺序不同。例如 `VelBCP` 把速度指标放在第一轴，`DerBCP` 把求导指标放在最后一轴。逐分量比较或相加前必须先转置到统一的物理指标约定，详见报告的“1.1 重要：FermiSurf 与 FermiSea 的张量指标顺序不一定一致”。
+
 ## 目录
 
 ```text

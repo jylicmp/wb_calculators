@@ -15,6 +15,34 @@
 
 “新增”均指相对同版本官方发布包新增。两个官方版本自身的差异没有计入用户改动。
 
+### 1.1 重要：FermiSurf 与 FermiSea 的张量指标顺序不一定一致
+
+> **不能直接按相同的 NumPy 数组下标比较部分 Fermi-surface 和 Fermi-sea 计算器的结果。** 两种写法可能表示相同的物理张量，却把速度指标或动量求导指标放在不同的轴上。比较、相加或检查分部积分关系之前，必须先按统一的物理指标约定转置。
+
+根源是 `FormulaProduct` 按公式因子的先后顺序拼接张量轴，而协变导数类把新增的求导指标附加在原张量指标之后。以 BCP 为例（以下顺序不包括结果数组中可能存在的 k 点和费米能前导轴）：
+
+| 公式 | 原始张量轴顺序 | 说明 |
+|---|---|---|
+| `VelBCP = FormulaProduct([Velocity, BCP])` | `[速度 alpha, BCP beta, BCP gamma]` | 速度指标位于第一个张量轴。 |
+| `DerBCP` | `[BCP beta, BCP gamma, 求导 alpha]` | `nn()` 中的输出下标为 `...abd`；求导指标 `d` 位于最后一个张量轴。 |
+
+因此，如果统一采用物理约定 `chi_{alpha,beta,gamma}`，`BCPD_FermiSurf` 的最后三个轴已经是 `[alpha,beta,gamma]`，而 `BCPD_FermiSea` 的最后三个轴是 `[beta,gamma,alpha]`。后者需要把最后一轴移到这三个张量轴的最前面，例如：
+
+```python
+# 适用于前面还带有 Efermi 或 k 点轴的结果数组
+chi_sea_aligned = np.moveaxis(chi_sea_raw, -1, -3)
+```
+
+BCP 四极项存在同类问题：
+
+- `VelDerBCP` 的原始顺序是 `[速度 alpha, BCP beta, BCP gamma, 求导 delta]`。
+- `Der2BCP` 的原始顺序是 `[BCP beta, BCP gamma, 求导 alpha, 求导 delta]`。
+- 若统一为 `sigma_{alpha,beta,gamma,delta}`，应将 `BCPQ_FermiSea` 的最后四个轴按 `(2, 0, 1, 3)` 重排；有前导轴时应只重排最后四个张量轴。
+
+Berry 曲率四极项也不能直接逐分量比较：`VelDerOmega` 的原始顺序为 `[速度, Omega, 求导]`，`Der2Omega` 为 `[Omega, 求导1, 求导2]`。若采用源码文档中的 `Q_{beta,delta,eta}` 约定，FermiSurf 最后三轴需从 `[beta,eta,delta]` 排为 `[beta,delta,eta]`，FermiSea 最后三轴需从 `[eta,beta,delta]` 排为 `[beta,delta,eta]`。
+
+这个问题不限于 BCP。凡是用 `FormulaProduct` 组合速度、度规或导数的类，例如 `VelMetric`、`MetricVel`、`VelDerMetric`、`VelDerOmega` 和 `VelDerBCP`，都应从公式因子顺序和 `einsum` 输出下标确认张量轴含义。类名相似、张量形状相同并不保证指标顺序相同。
+
 ## 2. 官方版本基线
 
 - 1.7 以 `wannierberri-1.7.0-py3-none-any.whl` 为准，SHA-256 为 `c210f1ceffd3a66113753fa915f57b99c232fc4aa12c082366855df7443d247d`。GitHub 标签 `1.7.0` 的提交 `134a94a3188787efd5f6e2fe3ec22fe7cb26c424` 中，98 个包文件与 wheel 完全一致。
@@ -32,15 +60,15 @@
 | `AHC_test_Li` | `frml_basic.tildeFc`，二阶 | AHC 基础公式的测试入口，`fder=0`，没有新增单位因子。 |
 | `QMetric` | `Metric`，二阶 | 对对称量子度规型矩阵做费米海积分。默认 `constant_factor=1`，输出仍是 WannierBerri 内部单位。 |
 | `QMetric_test` | `tildeFab`，二阶 | 未对称的 `tildeFab` 测试入口，用于与 `QMetric` 对照。 |
-| `BCPD_FermiSurf` | `VelBCP`，三阶 | 计算速度与 BCP 的乘积，`fder=1`，使用 `factor_BCPD`。 |
-| `BCPD_FermiSea` | `DerBCP`，三阶 | 计算 BCP 的协变一阶导数，`fder=0`，使用 `factor_BCPD`。 |
+| `BCPD_FermiSurf` | `VelBCP`，三阶 | 计算速度与 BCP 的乘积，`fder=1`，使用 `factor_BCPD`；原始轴顺序为 `[速度, BCP1, BCP2]`。 |
+| `BCPD_FermiSea` | `DerBCP`，三阶 | 计算 BCP 的协变一阶导数，`fder=0`，使用 `factor_BCPD`；原始轴顺序为 `[BCP1, BCP2, 求导]`。 |
 | `BCPD_FermiSea_test` | `DerBCP_test`，三阶 | 以拆分的 `M/N` 辅助公式复算上一项的测试实现。 |
-| `BerryQuadrupole_FermiSea` | `Der2Omega`，三阶 | Berry 曲率二阶导数的费米海形式，使用 `factor_BCQ3rd`。 |
+| `BerryQuadrupole_FermiSea` | `Der2Omega`，三阶 | Berry 曲率二阶导数的费米海形式，使用 `factor_BCQ3rd`；原始轴顺序为 `[Omega, 求导1, 求导2]`。 |
 | `BerryQuadrupole_FermiSea_chain` | `Der2Omega_chain`，三阶 | 与上一项相同目标，但二阶协变导数用链式展开实现，供交叉检查。 |
-| `BerryQuadrupole_FermiSurf` | `VelDerOmega`，三阶 | 速度乘 Berry 曲率一阶导数的费米面形式，使用 `factor_BCQ3rd`。 |
-| `BCPQ_FermiSea` | `Der2BCP`，四阶 | BCP 二阶导数的费米海形式，使用 `factor_BCPQ3rd`。 |
+| `BerryQuadrupole_FermiSurf` | `VelDerOmega`，三阶 | 速度乘 Berry 曲率一阶导数的费米面形式，使用 `factor_BCQ3rd`；原始轴顺序为 `[速度, Omega, 求导]`。 |
+| `BCPQ_FermiSea` | `Der2BCP`，四阶 | BCP 二阶导数的费米海形式，使用 `factor_BCPQ3rd`；原始轴顺序为 `[BCP1, BCP2, 求导1, 求导2]`。 |
 | `BCPQ_FermiSea_test` | `Der2BCP_test`，四阶 | 拆分辅助公式的测试实现；当前公式函数会主动抛出 `NotImplementedError`。 |
-| `BCPQ_FermiSurf` | `VelDerBCP`，四阶 | 速度乘 BCP 一阶导数的费米面形式，使用 `factor_BCPQ3rd`。 |
+| `BCPQ_FermiSurf` | `VelDerBCP`，四阶 | 速度乘 BCP 一阶导数的费米面形式，使用 `factor_BCPQ3rd`；原始轴顺序为 `[速度, BCP1, BCP2, 求导]`。 |
 | `IMQ_FermiSea` | `Der4E`，四阶 | 能量四阶导数，即速度三阶导数对应的逆质量四极项，使用 `factor_IMQ3rd`。 |
 | `MetricDipole_FermiSea` | `DerMetric`，三阶 | 量子度规一阶导数的费米海积分。 |
 | `MetricQuadrupole_FermiSurf` | `VelDerMetric`，四阶 | 速度乘量子度规一阶导数的费米面测试量。 |
@@ -205,13 +233,14 @@ beta_abd = sum_n integral[dk]
 
 以下结论来自静态检查和最小导入测试，不是对物理结果的数值否定：
 
-1. 1.7 的 `Der2BCP_test.nn()` 无条件抛出 `NotImplementedError`，所以 `BCPQ_FermiSea_test` 不能完成实际计算。
-2. 1.7 的 `tildeFab.nn()` 第一项也由 `external_terms` 控制；如果只开启 internal terms，这一项不会加入。该条件与同文件其他公式的写法不一致，使用 `QMetric_test` 前应核对设计意图。
-3. 1.7 的 `BCPD_FermiSea` 文档公式写有 `f'`，但代码设置 `fder=0`，实际使用费米海权重 `f`。报告以代码行为为准。
-4. 1.7 的 `QMetric` 文档标注 `S/m`，但构造函数没有设置专用 `constant_factor`。1.7 的多个 MQM 测试入口以及 1.8 的 Gao–Xiao 入口也默认因子为 1。输出单位需要结合 WannierBerri 内部 eV/Å 约定另行换算。
-5. 名称含 `_test`、`_chain`、`_basic` 或 `ndim3` 的类属于替代实现或中间张量检查入口，不宜在没有基准模型对照时视为稳定公共 API。
-6. 1.8 的三个早期 Qorb 入口缺少公式依赖，`JJ` 参数也没有形成可运行的数据通路；具体情况见 4.4 和 4.5。
-7. 本归档没有修改算法，也没有运行材料模型、k 点收敛、简并阈值敏感性、规范不变性或文献数值复现。因此符号、整体单位和物理正确性仍需独立基准验证。
+1. 部分 FermiSurf/FermiSea 实现的张量轴顺序不同。尤其是 `VelBCP` 的速度指标在第一轴，而 `DerBCP` 的求导指标在最后一轴；未经转置的同下标分量没有可比性。详见 1.1 节。
+2. 1.7 的 `Der2BCP_test.nn()` 无条件抛出 `NotImplementedError`，所以 `BCPQ_FermiSea_test` 不能完成实际计算。
+3. 1.7 的 `tildeFab.nn()` 第一项也由 `external_terms` 控制；如果只开启 internal terms，这一项不会加入。该条件与同文件其他公式的写法不一致，使用 `QMetric_test` 前应核对设计意图。
+4. 1.7 的 `BCPD_FermiSea` 文档公式写有 `f'`，但代码设置 `fder=0`，实际使用费米海权重 `f`。报告以代码行为为准。
+5. 1.7 的 `QMetric` 文档标注 `S/m`，但构造函数没有设置专用 `constant_factor`。1.7 的多个 MQM 测试入口以及 1.8 的 Gao–Xiao 入口也默认因子为 1。输出单位需要结合 WannierBerri 内部 eV/Å 约定另行换算。
+6. 名称含 `_test`、`_chain`、`_basic` 或 `ndim3` 的类属于替代实现或中间张量检查入口，不宜在没有基准模型对照时视为稳定公共 API。
+7. 1.8 的三个早期 Qorb 入口缺少公式依赖，`JJ` 参数也没有形成可运行的数据通路；具体情况见 4.4 和 4.5。
+8. 本归档没有修改算法，也没有运行材料模型、k 点收敛、简并阈值敏感性、规范不变性或文献数值复现。因此符号、整体单位和物理正确性仍需独立基准验证。
 
 ## 7. 验证记录
 
