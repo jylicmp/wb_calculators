@@ -1,0 +1,347 @@
+{
+  "date": "2026-10-05",
+  "scope": "Metric native nonadditive occupied-subspace integration; BCP full Sylvester derivatives and native trace-additive integration; velocity-product kernels nonadditive",
+  "theory_source": {
+    "path": "notes/formulae_temp_clean.tex",
+    "sha256": "f723afcd8ca584bb3db3a3d381e78bc8e82f990559da4b559498cbb5ebb9ba65",
+    "equation_labels": [
+      "eq:Finterpolation-components",
+      "eq:projected-geometry-components",
+      "eq:Ffirst-components",
+      "eq:geometry-derivative-components",
+      "eq:Dfirst",
+      "eq:sea-surface2",
+      "eq:bcp-product-components",
+      "eq:bcp-code-components",
+      "eq:sylvester1",
+      "eq:sylvester2",
+      "eq:bcp-derivative-components",
+      "eq:bcp-second",
+      "eq:sylvester-components",
+      "eq:product-components"
+    ]
+  },
+  "validation": {
+    "1.7": {
+      "package_path": "/private/tmp/wb-v17-reference/wannierberri",
+      "tests_passed": 26,
+      "log": "tests/validation_v1.7.log",
+      "reused_file_sha256": {
+        "formula/formula.py": "98b6209f51e28ce158550e2dec6ca1fa1e5daf94fdc7005047308f807e955f1e",
+        "formula/covariant.py": "7c6cedd6ded790c3a4788522c074eb7793f2bb6761fb8221ec986073fc6aae73",
+        "formula/covariant_basic.py": "b6b8465f67e0673c8d30f1db37920cc6294ad38945ee0d3cd1899f86684a8a4c",
+        "calculators/static.py": "09a16236080303704d1bc1416be4fd96a71b188529fd065dd4d0455a8ead1050",
+        "calculators/tabulate.py": "dc00c2ba0b881fa3d30de6fce9c3d6713a48809b3b7136ffb7b9d81293c28036",
+        "data_K/data_K.py": "67a0a99dca627e92edb6d92b6a69108e3ccde4941fc5a82b159b2d0611fb0f34",
+        "grid/tetrahedron.py": "6b22ba43e6e194ab2b126454d1880d1ac44abdc71349a2dad7d8f38c04bb4429",
+        "utility.py": "0ae47e13b2495552a3ab0ccf3304cad190c8c1db78ad179b82fef204b08986e8"
+      },
+      "reused_class_ast_sha256": {
+        "Dcov": "3b090b1c184a9fd9d12b18a6863ef9c21fddb20601fc532808f58149db5c6e0c",
+        "DerDcov": "4cea442264ac57929c59b80bf6700b6c88f5f140e497628f3c6894b28749d184"
+      },
+      "command": "PYTHONPATH=/private/tmp/wb-v17-reference:$PWD OPENBLAS_NUM_THREADS=1 /private/tmp/wb-port-audit-env/bin/python -m unittest discover -s calculators_collect/tests -v"
+    },
+    "1.8": {
+      "package_path": "/private/tmp/wb-v17-port-audit/wannierberri",
+      "tests_passed": 26,
+      "log": "tests/validation_v1.8.log",
+      "reused_file_sha256": {
+        "formula/formula.py": "98b6209f51e28ce158550e2dec6ca1fa1e5daf94fdc7005047308f807e955f1e",
+        "formula/covariant.py": "32ccfb7cc4d1eb473cbbbf23be3151d3a5f6f50048c6bfdf1c94a60622a34d3f",
+        "formula/covariant_basic.py": "6707f66519a9c2a626aac5c8ef756c154a32cbb6734a44d835e8af2e9d22c8f6",
+        "calculators/static.py": "303a2f3d15866cdd1cf54495e4119f8aace788d55119b1dcdb3852d9e9ca8422",
+        "calculators/tabulate.py": "7af1c12036b442f764e0441e58835760adbde9248ff6c1472e01fb9c108e6aaa",
+        "data_K/data_K.py": "67a0a99dca627e92edb6d92b6a69108e3ccde4941fc5a82b159b2d0611fb0f34",
+        "grid/tetrahedron.py": "6b22ba43e6e194ab2b126454d1880d1ac44abdc71349a2dad7d8f38c04bb4429",
+        "utility.py": "9667592e322d3b06183c96022452e7d90e132437f692dfe517313161bfac6d0a"
+      },
+      "reused_class_ast_sha256": {
+        "Dcov": "3b090b1c184a9fd9d12b18a6863ef9c21fddb20601fc532808f58149db5c6e0c",
+        "DerDcov": "4cea442264ac57929c59b80bf6700b6c88f5f140e497628f3c6894b28749d184"
+      },
+      "command": "PYTHONPATH=/private/tmp/wb-v17-port-audit:$PWD OPENBLAS_NUM_THREADS=1 /private/tmp/wb-port-audit-env/bin/python -m unittest discover -s calculators_collect/tests -v"
+    }
+  },
+  "collection_files_sha256": {
+    ".gitignore": "6feaded4e28ea86e001a6751b4e3d960e8b7c31b9616ff9936b79297086e809b",
+    "BCP_VALIDATION.md": "ea1acd0038b9ca8db23fe1d674a3084ffc4a9233460c39c53286b6cac5974f98",
+    "README.md": "813bfe45c0a8f8a13ce77c9b611bca284e6d5789cf591940f46118f2c4966b95",
+    "VALIDATION.md": "afa365d6c214ad87076e49ae824100580c28a55bf5a098529fc92eb9c1bb3591",
+    "__init__.py": "8cc548ea3fad043931fd4d1b4ef2f7a9c405884bd856ef65d9b272d94ed21835",
+    "calculators/__init__.py": "8cc548ea3fad043931fd4d1b4ef2f7a9c405884bd856ef65d9b272d94ed21835",
+    "calculators/static.py": "96ccda9e626a8e96f5b0bb6c7e73a3242fa959db57c98845345c4cb89f45de61",
+    "calculators/tabulate.py": "6df68ddce44f2ef073c4e76b096b98ca5674adc55fae09110d155305988dff56",
+    "formula/__init__.py": "8cc548ea3fad043931fd4d1b4ef2f7a9c405884bd856ef65d9b272d94ed21835",
+    "formula/covariant.py": "eaf7975b69ac4e1530031ec6bb78de89d6b08e5cf12fb9ab91137a5987fd5f46",
+    "formula/covariant_basic.py": "db21852be382acfafdbab27772c4b3cbe6eda3c45c8e2a7b1609d38f84b9add0",
+    "system/__init__.py": "8cc548ea3fad043931fd4d1b4ef2f7a9c405884bd856ef65d9b272d94ed21835",
+    "system/needed_data.py": "dce40ea7a64375d40f58d02b950d03d73335b5814ccea4b458a092aad15f0098",
+    "tests/test_bcp.py": "ca0cd83ffd94f8b6c860da12f311312d058cdb0d8b92573fbbbd604724852916",
+    "tests/test_metric.py": "e2959edf7273ce0a9cec028fb82e6eb5e7eab3fa73fe9e93ac18937c8d44d50c",
+    "tests/validation_v1.7.log": "81b485bb6a37b28f953157b274040671ccb53b3629042c5fb38cb1f5684f6c9b",
+    "tests/validation_v1.8.log": "db892b0f0ca4f34db5e4c21c08b1a54bdd700f1ece9c476f48e1297b1d90f086"
+  },
+  "archive_manifest_hashes_unchanged": true,
+  "limitations": [
+    "Analytic regressions plus internal-only Haldane/FeS 21x21 and 41x41 same-mesh independent checks; no continuum or material convergence claim",
+    "tetra branch tested with controlled exact occupied-group weights, not independent tetra interpolation validation",
+    "FF loader construction is not implemented by data-requirement helpers",
+    "default hole_like=False tested; other upstream occupation conventions not certified",
+    "VelDerMetric fder=1 semantics tested; no general subspace second-k-derivative identity inferred",
+    "Independent model Der2BCP reference is a finite difference of an independent first derivative, not an exact analytic reference",
+    "BCP includes finite Wannier-space contributions only; excluded physical bands are not recovered",
+    "BCP default static prefactor 1 differs from archived electrical-response wrappers"
+  ],
+  "integration_semantics": {
+    "formula_additive": {
+      "Metric": false,
+      "DerMetric": false,
+      "VelMetric": false,
+      "MetricVel": false,
+      "VelDerMetric": false,
+      "BCP": true,
+      "DerBCP": true,
+      "Der2BCP": true,
+      "VelBCP": false,
+      "VelDerBCP": false
+    },
+    "static_base": "wannierberri.calculators.static.StaticCalculator",
+    "removed_classes": [
+      "_BandGroupSum",
+      "_MetricStatic"
+    ],
+    "reference": "direct occupied-subspace trace at each chemical potential",
+    "default_hole_like": false,
+    "bcp_default_constant_factor": 1,
+    "bcp_surface": "fder=1 cumulative-subspace velocity-kernel trace differences; no isolated-band response identity assumed"
+  },
+  "prior_remote_evidence": {
+    "root": "/share/home/zhuhaiyuan/NLC/test_wb_calculators_v1.7",
+    "report": "BERRY_CONTROL_REPORT.md",
+    "status": "previous run; retained unchanged",
+    "scope": "internal-only Haldane/FeS independent benchmarks and Berry-curvature controls"
+  },
+  "remote_bcp_evidence": {
+    "host": "SUSTech-Zhu",
+    "root": "/share/home/zhuhaiyuan/NLC/test_wb_calculators_v1.7/bcp",
+    "report": "REPORT.md",
+    "validation": "results/validation.json",
+    "job_id": "980440_[0-1]",
+    "scheduler": "COMPLETED, exit 0",
+    "independent_reference_agent_model": "gpt-5.6-luna",
+    "results": {
+      "status": "validated",
+      "scope": "same-grid internal-only PythTB validation; independent NumPy spectral reference",
+      "models": [
+        "Haldane",
+        "FeS"
+      ],
+      "grids": [
+        21,
+        41
+      ],
+      "local_and_remote_regressions": 26,
+      "summary": [
+        {
+          "model": "Haldane",
+          "n": 21,
+          "quantity": "BCP",
+          "point_error": 6.661338147750939e-16,
+          "point_scaled_error": 1.3822197298044688e-15,
+          "independent_integral_error": 2.42861286636753e-17,
+          "true_error": 2.7755575615628914e-17,
+          "false_error": 2.7755575615628914e-17,
+          "window_error": 0.0
+        },
+        {
+          "model": "Haldane",
+          "n": 21,
+          "quantity": "DerBCP",
+          "point_error": 2.3314683517128287e-15,
+          "point_scaled_error": 3.588103081520545e-15,
+          "independent_integral_error": 2.3418766925686896e-17,
+          "true_error": 1.9081958235744878e-17,
+          "false_error": 1.9081958235744878e-17,
+          "window_error": 0.0
+        },
+        {
+          "model": "Haldane",
+          "n": 21,
+          "quantity": "Der2BCP",
+          "point_error": 2.6610980086161362e-09,
+          "point_scaled_error": 7.020523028963059e-10,
+          "independent_integral_error": 9.60043849973502e-12,
+          "true_error": 5.551115123125783e-17,
+          "false_error": 5.551115123125783e-17,
+          "window_error": 0.0
+        },
+        {
+          "model": "Haldane",
+          "n": 41,
+          "quantity": "BCP",
+          "point_error": 1.0547118733938987e-15,
+          "point_scaled_error": 2.1150858362707573e-15,
+          "independent_integral_error": 1.3877787807814457e-17,
+          "true_error": 9.020562075079397e-17,
+          "false_error": 9.020562075079397e-17,
+          "window_error": 0.0
+        },
+        {
+          "model": "Haldane",
+          "n": 41,
+          "quantity": "DerBCP",
+          "point_error": 3.469446951953614e-15,
+          "point_scaled_error": 4.607933588259949e-15,
+          "independent_integral_error": 1.431146867680866e-17,
+          "true_error": 3.155028321932818e-17,
+          "false_error": 3.155028321932818e-17,
+          "window_error": 0.0
+        },
+        {
+          "model": "Haldane",
+          "n": 41,
+          "quantity": "Der2BCP",
+          "point_error": 2.8880897673388972e-09,
+          "point_scaled_error": 6.743214429980724e-10,
+          "independent_integral_error": 7.280443609092302e-12,
+          "true_error": 7.632783294297951e-17,
+          "false_error": 7.632783294297951e-17,
+          "window_error": 0.0
+        },
+        {
+          "model": "FeS",
+          "n": 21,
+          "quantity": "BCP",
+          "point_error": 3.922195901395753e-11,
+          "point_scaled_error": 4.125716522995097e-14,
+          "independent_integral_error": 6.750155989720952e-14,
+          "true_error": 3.3306690738754696e-15,
+          "false_error": 3.469446951953614e-15,
+          "window_error": 1.0547118733938987e-15
+        },
+        {
+          "model": "FeS",
+          "n": 21,
+          "quantity": "DerBCP",
+          "point_error": 1.0059011401608586e-09,
+          "point_scaled_error": 5.169107365268066e-14,
+          "independent_integral_error": 1.089516435694433e-12,
+          "true_error": 4.1744385725905886e-14,
+          "false_error": 4.811884397881716e-14,
+          "window_error": 1.034426450746695e-14
+        },
+        {
+          "model": "FeS",
+          "n": 21,
+          "quantity": "Der2BCP",
+          "point_error": 0.24141808762215078,
+          "point_scaled_error": 1.3331357903512585e-07,
+          "independent_integral_error": 0.00021080229817016516,
+          "true_error": 3.183231456205249e-12,
+          "false_error": 3.183231456205249e-12,
+          "window_error": 8.586060220001547e-13
+        },
+        {
+          "model": "FeS",
+          "n": 41,
+          "quantity": "BCP",
+          "point_error": 2.2396307031158358e-11,
+          "point_scaled_error": 2.578302229646776e-14,
+          "independent_integral_error": 7.0909064742399236e-15,
+          "true_error": 6.5780714209040525e-15,
+          "false_error": 6.50868248186498e-15,
+          "window_error": 1.5543122344752192e-15
+        },
+        {
+          "model": "FeS",
+          "n": 41,
+          "quantity": "DerBCP",
+          "point_error": 7.439666660502553e-10,
+          "point_scaled_error": 3.661156936151086e-14,
+          "independent_integral_error": 5.331142660294017e-13,
+          "true_error": 3.552713678800501e-14,
+          "false_error": 3.552713678800501e-14,
+          "window_error": 5.640561802355837e-15
+        },
+        {
+          "model": "FeS",
+          "n": 41,
+          "quantity": "Der2BCP",
+          "point_error": 0.013522223103791475,
+          "point_scaled_error": 1.4274104346700488e-08,
+          "independent_integral_error": 4.2161384044447914e-05,
+          "true_error": 1.3642420526593924e-12,
+          "false_error": 1.3642420526593924e-12,
+          "window_error": 1.6317502904428238e-13
+        }
+      ],
+      "derivative_checks": [
+        {
+          "model": "Haldane",
+          "fd": [
+            {
+              "max_abs": 1.6739956661127042e-07,
+              "relative_to_scale": 1.3084667014164182e-06,
+              "h": 0.001
+            },
+            {
+              "max_abs": 1.506589258903901e-08,
+              "relative_to_scale": 1.1776146843707965e-07,
+              "h": 0.0003
+            },
+            {
+              "max_abs": 1.6740759889444234e-09,
+              "relative_to_scale": 1.3085294851815114e-08,
+              "h": 0.0001
+            },
+            {
+              "max_abs": 1.503874108577108e-10,
+              "relative_to_scale": 1.1754924065991948e-09,
+              "h": 3e-05
+            },
+            {
+              "max_abs": 1.7276291508494523e-11,
+              "relative_to_scale": 1.3503889299380277e-10,
+              "h": 1e-05
+            }
+          ],
+          "legacy_DerBCP_trace_max": 3.469446951953614e-18,
+          "legacy_DerBCP_matrix_max": 3.469446951953614e-18
+        },
+        {
+          "model": "FeS",
+          "fd": [
+            {
+              "max_abs": 0.00021808832004399648,
+              "relative_to_scale": 4.5077352590737927e-05,
+              "h": 0.001
+            },
+            {
+              "max_abs": 1.9627573282221533e-05,
+              "relative_to_scale": 4.056884115411402e-06,
+              "h": 0.0003
+            },
+            {
+              "max_abs": 2.180852916922049e-06,
+              "relative_to_scale": 4.507672665129537e-07,
+              "h": 0.0001
+            },
+            {
+              "max_abs": 1.9645406812429655e-07,
+              "relative_to_scale": 4.0605701831887456e-08,
+              "h": 3e-05
+            },
+            {
+              "max_abs": 2.216385652786812e-08,
+              "relative_to_scale": 4.581116381086739e-09,
+              "h": 1e-05
+            }
+          ],
+          "legacy_DerBCP_trace_max": 0.2786490151554051,
+          "legacy_DerBCP_matrix_max": 0.26448837089684485
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,146 @@
+%% LyX 2.4.4 created this file.  For more info, see https://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[12pt,english]{revtex4-2}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setcounter{secnumdepth}{3}
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+\usepackage{babel}
+\begin{document}
+\title{Quantum geometry multipole}
+\maketitle
+
+\section{Analytic formulae}
+
+Quantum geometry (QG)
+\[
+Q_{n}^{ij}=\sum_{m\left(\neq n\right)}A_{nm}^{i}A_{mn}^{j}=\sum_{m\left(\neq n\right)}\frac{\langle u_{n}|v_{i}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}
+\]
+Quantum metric (QM)
+\[
+g_{n}^{ij}=\text{Re}Q_{n}^{ij}
+\]
+Berry curvature (BC)
+\[
+\Omega_{n}^{ij}=2\text{Im}Q_{n}^{ij}
+\]
+
+quantum geometry dipole (QGD)
+\[
+Q_{n}^{lj}=\sum_{m\left(\neq n\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}
+\]
+\begin{align*}
+\partial_{i}Q_{n}^{lj} & =\sum_{m\left(\neq n\right)}\left[\frac{\langle\partial_{i}u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|\partial_{i}u_{n}\rangle}{\varepsilon_{nm}^{2}}\right.\\
+ & +\frac{\langle u_{n}|v_{l}|\partial_{i}u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle\partial_{i}u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & +\frac{\langle u_{n}|\partial_{i}v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|\partial_{i}v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & \left.+\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\partial_{i}\frac{1}{\varepsilon_{nm}^{2}}\right]\\
+ & =\frac{\mathbf{V}^{i}}{\Delta\varepsilon}\mathbf{V}^{l}\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}-\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{2}}\mathbf{V}^{j}\frac{\mathbf{V}^{i}}{\Delta\varepsilon}\\
+ & -\mathbf{V}^{l}\frac{\mathbf{V}^{i}}{\Delta\varepsilon}\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}+\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{2}}\frac{\mathbf{V}^{i}}{\Delta\varepsilon}\mathbf{V}^{j}\\
+ & +\bm{\Gamma}^{il}\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}+\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{2}}\bm{\Gamma}^{ij}\\
+ & -2\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{3}}\left[\mathbf{V}^{j},\mathbf{V}_{F}^{i}\right]\\
+ & =\left(\bm{\Gamma}^{il}+\left[\frac{\mathbf{V}^{i}}{\Delta\varepsilon},\mathbf{V}^{l}\right]\right)\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}\\
+ & +\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{2}}\left(\bm{\Gamma}^{ij}+\left[\frac{\mathbf{V}^{i}}{\Delta\varepsilon},\mathbf{V}^{j}\right]\right)\\
+ & -2\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{3}}\left[\mathbf{V}^{j},\mathbf{V}_{F}^{i}\right]
+\end{align*}
+\begin{align*}
+\partial_{k}Q_{n}^{ij} & =\sum_{m\left(\neq n\right)}\left[\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|v_{k}|u_{p}\rangle\langle u_{p}|v_{i}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{np}}+\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|v_{i}|u_{m}\rangle\langle u_{m}|v_{j}|u_{p}\rangle\langle u_{p}|v_{k}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{np}}\right.\\
+ & +\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{i}|u_{p}\rangle\langle u_{p}|v_{k}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{mp}}+\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{i}|u_{m}\rangle\langle u_{m}|v_{k}|u_{p}\rangle\langle u_{p}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{mp}}\\
+ & +\frac{\Gamma_{nm}^{ki}\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\frac{\langle u_{n}|v_{i}|u_{m}\rangle\Gamma_{mn}^{kj}}{\varepsilon_{nm}^{2}}\\
+ & -\left.2\langle u_{n}|v_{i}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\frac{v_{n}^{k}-v_{m}^{k}}{\varepsilon_{nm}^{3}}\right]
+\end{align*}
+\[
+\partial_{k}Q_{n}^{ij}=\partial_{k}Q_{n}^{ij,\text{I}}+\partial_{k}Q_{n}^{ij,\text{II}}
+\]
+one-summation term (QGD-I)
+\[
+\partial_{k}Q_{n}^{ij,\text{I}}=\sum_{m\left(\neq n\right)}\left[\frac{\Gamma_{nm}^{ki}\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\frac{\langle u_{n}|v_{i}|u_{m}\rangle\Gamma_{mn}^{kj}}{\varepsilon_{nm}^{2}}-2\langle u_{n}|v_{i}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\frac{v_{n}^{k}-v_{m}^{k}}{\varepsilon_{nm}^{3}}\right]
+\]
+where $\Gamma_{nm}^{ki}$ is interband the inverse mass 
+\[
+\Gamma_{nm}^{ki}=\langle u_{n}|\partial_{k}\partial_{i}H|u_{m}\rangle
+\]
+and $v_{n}^{k}$ is the Fermi velocity of band $n$
+\[
+v_{n}^{k}=\partial_{k}\varepsilon_{n}=\langle u_{n}|v_{k}|u_{n}\rangle
+\]
+two-summation term (QGD-II)
+\begin{align*}
+\partial_{k}Q_{n}^{ij,\text{II}} & =\sum_{m\left(\neq n\right)}\left[\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|v_{k}|u_{p}\rangle\langle u_{p}|v_{i}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{np}}+\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|v_{i}|u_{m}\rangle\langle u_{m}|v_{j}|u_{p}\rangle\langle u_{p}|v_{k}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{np}}\right.\\
+ & +\left.\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{i}|u_{p}\rangle\langle u_{p}|v_{k}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{mp}}+\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{i}|u_{m}\rangle\langle u_{m}|v_{k}|u_{p}\rangle\langle u_{p}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{mp}}\right]
+\end{align*}
+
+Quantum geometry quadrupole
+
+\section{Matrix representation}
+
+\subsection{Ingredients }
+
+Velocity matrix in energy band space (Hamiltonian gauge)
+\[
+\left[\mathbf{V}^{i}\right]_{nm}=\langle u_{n}|v_{i}|u_{m}\rangle
+\]
+band-normalized velocity matrix (interband Berry connection for $q=1$)
+\[
+\left[\frac{\mathbf{V}^{i}}{\Delta\varepsilon^{q}}\right]_{nm}=\frac{\langle u_{n}|v_{i}|u_{m}\rangle}{\varepsilon_{nm}^{q}}\left(1-\delta_{nm}\right)
+\]
+Inverse mass matrix
+\[
+\bm{\Gamma}_{nm}^{ij}=\langle u_{n}|\partial_{j}v_{i}|u_{m}\rangle
+\]
+Fermi velocity matrix
+\[
+\left[\mathbf{V}_{F}^{i}\right]_{nm}=\langle u_{n}|v_{i}|u_{n}\rangle\delta_{nm}
+\]
+
+
+\subsection{QG and QG multipole}
+
+QG
+
+\[
+Q_{n}^{ij}=\left[\mathbf{Q}^{ij}\right]_{nn}
+\]
+\[
+\mathbf{Q}^{ij}=-\frac{\mathbf{V}^{i}}{\Delta\varepsilon}\frac{\mathbf{V}^{j}}{\Delta\varepsilon}
+\]
+
+QGD
+\[
+\partial_{k}Q_{n}^{ij,\text{I}}=\left[\partial_{k}\mathbf{Q}^{ij,\text{I}}\right]_{nn}
+\]
+\[
+\partial_{k}\mathbf{Q}^{ij,\text{I}}=\bm{\Gamma}^{ki}\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}+\frac{\mathbf{V}^{i}}{\Delta\varepsilon^{2}}\bm{\Gamma}^{kj}-2\left[\mathbf{V}_{F}^{k},\frac{\mathbf{V}^{i}}{\Delta\varepsilon}\right]\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}
+\]
+\[
+\partial_{k}Q_{n}^{ij,\text{II}}=\left[\partial_{k}\mathbf{Q}^{ij,\text{II}}\right]_{nn}
+\]
+\begin{align*}
+\partial_{k}Q_{n}^{ij,\text{II}} & =\sum_{m\left(\neq n\right)}\left[\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|v_{k}|u_{p}\rangle\langle u_{p}|v_{i}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{np}}+\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|v_{i}|u_{m}\rangle\langle u_{m}|v_{j}|u_{p}\rangle\langle u_{p}|v_{k}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{np}}\right.\\
+ & +\left.\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{i}|u_{p}\rangle\langle u_{p}|v_{k}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{mp}}+\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{i}|u_{m}\rangle\langle u_{m}|v_{k}|u_{p}\rangle\langle u_{p}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{mp}}\right]
+\end{align*}
+\[
+\partial_{k}\mathbf{Q}^{ij,\text{II}}=\left[\frac{\mathbf{V}^{k}}{\Delta\varepsilon},\mathbf{V}^{i}\right]\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}+\frac{\mathbf{V}^{i}}{\Delta\varepsilon^{2}}\left[\frac{\mathbf{V}^{k}}{\Delta\varepsilon},\mathbf{V}^{j}\right]
+\]
+
+QGQ
+\begin{align*}
+\partial_{\ell}\partial_{k}\mathbf{Q}^{ij,\text{I}} & =2\bm{\Gamma}^{ki}\left[\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{3}},\mathbf{V}_{F}^{\ell}\right]-2\frac{\mathbf{V}^{i}}{\Delta\varepsilon^{3}}\left[\bm{\Gamma}^{kj},\mathbf{V}_{F}^{\ell}\right]-\frac{\bm{\Gamma}^{ki}}{\Delta\varepsilon}\frac{\bm{\Gamma}^{\ell j}}{\Delta\varepsilon}-\frac{\bm{\Gamma}^{\ell i}}{\Delta\varepsilon}\frac{\bm{\Gamma}^{kj}}{\Delta\varepsilon}\\
+ & -6\frac{\mathbf{V}^{i}}{\Delta\varepsilon^{2}}\left(\mathbf{V}_{F}^{k}\mathbf{V}_{F}^{\ell}\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}+\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}\mathbf{V}_{F}^{k}\mathbf{V}_{F}^{\ell}-\mathbf{V}_{F}^{\ell}\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}\mathbf{V}_{F}^{k}-\mathbf{V}_{F}^{k}\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}\mathbf{V}_{F}^{\ell}\right)
+\end{align*}
+\begin{align*}
+\partial_{\ell}\partial_{k}\mathbf{Q}^{ij,\text{I}} & =2\left[\frac{\mathbf{V}^{k}}{\Delta\varepsilon},\mathbf{V}^{i}\right]\left[\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{3}},\mathbf{V}_{F}^{\ell}\right]+2\left[\mathbf{V}_{F}^{\ell},\frac{\mathbf{V}^{i}}{\Delta\varepsilon^{3}}\right]\left[\mathbf{V}^{j},\frac{\mathbf{V}^{k}}{\Delta\varepsilon}\right]\\
+ & +2\left[\frac{\mathbf{V}^{\ell}}{\Delta\varepsilon},\mathbf{V}^{i}\right]\left[\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{3}},\mathbf{V}_{F}^{k}\right]+2\left[\mathbf{V}_{F}^{k},\frac{\mathbf{V}^{i}}{\Delta\varepsilon^{3}}\right]\left[\mathbf{V}^{j},\frac{\mathbf{V}^{\ell}}{\Delta\varepsilon}\right]\\
+ & +\left[\frac{\mathbf{V}^{k}}{\Delta\varepsilon},\bm{\Gamma}^{\ell i}\right]\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}+\frac{\bm{\Gamma}^{\ell i}}{\Delta\varepsilon^{2}}\left[\frac{\mathbf{V}^{k}}{\Delta\varepsilon},\mathbf{V}^{j}\right]\\
+ & +\left[\frac{\mathbf{V}^{\ell}}{\Delta\varepsilon},\bm{\Gamma}^{ki}\right]\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}+\frac{\bm{\Gamma}^{ki}}{\Delta\varepsilon^{2}}\left[\frac{\mathbf{V}^{\ell}}{\Delta\varepsilon},\mathbf{V}^{j}\right]\\
+ & +\frac{\mathbf{V}^{i}}{\Delta\varepsilon^{2}}\left[\frac{\mathbf{V}^{k}}{\Delta\varepsilon},\bm{\Gamma}^{\ell j}\right]+\left[\frac{\mathbf{V}^{k}}{\Delta\varepsilon},\mathbf{V}^{i}\right]\frac{\bm{\Gamma}^{\ell j}}{\Delta\varepsilon^{2}}\\
+ & +\frac{\mathbf{V}^{i}}{\Delta\varepsilon^{2}}\left[\frac{\mathbf{V}^{\ell}}{\Delta\varepsilon},\bm{\Gamma}^{kj}\right]+\left[\frac{\mathbf{V}^{\ell}}{\Delta\varepsilon},\mathbf{V}^{i}\right]\frac{\bm{\Gamma}^{kj}}{\Delta\varepsilon^{2}}
+\end{align*}
+
+\[
+H_{ij}\left(\bm{k}\right)=\sum_{\delta\bm{R}}H_{ij}\left(\delta\bm{R}\right)e^{i\bm{k}\cdot\delta\bm{R}}
+\]
+
+\end{document}

@@ -1,0 +1,917 @@
+\documentclass[prx,amsmath,amssymb,superscriptaddress,longbibliography]{revtex4-2}
+% \documentclass[10pt,prl,superscriptaddress,longbibliography]{revtex4-2}
+\usepackage{xcolor}
+\definecolor{BLACK}{rgb}{0,0,0}
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage[colorlinks=true,linkcolor=blue,anchorcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+
+\usepackage{booktabs}
+\usepackage{mathrsfs}
+\makeatletter
+\def\ltxu@dotsep{0.5em}
+\makeatother
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\symab}{\mathop{\mathrm{Sym}}\nolimits_{ab}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\allowdisplaybreaks[2]
+\begin{document}
+\title{Personally implemented formulae in WannierBerri\\
+\color{blue}Working handbook: geometry, covariant derivatives, and interpolation}
+\author{Jiayu Li}
+\email{jyli93@hku.hk}
+\affiliation{Department of Physics, Southern University of Science and Technology, Shenzhen, China}
+\affiliation{New Cornerstone Science Laboratory, Department of Physics, The University of Hong Kong, Hong Kong, China}
+\date{\textcolor{blue}{Working copy, 4 October 2026}}
+\maketitle
+\color{blue}
+\noindent\textbf{Revision colours.} Black text is retained from the original
+\code{formulae.tex}; blue text marks additions and rewritten passages.
+Unchanged equations remain black even when labels have been added.
+
+
+This working copy consolidates the results in \code{formulae.tex},
+\code{Wannier.tex}, and \code{QGD.tex}.
+It establishes common conventions for the subsequent reconciliation of the
+v1.7 and v1.8 calculators. Formula identities, representation assumptions,
+and implementation status are stated separately.
+The original source notes remain unchanged. Source corrections and unfinished
+results are recorded in Appendix~\ref{app:corrections}.
+
+% A compact contents list keeps the overview on the title page.
+\begingroup
+\small
+\makeatletter
+\def\l@f@section{\addvspace{0.4em}}
+\makeatother
+\tableofcontents
+\endgroup
+\newpage
+
+\section{\textcolor{black}{Basic ingredients}}
+\label{sec:basic}
+
+\subsection{Notation, units, and scope}
+\label{sec:notation}
+We use Cartesian wave-vector derivatives
+$\partial_a=\partial/\partial k_a$ and $\epsilon_{xyz}=+1$.
+Repeated Cartesian indices are summed only in explicitly contracted expressions;
+free indices remain free. An isolated band is denoted by $n$.
+In block formulae, $m,n\in A$ and $l,p\in B$, where the two groups
+are separated by a nonzero gap at the wave vector under consideration.
+Degeneracies within a group are allowed. Primed band indices are summed over
+their indicated group.
+\begin{equation}
+ \Delta_{rs}=\varepsilon_r-\varepsilon_s,\qquad
+ \int[\dd\bm{k}]=\int_{\mathrm{BZ}}\frac{\dd^d k}{(2\pi)^d},\qquad
+ e>0,\quad q_{\mathrm{electron}}=-e.
+ \label{eq:conventions}
+\end{equation}
+The geometric expressions use energies and wave vectors, without silently
+setting $\hbar=1$. In particular,
+\begin{equation}
+ v_n^a=\frac{1}{\hbar}\partial_a\varepsilon_n,\qquad
+ E_n^{a}=\partial_a\varepsilon_n.
+ \label{eq:velocity-units}
+\end{equation}
+If energy is in eV and length in \AA, $E_n^a$ is in eV\,\AA;
+it is not yet a velocity in m/s. The conversion is
+$v_n^a=(1\,\mathrm{eV\ in\ J})(1\,\text{\AA\ in m})E_n^a/\hbar$.
+
+\begin{center}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{lll}
+\toprule
+Symbol & Meaning & Relation to the source notes\\
+\midrule
+$Q_n^{ab}$ & quantum geometric tensor (QGT) & QG; called QMT in \code{formulae.tex}\\
+$G_n^{ab}$ & quantum metric & $g_n^{ab}$ in the other two notes\\
+$\mathcal G_n^{ab}$ & Berry connection polarizability (BCP) & original normalization retained\\
+$D^a$ & $U^\dagger\partial_a U$ & coefficient-space connection\\
+$\bar A^a$ & $U^\dagger A^{W,a}U$ & rotated Wannier connection\\
+$M^a$ & $\bar A^a+\ii D^a$ & auxiliary connection in BCP formulae\\
+$\widetilde G^{ab}$ & energy-weighted geometric matrix & distinct from the metric $G_n^{ab}$\\
+$\mathfrak m^a$ & interband magnetic kernel & separates magnetic $M$ from BCP $M$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+{\color{black}
+\subsection{Berry connection}
+
+Single band Berry connection (Abelian Berry connection):
+\begin{equation}
+    A_n^i(\bm{k}) = i \langle u_n(\bm{k})| \partial_{k_i} u_n(\bm{k}) \rangle \equiv i \langle{u_n}| \partial_{i}{u_n}\rangle 
+\label{eq:berry-connection}\end{equation}
+Interband Berry connection (non-Abelian Berry connection):
+\begin{equation}
+    A_{nm}^i(\bm{k}) = i \langle u_n(\bm{k})| \partial_{k_i} u_m(\bm{k}) \rangle \equiv i \langle{u_n}| \partial_{i}{u_m}\rangle 
+\end{equation}
+
+}
+The matrix Berry connection is Hermitian, $(A^a)^\dagger=A^a$.
+Its full matrix transforms inhomogeneously under a wave-vector-dependent
+change of basis. Off-block elements transform covariantly under independent
+rotations within $A$ and $B$.
+
+\subsection{Quantum geometric tensor (QGT)}
+{\color{black}
+Quantum geometry tensor: 
+\begin{align}
+     Q_{n}^{ij}(\bm{k}) &=  \langle{\partial_{k_i} u_n(\bm{k})}|(1 - |u_n(\bm{k})\rangle\langle{u_n(\bm{k})}|)|{\partial_{k_j} u_n(\bm{k})}\rangle \nonumber \\
+     &\equiv \langle \partial_{i} u_n |(1 - |u_n\rangle\langle u_n |)|{\partial_{j} u_n}\rangle  \nonumber  \\
+     &= \sum_{m(\neq n)}  \langle \partial_i u_n | u_m \rangle\langle u_m | \partial_j u_n \rangle \nonumber \\
+     &= \sum_{m(\neq n)}  A_{nm}^i A_{mn}^j \nonumber \\
+     &= G_n^{ij}(\bm{k}) - \frac{i}{2}\Omega_n^{ij}(\bm{k}) 
+\label{eq:qgt}\end{align}
+Quantum metric tensor: 
+\begin{equation}
+    G_{n}^{ij}(\bm{k}) = \mathrm{Re}~Q_{n}^{ij}(\bm{k}) = \mathrm{Re} \sum_{m(\neq n)}  A_{nm}^i A_{mn}^j
+\label{eq:metric-curvature}\end{equation}
+Berry curvature tensor:
+\begin{equation}
+    \Omega_{n}^{ij}(\bm{k}) = -2\mathrm{Im}~Q_{n}^{ij}(\bm{k}) = -2\mathrm{Im} \sum_{m(\neq n)}  A_{nm}^i A_{mn}^j
+\end{equation}
+Berry curvature vector:
+\begin{equation}
+    \Omega_{n}^{i}(\bm{k}) = \frac{1}{2}\epsilon^{ijk}\Omega_{n}^{jk}(\bm{k}) = -\epsilon^{ijk}\mathrm{Im} \sum_{m(\neq n)}  A_{nm}^j A_{mn}^k = \epsilon^{ijk} \partial_j A_n^k
+\label{eq:curvature-vector}\end{equation}
+}
+The band sum in Eq.~\eqref{eq:qgt} requires a complete complement to $n$.
+A finite-model band sum gives the geometry of that model; missing states in a
+Wannier representation require the external terms of Sec.~\ref{sec:interpolation}.
+The metric is symmetric and positive semidefinite, whereas
+$\Omega_n^{ab}=-\Omega_n^{ba}$.
+
+{\color{black}
+\subsection{Berry connection polarizability (BCP)}
+
+Berry connection polarizability~\cite{GaoPRL2014FieldInducedPositional}: 
+\begin{equation}
+    \mathcal{G}_n^{ij}(\bm{k}) = \frac{1}{2} \sum_{m(\neq n)}  \frac{A_{nm}^i A_{mn}^j + A_{nm}^j A_{mn}^i}{\varepsilon_n - \varepsilon_m} = \mathrm{Re}\sum_{m(\neq n)}  \frac{A_{nm}^i A_{mn}^j}{\varepsilon_n - \varepsilon_m}
+\label{eq:bcp-single}\end{equation}
+
+}
+The normalization in Eq.~\eqref{eq:bcp-single} is retained from the original notes.
+Any response formula imported from another convention must first be converted
+to this definition; a factor of two must not be inferred from the name BCP alone.
+The units of $Q$, $G$, and $\Omega$ are length squared; those of
+$\mathcal G$ are length squared divided by energy.
+
+\section{Covariant derivatives and Wannier conventions}
+\label{sec:covariant}
+
+\subsection{Wannier and Hamiltonian gauges}
+With Wannier centers $\bm t_i$, define
+\begin{align}
+ |u_{j\bm k}^{W}\rangle
+ &=\sum_{\bm R}e^{\ii\bm k\cdot(\bm R+\bm t_j-\bm r)}|\bm Rj\rangle,
+ \\
+ \mathcal H_{ij}^{W}(\bm k)
+ &=\sum_{\bm R}e^{\ii\bm k\cdot\bm R_{ij}}
+ \langle\bm0 i|\hat{\mathcal H}|\bm Rj\rangle,
+ \qquad \bm R_{ij}=\bm R+\bm t_j-\bm t_i,
+ \label{eq:fourier}\\
+ \mathcal H^W U&=U\varepsilon,\qquad
+ |u_n\rangle=\sum_j|u_j^W\rangle U_{jn},\qquad
+ \bar X=U^\dagger X^W U.
+ \label{eq:gauges}
+\end{align}
+Normalization of the Bloch sums is understood.
+Fourier derivatives follow by multiplying every real-space term by
+$\ii R_{ij}^a$, with one factor for each derivative.
+
+For the coefficient vectors (columns of $U$),
+\begin{align}
+ D^a&=U^\dagger\partial_a U,\qquad
+ (D^a)^\dagger=-D^a,\qquad (D_{nm}^a)^*=-D_{mn}^a,
+ \label{eq:D}\\
+ D_{ln}^a&=\frac{\mathcal H_{ln}^{,a}}{\varepsilon_n-\varepsilon_l},
+ \quad l\in B,\ n\in A,\qquad
+ \mathcal H^{,a}=U^\dagger(\partial_a\mathcal H^W)U,
+ \label{eq:D-gap}\\
+ |\partial_a u_n\rangle
+ &=\sum_j|\partial_a u_j^W\rangle U_{jn}+\sum_r|u_r\rangle D_{rn}^a,
+ \\
+ A^{H,a}&=\bar A^a+\ii D^a\equiv M^a,\qquad
+ A_{ij}^{W,a}=\ii\langle u_i^W|\partial_a u_j^W\rangle.
+ \label{eq:M}
+\end{align}
+Diagonal entries of $D$ depend on the phase choice.
+Equation~\eqref{eq:D-gap} is used only across separated blocks, never to divide
+by a zero gap within a degenerate group.
+In general, $D_{nm}^a\ne\langle u_n|\partial_a u_m\rangle$:
+the latter also contains the derivative of the Wannier basis.
+
+\subsection{Comma, ordinary, and covariant derivatives}
+\label{sec:derivative-conventions}
+For a specified Wannier-gauge matrix $X^W$, the comma derivative means
+\begin{equation}
+ X^{,d}=U^\dagger(\partial_d X^W)U,\qquad
+ \partial_d\bar X=X^{,d}+\bar X D^d-D^d\bar X.
+ \label{eq:ordinary-derivative}
+\end{equation}
+Thus $X^{,d}$ is not the ordinary derivative of $\bar X$.
+In a fixed basis for an abstract operator it becomes
+$\langle n|\partial_d\hat X|m\rangle$.
+Such an operator-derivative matrix is covariant; it is the ordinary derivative
+of a transformed matrix that acquires derivatives of the gauge rotation.
+
+Under $U\mapsto U\,\mathrm{diag}(W_A,W_B)$,
+$X_{AB}\mapsto W_A^\dagger X_{AB}W_B$.
+Using the coefficient-space connection, define~\cite{Liu2023CovariantderivativesBerry}
+\begin{equation}
+ X_{CD}^{:d}=\partial_d X_{CD}+D_{CC}^d X_{CD}-X_{CD}D_{DD}^d,
+ \quad C,D\in\{A,B\}.
+ \label{eq:cov-derivative}
+\end{equation}
+Here $C,D$ label blocks, while the superscript $d$ labels a Cartesian direction.
+The symbol $X$ in this equation denotes a Hamiltonian-gauge matrix.
+For a rotated Wannier matrix the resulting block rules are
+\begin{align}
+ X_{AB}^{:d}&=X_{AB}^{,d}-D_{AB}^dX_{BB}+X_{AA}D_{AB}^d,\label{eq:block-ab}\\
+ X_{BA}^{:d}&=X_{BA}^{,d}-D_{BA}^dX_{AA}+X_{BB}D_{BA}^d,\\
+ X_{AA}^{:d}&=X_{AA}^{,d}-D_{AB}^dX_{BA}+X_{AB}D_{BA}^d.
+ \label{eq:block-aa}
+\end{align}
+For the Hamiltonian, $\mathcal H_{AA}^{:d}=\mathcal H_{AA}^{,d}$ and
+$\mathcal H_{AB}^{:d}=0$.
+These statements concern rotations within a fixed Wannier representation.
+A connection defined using the full physical Bloch basis must be used
+consistently if that representation is changed.
+
+\subsection{Trace, product, and chain rules}
+The trace and product rules eliminate gauge-dependent intrablock connections:
+\begin{align}
+ \partial_d\Tr_A X&=\Tr_A X^{:d},
+ \label{eq:trace}\\
+ (X_{CD}Y_{DE})^{:d}&=X_{CD}^{:d}Y_{DE}+X_{CD}Y_{DE}^{:d}.
+ \label{eq:product}
+\end{align}
+For $\widetilde f=f(\mathcal H)$, evaluation in the energy eigenbasis gives
+\begin{equation}
+ \widetilde f_{mn}^{:d}=\mathcal H_{mn}^{:d}
+ \begin{cases}
+ f'(\varepsilon_n),&\varepsilon_m=\varepsilon_n,\\[2pt]
+ \displaystyle\frac{f(\varepsilon_m)-f(\varepsilon_n)}{\varepsilon_m-\varepsilon_n},
+ &\varepsilon_m\ne\varepsilon_n.
+ \end{cases}
+ \label{eq:chain}
+\end{equation}
+The divided difference is essential when a block contains distinct energies.
+At zero temperature, apply the smooth-function rule before taking the
+appropriate distributional limit of the occupation.
+
+For compact second derivatives, define the bilinear product expansion
+\begin{align}
+ \mathscr P_d(X,Y)&=X^{:d}Y+XY^{:d},\nonumber\\
+ \mathscr P_{de}(X,Y)&=X^{:de}Y+X^{:d}Y^{:e}
+                 +X^{:e}Y^{:d}+XY^{:de},
+ \label{eq:second-product}\\
+ X^{:de}&\equiv(X^{:d})^{:e}.
+ \nonumber
+\end{align}
+Matrix order is preserved. Ordered covariant derivatives need not commute;
+ordinary derivatives of a smooth traced scalar do commute.
+
+\section{Gauge-covariant geometry and Wannier interpolation}
+\label{sec:interpolation}
+
+\subsection{Projectors and geometric matrices}
+Let $P=\sum_{n\in A}|u_n\rangle\langle u_n|$ and $Q=1-P$.
+For physical Bloch states, $Q$ includes states outside a finite Wannier space.
+The projected geometric matrices are
+\begin{align}
+ \widetilde F_{mn}^{ab}
+ &=\langle\partial_a u_m|Q|\partial_b u_n\rangle,
+ \label{eq:Fprojected}\\
+ \widetilde G^{ab}&=\tfrac12(\mathcal H_{AA}\widetilde F^{ab}
+                            +\widetilde F^{ab}\mathcal H_{AA}),
+ \label{eq:Gweighted}\\
+ \widetilde H_{mn}^{ab}
+ &=\langle\partial_a u_m|Q\hat{\mathcal H}Q|\partial_b u_n\rangle.
+ \label{eq:Hprojected}
+\end{align}
+Each transforms as $\widetilde O\mapsto W_A^\dagger\widetilde O W_A$ and obeys
+$\widetilde O_{mn}^{ab}=(\widetilde O_{nm}^{ba})^*$.
+In the Hamiltonian gauge,
+$\widetilde G_{mn}^{ab}=(\varepsilon_m+\varepsilon_n)\widetilde F_{mn}^{ab}/2$.
+The metric and curvature matrices are
+\begin{equation}
+ \widetilde g^{ab}=\tfrac12(\widetilde F^{ab}+\widetilde F^{ba}),\qquad
+ \widetilde\Omega^c=\ii\epsilon_{cab}\widetilde F^{ab}.
+ \label{eq:projected-geometry}
+\end{equation}
+For $A=\{n\}$ these recover Sec.~\ref{sec:basic}.
+For a larger $A$, $\Tr_A\widetilde g$ is the metric of the whole subspace;
+it is generally not $\sum_{n\in A}G_n$.
+
+For a continuum Hamiltonian with kinetic energy $(\bm p+\hbar\bm k)^2/(2m_e)$
+and a local, momentum-independent potential, the fourth matrix in
+\code{Wannier.tex} is
+\begin{equation}
+ \widetilde S_{mn}^{ab}=\frac{\hbar^2}{m_e}\delta_{ab}\delta_{mn}
+                  +2(\widetilde G_{mn}^{ab}-\widetilde H_{mn}^{ab}).
+ \label{eq:S-continuum}
+\end{equation}
+For $A=\{n\}$, $\Rea\widetilde S_{nn}^{ab}=\partial_a\partial_b\varepsilon_n$.
+The free-electron term cannot be substituted for the bare Hessian of a
+general tight-binding or nonlocal Hamiltonian; use Sec.~\ref{sec:energy} there.
+
+\subsection{Internal and external terms}
+Define Wannier-gauge matrices
+\begin{align}
+ F_{ij}^{W,ab}&=\langle\partial_a u_i^W|\partial_b u_j^W\rangle,\nonumber\\
+ B_{ij}^{W,a}&=\ii\langle u_i^W|\hat{\mathcal H}|\partial_a u_j^W\rangle,\nonumber\\
+ H_{ij}^{W,ab}&=\langle\partial_a u_i^W|\hat{\mathcal H}|\partial_b u_j^W\rangle.
+ \label{eq:external-data}
+\end{align}
+The two-index $H^{W,ab}$ is an energy-weighted geometric matrix,
+not $\partial_a\partial_b\mathcal H^W$.
+Then
+\begin{align}
+ \widetilde F^{ab}_{\mathrm{int}}
+ &=-D_{AB}^aD_{BA}^b,\label{eq:Fint}\\
+ \widetilde F^{ab}_{\mathrm{ext}}
+ &=\bar F_{AA}^{ab}-\bar A_{AA}^a\bar A_{AA}^b
+    +\ii D_{AB}^a\bar A_{BA}^b+\ii\bar A_{AB}^a D_{BA}^b,\label{eq:Fext}\\
+ \widetilde F^{ab}&=\widetilde F^{ab}_{\mathrm{int}}+
+                    \widetilde F^{ab}_{\mathrm{ext}}.
+\end{align}
+Here $B$ is the complement of $A$ within the represented Wannier space;
+$\bar F$ retains the additional basis-derivative information.
+Keeping only $\widetilde F_{\mathrm{int}}$ corresponds to the fixed-basis
+Hamiltonian geometry.
+
+For $\widetilde H$, assuming the represented active states are eigenstates
+of the physical Hamiltonian (or lie in the exact frozen subspace),
+\begin{align}
+ \widetilde H^{ab}_{\mathrm{int}}&=-D_{AB}^a\mathcal H_{BB}D_{BA}^b,\nonumber\\
+ \widetilde H^{ab}_{\mathrm{ext}}
+ &=\bar H_{AA}^{ab}-\bar A_{AA}^a\mathcal H_{AA}\bar A_{AA}^b
+    +\ii D_{AB}^a\bar B_{BA}^b
+    +\ii(\bar B^a)^\dagger_{AB}D_{BA}^b.
+ \label{eq:Hinterpolation}
+\end{align}
+Outside that exact subspace, projection and disentanglement errors must be
+assessed before interpreting the interpolation as a physical matrix element.
+
+A useful sign check is
+\begin{equation}
+ \Omega_{A,\mathrm{int}}^{ab}
+ =2\Ima\Tr_A(D_{AB}^aD_{BA}^b),\qquad
+ \widetilde\Omega^z=\ii(\widetilde F^{xy}-\widetilde F^{yx}).
+ \label{eq:curvature-check}
+\end{equation}
+
+\subsection{First and second geometric derivatives}
+The internal first derivative is
+\begin{equation}
+ \widetilde F_{\mathrm{int}}^{ab:d}
+ =-D_{AB}^{a:d}D_{BA}^b-D_{AB}^aD_{BA}^{b:d}.
+ \label{eq:Ffirst}
+\end{equation}
+The external first derivative contains all seven product-rule terms:
+\begin{align}
+ \widetilde F_{\mathrm{ext}}^{ab:d}
+ &=\bar F_{AA}^{ab:d}
+ -\bar A_{AA}^{a:d}\bar A_{AA}^b-\bar A_{AA}^a\bar A_{AA}^{b:d}
+ \nonumber\\
+ &\quad+\ii D_{AB}^{a:d}\bar A_{BA}^b+\ii D_{AB}^a\bar A_{BA}^{b:d}
+ +\ii\bar A_{AB}^{a:d}D_{BA}^b+\ii\bar A_{AB}^aD_{BA}^{b:d}.
+ \label{eq:Fext-first}
+\end{align}
+All second-order terms are retained compactly by Eq.~\eqref{eq:second-product}:
+\begin{align}
+ \widetilde F_{\mathrm{int}}^{ab:de}
+ &=-\mathscr P_{de}(D_{AB}^a,D_{BA}^b),\nonumber\\
+ \widetilde F_{\mathrm{ext}}^{ab:de}
+ &=\bar F_{AA}^{ab:de}-\mathscr P_{de}(\bar A_{AA}^a,\bar A_{AA}^b)
+ \nonumber\\
+ &\quad+\ii\mathscr P_{de}(D_{AB}^a,\bar A_{BA}^b)
+       +\ii\mathscr P_{de}(\bar A_{AB}^a,D_{BA}^b).
+ \label{eq:Fsecond}
+\end{align}
+Consequently, for $s=d$ or $de$,
+\begin{equation}
+ \widetilde g^{ab:s}=\tfrac12(\widetilde F^{ab:s}+\widetilde F^{ba:s}),\qquad
+ \widetilde\Omega^{c:s}=\ii\epsilon_{cab}\widetilde F^{ab:s}.
+ \label{eq:geometry-derivatives}
+\end{equation}
+Taking $\Tr_A$ gives the ordinary first or second derivative of the
+corresponding subspace trace.
+The same product rule differentiates Eqs.~\eqref{eq:Gweighted} and
+\eqref{eq:Hinterpolation}; derivatives of every Hamiltonian factor are required.
+
+\section{BCP and energy-denominator derivatives}
+\label{sec:bcp}
+
+\subsection{A symmetric block construction}
+For off-block elements define $M$ by Eq.~\eqref{eq:M} and
+\begin{equation}
+ N_{rs}^a=\frac{M_{rs}^a}{\Delta_{rs}},\qquad
+ (M_{rs}^a)^*=M_{sr}^a,\qquad (N_{rs}^a)^*=-N_{sr}^a.
+ \label{eq:N}
+\end{equation}
+The finite-model energy-weighted tensor and BCP are
+\begin{align}
+ \widetilde{\mathcal F}^{ab}
+ &=\tfrac12(N_{AB}^a M_{BA}^b-M_{AB}^a N_{BA}^b),\label{eq:weightedF}\\
+ \widetilde{\mathcal G}^{ab}
+ &=\tfrac12(\widetilde{\mathcal F}^{ab}+\widetilde{\mathcal F}^{ba}).
+ \label{eq:bcp-block}
+\end{align}
+In the energy eigenbasis,
+\begin{equation}
+ \widetilde{\mathcal F}_{mn}^{ab}
+ =\frac12\sum_{l\in B}M_{ml}^a M_{ln}^b
+ \left(\frac1{\Delta_{ml}}+\frac1{\Delta_{nl}}\right).
+ \label{eq:weightedF-components}
+\end{equation}
+For a single active band and a complete model complement,
+$\widetilde{\mathcal G}_{nn}^{ab}=\mathcal G_n^{ab}$.
+A calculation using only $M$ within a truncated Wannier space does not restore
+energy-denominator contributions from all excluded physical bands.
+
+Let $T^{ab}=N_{AB}^aM_{BA}^b-M_{AB}^aN_{BA}^b$.
+Hermiticity gives $(T^{ab})^\dagger=T^{ba}$, so the code-friendly form is
+\begin{equation}
+ \widetilde{\mathcal G}^{ab}=\tfrac14[T^{ab}+(T^{ab})^\dagger].
+ \label{eq:bcp-code}
+\end{equation}
+This explains the division by four after band-index Hermitian symmetrization
+in the archived \code{BCP} class.
+
+\subsection{Connection derivatives and the general block rule}
+The first derivative of the off-block coefficient connection is
+\begin{align}
+ D_{ln}^{a:d}=\frac{1}{\varepsilon_n-\varepsilon_l}
+ \big[\mathcal H_{ln}^{,ad}
+ &+\mathcal H_{lp}^{,a}D_{pn}^d-D_{lm}^d\mathcal H_{mn}^{,a}
+ \nonumber\\[-2pt]
+ &+\mathcal H_{lp}^{,d}D_{pn}^a-D_{lm}^a\mathcal H_{mn}^{,d}\big],
+ \label{eq:Dfirst}
+\end{align}
+where $m\in A$ and $p\in B$ are summed.
+Also $M^{a:d}=\bar A^{a:d}+\ii D^{a:d}$, with the corresponding relation at second order.
+
+To differentiate an energy denominator covariantly, define the Sylvester operator
+\begin{equation}
+ \mathscr L_{CD}(Y)=\mathcal H_{CC}Y-Y\mathcal H_{DD}.
+ \label{eq:sylvester}
+\end{equation}
+Its inverse exists for separated spectra. Equation~\eqref{eq:N} is the
+Hamiltonian-gauge evaluation of $\mathscr L_{CD}(N^a)=M^a$.
+For $\mathscr L_{CD}(Y)=R$, product differentiation gives
+\begin{align}
+ \mathscr L_{CD}(Y^{:d})
+ &=R^{:d}-\mathcal H_{CC}^{:d}Y+Y\mathcal H_{DD}^{:d},\label{eq:sylvester1}\\
+ \mathscr L_{CD}(Y^{:de})
+ &=R^{:de}-\mathcal H_{CC}^{:de}Y
+ -\mathcal H_{CC}^{:d}Y^{:e}-\mathcal H_{CC}^{:e}Y^{:d}
+ \nonumber\\
+ &\quad+Y^{:d}\mathcal H_{DD}^{:e}+Y^{:e}\mathcal H_{DD}^{:d}
+       +Y\mathcal H_{DD}^{:de}.
+ \label{eq:sylvester2}
+\end{align}
+Set $(Y,R)=(N^a,M^a)$ for BCP denominators, or
+$(Y,R)=(D^a_{BA},-\mathcal H_{BA}^{,a})$ for coefficient connections.
+These identities preserve intrablock matrix products and supply a general
+reference for auditing the multiband implementation.
+
+\subsection{Isolated-band quotient formulae}
+For individual nondegenerate eigenlines, write the phase-covariant derivative
+as $;d$, to distinguish it from a multiband block derivative.
+Let $\Delta_{rs,d}=E_r^d-E_s^d$ and
+$\Delta_{rs,de}=\partial_e\partial_d(\varepsilon_r-\varepsilon_s)$.
+Then
+\begin{align}
+ N_{rs}^{a;d}
+ &=\frac{M_{rs}^{a;d}}{\Delta_{rs}}
+   -\frac{M_{rs}^{a}\Delta_{rs,d}}{\Delta_{rs}^2},\label{eq:Nfirst}\\
+ N_{rs}^{a;de}
+ &=\frac{M_{rs}^{a;de}}{\Delta_{rs}}
+   -\frac{M_{rs}^{a;d}\Delta_{rs,e}+M_{rs}^{a;e}\Delta_{rs,d}
+           +M_{rs}^a\Delta_{rs,de}}{\Delta_{rs}^2}
+   +\frac{2M_{rs}^a\Delta_{rs,d}\Delta_{rs,e}}{\Delta_{rs}^3}.
+ \label{eq:Nsecond}
+\end{align}
+These are the compact quotient formulae in \code{Wannier.tex}.
+They must not replace Eqs.~\eqref{eq:sylvester1}--\eqref{eq:sylvester2}
+for arbitrary multiband rotations. The archived \code{DerBCP} uses diagonal
+velocity differences; its general-block equivalence remains a reconciliation item.
+
+\subsection{BCP dipole and quadrupole kernels}
+With either consistently evaluated block derivatives or isolated-band derivatives,
+\begin{align}
+ \widetilde{\mathcal F}^{ab:d}
+ &=\tfrac12\big[
+ N_{AB}^{a:d}M_{BA}^b+N_{AB}^aM_{BA}^{b:d}
+ -M_{AB}^{a:d}N_{BA}^b-M_{AB}^aN_{BA}^{b:d}\big],\label{eq:bcp-first}\\
+ \widetilde{\mathcal F}^{ab:de}
+ &=\tfrac12\big[\mathscr P_{de}(N_{AB}^a,M_{BA}^b)
+                  -\mathscr P_{de}(M_{AB}^a,N_{BA}^b)\big],\label{eq:bcp-second}\\
+ \widetilde{\mathcal G}^{ab:s}
+ &=\tfrac12(\widetilde{\mathcal F}^{ab:s}
+             +\widetilde{\mathcal F}^{ba:s}),\qquad s=d,de.
+ \label{eq:bcp-sym}
+\end{align}
+The two factors of $1/2$ in this construction are independent.
+For a smooth subspace, $\Tr_A\widetilde{\mathcal G}^{ab:d}$ and
+$\Tr_A\widetilde{\mathcal G}^{ab:de}$ are the dipole and quadrupole
+geometric kernels before occupations and response prefactors are applied.
+
+\section{Explicit band-sum and matrix formulae from QGD}
+\label{sec:qgd}
+
+\subsection{Domain and matrix ingredients}
+This section applies to a smooth Hamiltonian in a fixed orthonormal basis,
+with nondegenerate bands and nonzero denominators.
+It gives an independent representation of the internal geometry.
+Define energy-derivative matrices, rather than physical velocities,
+\begin{align}
+ V_{nm}^a&=\langle n|\partial_a\mathcal H|m\rangle,
+ &\Gamma_{nm}^{ab}&=\langle n|\partial_a\partial_b\mathcal H|m\rangle,
+ \nonumber\\
+ (K_q^a)_{nm}&=\begin{cases}V_{nm}^a/\Delta_{nm}^q,&n\ne m,\\0,&n=m,\end{cases}
+ &(V_F^a)_{nm}&=\delta_{nm}E_n^a.
+ \label{eq:qgd-ingredients}
+\end{align}
+Division by $\Delta^q$ is elementwise and excludes the diagonal.
+Products of $K_q$ are ordinary matrix products.
+In this convention $D_{nm}^a=-(K_1^a)_{nm}$ and
+$A_{nm}^a=-\ii(K_1^a)_{nm}$ for $n\ne m$.
+Thus $K_1$ alone is not the interband Berry connection.
+
+The QGT can be evaluated by either expression
+\begin{equation}
+ Q_n^{ab}=\sum_{m\ne n}\frac{V_{nm}^aV_{mn}^b}{\Delta_{nm}^2}
+          =-[K_1^aK_1^b]_{nn}.
+ \label{eq:qgt-matrix}
+\end{equation}
+Only the diagonal of the matrix product is asserted to equal the
+single-band QGT. Its off-diagonal entries are not the general projected
+matrix of Eq.~\eqref{eq:Fprojected}.
+
+\subsection{QGD-I and QGD-II}
+Write $\partial_cQ_n^{ab}=\mathcal I_n^{ab;c}+\mathcal J_n^{ab;c}$.
+The one-sum contribution is
+\begin{equation}
+ \mathcal I_n^{ab;c}=\sum_{m\ne n}\left[
+ \frac{\Gamma_{nm}^{ca}V_{mn}^b+V_{nm}^a\Gamma_{mn}^{cb}}{\Delta_{nm}^2}
+ -\frac{2V_{nm}^aV_{mn}^b(E_n^c-E_m^c)}{\Delta_{nm}^3}\right].
+ \label{eq:qgd-I}
+\end{equation}
+The two-sum contribution is
+\begin{align}
+ \mathcal J_n^{ab;c}=\sum_{m\ne n}\bigg[
+ &\sum_{p\ne n}\frac{V_{np}^cV_{pm}^aV_{mn}^b
+                        +V_{nm}^aV_{mp}^bV_{pn}^c}
+                       {\Delta_{nm}^2\Delta_{np}}
+ \nonumber\\
+ +&\sum_{p\ne m}\frac{V_{np}^aV_{pm}^cV_{mn}^b
+                        +V_{nm}^aV_{mp}^cV_{pn}^b}
+                       {\Delta_{nm}^2\Delta_{mp}}\bigg].
+ \label{eq:qgd-II}
+\end{align}
+The corresponding compact matrix expressions are
+\begin{align}
+ \mathcal I_n^{ab;c}
+ &=\big[\Gamma^{ca}K_2^b+K_2^a\Gamma^{cb}
+        -2[V_F^c,K_1^a]K_2^b\big]_{nn},\label{eq:qgd-I-matrix}\\
+ \mathcal J_n^{ab;c}
+ &=\big[[K_1^c,V^a]K_2^b+K_2^a[K_1^c,V^b]\big]_{nn}.
+ \label{eq:qgd-II-matrix}
+\end{align}
+No real part is taken until selecting the desired observable:
+\begin{equation}
+ \partial_cG_n^{ab}=\Rea\partial_cQ_n^{ab},\qquad
+ \partial_c\Omega_n^{ab}=-2\Ima\partial_cQ_n^{ab}.
+ \label{eq:qgd-observables}
+\end{equation}
+Equations~\eqref{eq:qgd-I}--\eqref{eq:qgd-II-matrix} retain the
+one-sum/two-sum distinction in \code{QGD.tex} without repeating the intermediate bra-ket expansions.
+
+\subsection{A complete quotient identity for the second derivative}
+The QGQ expansions in the source notes are incomplete.
+For a compact check of any completed expansion, define the phase-invariant pair
+$Z_{nm}^{ab}=V_{nm}^aV_{mn}^b$ for $m\ne n$.
+Differentiating $Q_n^{ab}=\sum_{m\ne n}Z_{nm}^{ab}/\Delta_{nm}^2$ twice gives
+\begin{align}
+ \partial_d\partial_c Q_n^{ab}=\sum_{m\ne n}\bigg[
+ &\frac{\partial_d\partial_c Z_{nm}^{ab}}{\Delta_{nm}^2}
+ -\frac{2\big[(\partial_c Z_{nm}^{ab})\Delta_{nm,d}
+              +(\partial_d Z_{nm}^{ab})\Delta_{nm,c}
+              +Z_{nm}^{ab}\Delta_{nm,cd}\big]}{\Delta_{nm}^3}
+ \nonumber\\
+ &+\frac{6Z_{nm}^{ab}\Delta_{nm,c}\Delta_{nm,d}}{\Delta_{nm}^4}\bigg].
+ \label{eq:qgq-quotient}
+\end{align}
+In particular, the last coefficient is $+6$ in this scalar band-sum convention.
+The numerator derivatives include changes of both eigenstates and operators.
+For an arbitrary operator matrix $X$, they can be generated using
+\begin{equation}
+ X_{nm}^{;c}=\langle n|\partial_c\hat X|m\rangle+[K_1^c,X]_{nm},\qquad
+ (K_q^a)_{nm}^{;c}=\frac{(V^a)_{nm}^{;c}}{\Delta_{nm}^q}
+ -q\frac{V_{nm}^a\Delta_{nm,c}}{\Delta_{nm}^{q+1}},\quad n\ne m.
+ \label{eq:qgd-recursion}
+\end{equation}
+Here $;c$ removes only eigenline phase connections, with the same choice as in
+Sec.~\ref{sec:bcp}. Differentiating $\Gamma$ includes
+$\langle n|\partial_c\partial_a\partial_b\mathcal H|m\rangle$.
+It cannot be omitted for a general tight-binding Hamiltonian.
+This identity is a complete differentiation rule, not a claim that the
+partial QGQ matrix expansions in the source notes are complete.
+
+\section{Energy derivatives and Drude building blocks}
+\label{sec:energy}
+Define the rotated bare derivatives
+\begin{equation}
+ V^a=\mathcal H^{,a},\quad W^{ab}=\mathcal H^{,ab},\quad
+ Y^{abc}=\mathcal H^{,abc},\quad Z^{abcd}=\mathcal H^{,abcd}.
+ \label{eq:energy-ingredients}
+\end{equation}
+Here $Z^{abcd}$ is a four-derivative Hamiltonian matrix, distinct from the
+band-pair numerator $Z_{nm}^{ab}$ in Sec.~\ref{sec:qgd}.
+For example,
+\begin{align}
+ V_{AA}^{a:b}&=W_{AA}^{ab}+V_{AB}^aD_{BA}^b-D_{AB}^bV_{BA}^a,
+ \label{eq:invmass}\\
+ W_{AA}^{ab:c}&=Y_{AA}^{abc}+W_{AB}^{ab}D_{BA}^c-D_{AB}^cW_{BA}^{ab},
+ \label{eq:derW}\\
+ V_{AA}^{a:bc}&=W_{AA}^{ab:c}
+ +V_{AB}^{a:c}D_{BA}^b+V_{AB}^aD_{BA}^{b:c}
+ -D_{AB}^{b:c}V_{BA}^a-D_{AB}^bV_{BA}^{a:c}.
+ \label{eq:third-energy}
+\end{align}
+A further product derivative yields
+\begin{align}
+ V_{AA}^{a:bcd}={}&W_{AA}^{ab:cd}
+ +V_{AB}^{a:cd}D_{BA}^b+V_{AB}^{a:c}D_{BA}^{b:d}
+ +V_{AB}^{a:d}D_{BA}^{b:c}+V_{AB}^aD_{BA}^{b:cd}
+ \nonumber\\
+ &-D_{AB}^{b:cd}V_{BA}^a-D_{AB}^{b:c}V_{BA}^{a:d}
+ -D_{AB}^{b:d}V_{BA}^{a:c}-D_{AB}^bV_{BA}^{a:cd}.
+ \label{eq:fourth-energy}
+\end{align}
+For a smooth isolated group,
+\begin{equation}
+ \partial_a\partial_b\sum_{n\in A}\varepsilon_n=\Tr_A V^{a:b},\quad
+ \partial_a\partial_b\partial_c\sum_{n\in A}\varepsilon_n=\Tr_A V^{a:bc},\quad
+ \partial_a\partial_b\partial_c\partial_d\sum_{n\in A}\varepsilon_n=\Tr_A V^{a:bcd}.
+ \label{eq:energy-traces}
+\end{equation}
+For a single isolated band the inverse effective mass is
+$(m_n^{-1})^{ab}=\hbar^{-2}\partial_a\partial_b\varepsilon_n$.
+The operator Hessian $W_{nn}^{ab}$ differs from the band-energy Hessian:
+\begin{equation}
+ \partial_a\partial_b\varepsilon_n
+ =W_{nn}^{ab}+2\Rea\sum_{m\ne n}\frac{V_{nm}^aV_{mn}^b}{\Delta_{nm}}.
+ \label{eq:hessian-distinction}
+\end{equation}
+Thus the orbital-quadrupole derivative of an operator Hessian must not be
+replaced by \code{Der3E}. They correspond to different objects.
+
+\section{Orbital magnetic quantities}
+\label{sec:orbital}
+
+\subsection{Orbital moment and zero-temperature magnetization}
+With the charge convention in Eq.~\eqref{eq:conventions},
+\begin{align}
+ \widetilde m^c&=\frac{\ii e}{2\hbar}\epsilon_{cab}
+                      (\widetilde G^{ab}-\widetilde H^{ab}),\label{eq:moment}\\
+ \widetilde{\mathcal M}^c(\mu)
+ &=-\frac{\ii e}{2\hbar}\epsilon_{cab}
+    (\widetilde H^{ab}+\widetilde G^{ab}-2\mu\widetilde F^{ab}).
+ \label{eq:magnetization}
+\end{align}
+The first is the symmetrized orbital-moment matrix; for an exactly degenerate
+active group it reduces to the usual moment matrix.
+For a single band,
+$\mathcal M_n^c=m_n^c+(e/\hbar)(\mu-\varepsilon_n)\Omega_n^c$.
+At zero temperature, using the occupied projector at each wave vector,
+\begin{equation}
+ M_{\mathrm{orb}}^c=\int[\dd\bm k]\Tr_{\mathrm{occ}}
+                    \widetilde{\mathcal M}^c(\mu).
+ \label{eq:magnetization-integral}
+\end{equation}
+At fixed $\mu$, the derivative of Eq.~\eqref{eq:magnetization} is
+\begin{equation}
+ (\widetilde{\mathcal M}^c)^{:d}
+ =-\frac{\ii e}{2\hbar}\epsilon_{cab}
+ (\widetilde H^{ab:d}+\widetilde G^{ab:d}-2\mu\widetilde F^{ab:d}).
+ \label{eq:magnetization-derivative}
+\end{equation}
+Every projector derivative in $\widetilde H$ and $\widetilde G$ is included
+through the interpolation and product rules. Keeping only
+$\langle\partial_a u_m|Q(\partial_d\hat{\mathcal H})Q|\partial_b u_n\rangle$
+is insufficient.
+
+\subsection{Orbital magnetic quadrupole: four-term reference}
+\label{sec:mqm}
+To avoid the duplicated prefactors in \code{Wannier.tex}, this subsection
+uses the $e=\hbar=1$ convention of Gao and Xiao~\cite{GaoXiao2018}.
+It supplies the reduced kernel for comparison with the archive, not a new SI conversion.
+For an isolated band define
+\begin{align}
+ \mathfrak m_{mn}^{j}
+ &=\frac12\epsilon_{jab}\sum_{p\ne n}
+       (v_{mp}^a+v_n^a\delta_{mp})A_{pn}^b,\label{eq:interband-moment}\\
+ \Gamma_n^{i b}&=\langle u_n|\partial_i\partial_b\hat{\mathcal H}|u_n\rangle,
+ \qquad g_n^{ib}\equiv G_n^{ib}.
+\end{align}
+Here $v^a=\partial_a\hat{\mathcal H}$ in this subsection's units.
+Define four band kernels,
+\begin{align}
+ C_n^{ij}&=\frac23\Rea\sum_{m\ne n}A_{nm}^i\mathfrak m_{mn}^j,
+ &I_n^{ij}&=-\frac1{12}\epsilon_{abj}\partial_a\Gamma_n^{ib},
+ \nonumber\\
+ L_n^{ij}&=-2\Rea\sum_{m\ne n}
+                 \frac{A_{nm}^i\mathfrak m_{mn}^j}{\Delta_{nm}},
+ &K_n^{ij}&=-\frac13\epsilon_{abj}\partial_aG_n^{ib}.
+ \label{eq:mqm-kernels}
+\end{align}
+The quadrupole density is
+\begin{equation}
+ \mathcal Q^{ij}=\int[\dd\bm k]\sum_n
+ \left\{f_n(C_n^{ij}+I_n^{ij})+\Phi_n(L_n^{ij}+K_n^{ij})\right\},
+ \label{eq:mqm}
+\end{equation}
+where
+\begin{equation}
+ f_n=\frac1{1+e^{(\varepsilon_n-\mu)/(k_BT)}},\qquad
+ \Phi_n=-k_BT\ln\left(1+e^{(\mu-\varepsilon_n)/(k_BT)}\right).
+ \label{eq:grand-potential}
+\end{equation}
+At $T=0$, $f_n=\Theta(\mu-\varepsilon_n)$ and
+$\Phi_n=(\varepsilon_n-\mu)f_n$.
+The source-note labels ME1, W, ME2, QM correspond respectively to the
+archived v1.8 labels CL, IMD, ME, QMD.
+
+The physical operator Hessian in Eq.~\eqref{eq:mqm-kernels} equals the fixed-basis
+matrix $W$ of Sec.~\ref{sec:energy} in that representation.
+With a moving Wannier basis, operator derivatives and derivatives of
+$\mathcal H^W$ require additional basis-connection terms.
+This distinction must be checked when comparing the archived \code{DerWln}
+implementation to the physical quadrupole formula.
+
+The archived v1.8 calculator uses $(E-\mu)f$ for ME and QMD and defaults to
+\code{constant_factor=1}. Its weighting agrees with
+Eq.~\eqref{eq:grand-potential} at zero temperature, and does not by itself
+implement the finite-temperature grand potential.
+No additional $e/(2\hbar)$ factor should be inserted into
+Eq.~\eqref{eq:mqm} while retaining the convention in Eq.~\eqref{eq:interband-moment}.
+Conversion back to physical units must be derived for the full expression.
+
+\section{Bridge to the v1.7 and v1.8 calculator catalogue}
+\label{sec:catalogue}
+
+\subsection{Fermi-sea and Fermi-surface kernels}
+For a smooth periodic band quantity $X_n$ and vanishing boundary terms,
+\begin{align}
+ \int[\dd\bm k]\sum_n f_n\partial_aX_n
+ &=-\int[\dd\bm k]\sum_n f'_n E_n^a X_n,\label{eq:sea-surface}\\
+ \int[\dd\bm k]\sum_n f_n\partial_a\partial_dX_n
+ &=-\int[\dd\bm k]\sum_n f'_n E_n^a\partial_dX_n,
+ \label{eq:sea-surface2}
+\end{align}
+where $f'_n=\partial f/\partial\varepsilon|_{\varepsilon_n}$ is negative.
+A surface kernel defined with $-f'$ has the same sign as the sea integral.
+The code's occupation-derivative convention and outer factor must therefore
+be checked together. At band crossings, use smooth group traces and the
+matrix occupation rule rather than applying isolated-band formulae blindly.
+
+\subsection{Tensor axes and formula-class index}
+The following table records geometric kernel axes, excluding any leading
+wave-vector and chemical-potential axes. It is a navigation aid for the
+subsequent full version reconciliation.
+\begin{center}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{lll}
+\toprule
+Formula class & Geometric kernel & Raw Cartesian axes\\
+\midrule
+\code{Metric} & $G^{ab}$ or subspace metric & $(a,b)$\\
+\code{DerMetric} & $G^{ab:d}$ & $(a,b,d)$\\
+\code{BCP} & $\mathcal G^{ab}$ & $(a,b)$\\
+\code{DerBCP} & $\mathcal G^{ab:d}$ & $(a,b,d)$\\
+\code{Der2BCP} & $\mathcal G^{ab:de}$ & $(a,b,d,e)$\\
+\code{DerOmega}, \code{Der2Omega} & $\Omega^{c:d}$, $\Omega^{c:de}$ & $(c,d)$, $(c,d,e)$\\
+\code{VelBCP} & $E^c\mathcal G^{ab}$ & $(c,a,b)$\\
+\code{VelDerBCP} & $E^c\mathcal G^{ab:d}$ & $(c,a,b,d)$\\
+\code{VelDerOmega} & $E^a\Omega^{c:d}$ & $(a,c,d)$\\
+\code{InvMass}, \code{Der3E}, \code{Der4E} & band-energy derivatives & derivative order\\
+\code{Qorb_GaoXiao_*} & Eq.~\eqref{eq:mqm} & $(i,j)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For a common dipole convention $(d,a,b)$, transpose the three axes of
+\code{DerBCP} from $(a,b,d)$ to $(d,a,b)$.
+For a common quadrupole convention $(d,a,b,e)$, the corresponding permutation
+of \code{Der2BCP} is $(2,0,1,3)$ in zero-based tensor-axis notation.
+Only the trailing tensor axes should be permuted when leading axes are present.
+
+\subsection{Items for the subsequent complete version reconciliation}
+The archived source and \code{CHANGE_REPORT.md} identify the following scope:
+\begin{itemize}
+ \item v1.7 adds metric, BCP dipole/quadrupole, Berry-curvature quadrupole,
+ fourth-energy-derivative, and early orbital-quadrupole calculators.
+ \item v1.8 retains several formula classes but does not expose the complete
+ v1.7 calculator set. It adds the four-term Gao--Xiao quadrupole and
+ \code{Beta_GaoXiao} thermoelectric response.
+ \item \code{Der2BCP_test} in v1.7 raises \code{NotImplementedError}.
+ The production \code{Der2BCP} also carries a bug-related TODO in the source;
+ a class name or a completed symbolic identity is not evidence of numerical validation.
+ \item BCP denominator derivatives, active/complement choices, tensor axes,
+ occupation signs, and SI prefactors need class-by-class comparison.
+ Group-metric traces and sums of isolated-band metrics must be distinguished.
+\end{itemize}
+The thermoelectric response and the full nonlinear conductivity prefactors
+are outside the completed source-note consolidation here.
+They should be added as separate catalogue entries with their field convention,
+thermal kernel, component symmetrization, and version-specific code mapping.
+
+\appendix
+\section{Corrections and retained evidence boundaries}
+\label{app:corrections}
+\begin{enumerate}
+ \item \textbf{Connection and derivative notation.}
+ The source notes used the same state notation for Bloch functions and
+ columns of $U$. Equations~\eqref{eq:D}--\eqref{eq:M} distinguish them.
+ The ordinary derivative $\partial_d X$ was also confused with the
+ operator/comma derivative $X^{,d}$; Sec.~\ref{sec:derivative-conventions} repairs that distinction.
+ The right-block gauge transformation has left index $n$, not the unrelated index $m$.
+ \item \textbf{Curvature and Hermiticity.}
+ The anti-Hermitian relation is $(D_{nm}^a)^*=-D_{mn}^a$.
+ The $z$-curvature contraction uses $xy-yx$, not $xy-yz$.
+ The internal trace curvature has the positive sign in
+ Eq.~\eqref{eq:curvature-check}.
+ The $+2\Ima Q$ convention in \code{QGD.tex} is replaced consistently by
+ Eq.~\eqref{eq:metric-curvature}.
+ \item \textbf{BCP factors and denominator derivatives.}
+ The metric symmetrization and the symmetric energy-denominator construction
+ each contribute a factor of $1/2$.
+ An expanded derivative in \code{Wannier.tex} lost one of these factors
+ and repeated terms instead of exchanging all $a,b$ indices.
+ Equations~\eqref{eq:bcp-first}--\eqref{eq:bcp-sym} retain the two operations explicitly.
+ The Sylvester identities supplement the single-band quotient rule without
+ assuming diagonal intrablock velocity matrices.
+ \item \textbf{Incomplete QGQ expansion.}
+ \code{Wannier.tex} leaves its part III empty, and \code{QGD.tex} repeats
+ the part-I label on a different group of terms.
+ These partial expressions are not reproduced as a complete result.
+ Equation~\eqref{eq:qgq-quotient} records the full quotient identity, including
+ the $+6$ denominator term and the band-energy Hessian difference.
+ \item \textbf{Orbital terms.}
+ The energy-weighted Wannier matrix uses derivatives $a,b$, not $b,b$.
+ Orbital-moment, magnetization, and interband magnetic-kernel symbols are separated.
+ The original quadrupole expression mixed an outer $e/(2\hbar)$ with a magnetic
+ matrix already containing that factor. Section~\ref{sec:mqm} uses a single
+ explicit reduced-unit convention.
+ \item \textbf{Exploratory derivations.}
+ The unfinished ME1 projector manipulations, partial magnetization derivatives,
+ and terminal Green-function identities are retained in the original notes.
+ They are not needed for the reusable formula chain in this handbook.
+ In particular, differentiation of a projected product must include all
+ projector derivatives; differentiating only its explicit Hamiltonian is incomplete.
+\end{enumerate}
+
+\section{Consistency checks for later calculator validation}
+\label{app:checks}
+Useful algebraic checks include
+\begin{align}
+ Q_n^{ab}&=(Q_n^{ba})^*,\qquad G_n^{aa}\ge0,\nonumber\\
+ \widetilde F_{mn}^{ab:s}&=(\widetilde F_{nm}^{ba:s})^*,\qquad
+ \mathcal G_n^{ab}=\mathcal G_n^{ba},\nonumber\\
+ \partial_d\partial_cX_n&=\partial_c\partial_dX_n
+ \quad\text{for a smooth gauge-invariant scalar }X_n.
+\end{align}
+Compare the QGD band sums, matrix products, and centered finite differences
+on a gapped multiband model. Test the BCP block denominator identities under
+independent unitary rotations in both blocks.
+For Brillouin-zone integrals, compare sea/surface kernels only after matching
+axes, signs, units, occupations, and integration normalization.
+These checks do not replace convergence tests on the eventual material model.
+
+% Embedded bibliography keeps this working copy self-contained for the native
+% single-file LaTeX compiler. Original notes/ref.bib is deliberately unchanged.
+\begin{thebibliography}{9}
+\bibitem{Liu2023CovariantderivativesBerry}
+X. Liu, S. S. Tsirkin, and I. Souza,
+Covariant derivatives of Berry-type quantities: Application to nonlinear transport,
+\href{https://arxiv.org/abs/2303.10129}{arXiv:2303.10129} (2023).
+\bibitem{GaoPRL2014FieldInducedPositional}
+Y. Gao, S. A. Yang, and Q. Niu,
+Field Induced Positional Shift of Bloch Electrons and Its Dynamical Implications,
+\href{https://doi.org/10.1103/PhysRevLett.112.166601}{Phys. Rev. Lett. \textbf{112}, 166601} (2014).
+\bibitem{GaoXiao2018}
+Y. Gao and D. Xiao,
+Orbital magnetic quadrupole moment and nonlinear anomalous thermoelectric transport,
+\href{https://doi.org/10.1103/PhysRevB.98.060402}{Phys. Rev. B \textbf{98}, 060402(R)} (2018).
+\end{thebibliography}
+\end{document}

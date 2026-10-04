@@ -1,0 +1,1135 @@
+%% LyX 2.4.4 created this file.  For more info, see https://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[12pt,english]{revtex4-2}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setcounter{secnumdepth}{3}
+\usepackage{xcolor}
+\usepackage{calc}
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+\usepackage{babel}
+\begin{document}
+\title{Covariant derivatives and Wannier interpolation scheme}
+\author{Jiayu Li}
+
+\maketitle
+Ref: arXiv:2303.10129
+
+All the primed indices are assumed to be summed. $n,m$ are summed
+over set $A$, and $p,l$ are summed over set $B$. 
+
+Under 
+\[
+|n\rangle\stackrel{U^{A}}{\longrightarrow}\sum_{m}^{A}|m\rangle U_{mn}^{A},\ |l\rangle\stackrel{U^{B}}{\longrightarrow}\sum_{p}^{B}|p\rangle U_{pl}^{B}
+\]
+$X_{nl}=\langle n|\hat{X}|l\rangle$ is covariant transformed as
+\[
+X_{nl}\stackrel{U^{A}}{\longrightarrow}\sum_{m}^{A}\left(U^{A}\right)_{nm}^{\dagger}X_{ml},\ X_{nl}\stackrel{U^{B}}{\longrightarrow}\sum_{p}^{B}X_{mp}U_{pl}^{B}
+\]
+Yet, the derivative $X_{nl}^{,d}\equiv\langle n|\partial_{d}\hat{X}|l\rangle$
+is not covariant transformed. 
+
+We can define the covariant derivative 
+\[
+X_{nl}^{:d}\equiv\partial_{d}X_{nl}+D_{nn^{\prime}}^{d}X_{n^{\prime}l}-X_{nl^{\prime}}D_{l^{\prime}l}^{d}
+\]
+Matrix element
+\begin{equation}
+X_{nl}^{:d}=X_{nl}^{,d}-D_{nl^{\prime}}^{d}X_{l^{\prime}l}+X_{nn^{\prime}}D_{n^{\prime}l}^{d}
+\end{equation}
+\begin{equation}
+X_{nm}^{:d}=X_{nm}^{,d}-D_{nl^{\prime}}^{d}X_{l^{\prime}m}+X_{nl^{\prime}}D_{l^{\prime}m}^{d}
+\end{equation}
+Hamiltonian 
+\begin{equation}
+H_{nm}^{:d}=H_{nm}^{,d},\ H_{nl}^{:d}=0
+\end{equation}
+Trace rule
+\begin{equation}
+\partial_{d}X_{n^{\prime}n^{\prime}}=X_{n^{\prime}n^{\prime}}^{:d}
+\end{equation}
+Product rule 
+\begin{equation}
+\left(X_{rs^{\prime}}Y_{s^{\prime}t}\right)^{:d}=X_{rs^{\prime}}^{:d}Y_{s^{\prime}t}+X_{rs^{\prime}}Y_{s^{\prime}t}^{:d}
+\end{equation}
+Chain rule 
+\begin{equation}
+\widetilde{f}_{ij}=\delta_{ij}f\left(\epsilon_{i}\right)
+\end{equation}
+\[
+\widetilde{f}_{ij}^{:d}=H_{ij}^{:d}\times\begin{cases}
+\frac{df\left(\epsilon\right)}{d\epsilon} & \mathrm{if}\ \epsilon_{i}=\epsilon_{j}\\
+\frac{f\left(\epsilon_{i}\right)-f\left(\epsilon_{j}\right)}{\epsilon_{i}-\epsilon_{j}} & \mathrm{if}\ \epsilon_{i}\neq\epsilon_{j}
+\end{cases}
+\]
+
+
+\section{Gauge-covariant matrices}
+
+Let $P=\sum_{n}^{A}|u_{n}\rangle\langle u_{n}|$ and $Q=1-P$. The
+states $|u_{n}\rangle$ are not necessary the eigenstates of energy,
+and 
+\begin{equation}
+\mathcal{H}_{mn}=\langle u_{m}|\mathcal{H}|u_{n}\rangle
+\end{equation}
+is not necessary diagonal. We write four gauge-covariant quantities
+\begin{equation}
+\widetilde{F}_{mn}^{ab}=\langle u_{m}|\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)|u_{n}\rangle=\langle\partial_{a}u_{m}|Q|\partial_{b}u_{n}\rangle
+\end{equation}
+\begin{align}
+\widetilde{G}_{mn}^{ab} & =\frac{1}{2}\langle u_{m}|\mathcal{H}\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)+\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)\mathcal{H}|u_{n}\rangle\nonumber \\
+ & =\frac{1}{2}\left(\mathcal{H}_{mn^{\prime}}\widetilde{F}_{n^{\prime}n}^{ab}+\widetilde{F}_{mn^{\prime}}^{ab}\mathcal{H}_{n^{\prime}n}\right)
+\end{align}
+\begin{equation}
+\widetilde{H}_{mn}^{ab}=\langle u_{m}|\left(\partial_{a}P\right)Q\mathcal{H}Q\left(\partial_{b}P\right)|u_{n}\rangle=\langle\partial_{a}u_{m}|Q\mathcal{H}Q|\partial_{b}u_{n}\rangle
+\end{equation}
+
+\begin{equation}
+\widetilde{S}_{mn}^{ab}=\frac{\hbar^{2}}{m}\delta_{ab}\delta_{mn}+2\left(\widetilde{G}_{mn}^{ab}-\widetilde{H}_{mn}^{ab}\right)
+\end{equation}
+The four matrices $\widetilde{O}_{mn}^{ab}$ are Hermitian in the
+sence that $\widetilde{O}_{mn}^{ab}=\left(\widetilde{O}_{nm}^{ba}\right)^{*}$.
+They transform covariantly under gauge transformation $|u_{n}\rangle\rightarrow|u_{n}^{\prime}\rangle=\sum_{m}^{A}|u_{m}\rangle U_{mn}$
+\begin{equation}
+\widetilde{O}^{ab}\rightarrow U^{\dagger}\widetilde{O}^{ab}U
+\end{equation}
+
+\noindent\fcolorbox{black}{white}{\begin{minipage}[t]{1\columnwidth - 2\fboxsep - 2\fboxrule}%
+\textcolor{blue}{Quick note: }
+\begin{eqnarray*}
+\widetilde{F}_{mn}^{ab} & = & \langle u_{m}|\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)|u_{n}\rangle\\
+ & = & \langle u_{m}|\left(\partial_{a}|u_{n^{\prime}}\rangle\langle u_{n^{\prime}}|\right)Q\left(\partial_{b}|u_{n^{\prime\prime}}\rangle\langle u_{n^{\prime\prime}}|\right)|u_{n}\rangle\\
+ & = & \langle u_{m}|\partial_{a}u_{n^{\prime}}\rangle\underset{0}{\underbrace{\langle u_{n^{\prime}}|Q}}|\partial_{b}u_{n^{\prime\prime}}\rangle\langle u_{n^{\prime\prime}}|u_{n}\rangle+\langle u_{m}|\partial_{a}u_{n^{\prime}}\rangle\underset{0}{\underbrace{\langle u_{n^{\prime}}|Q|u_{n^{\prime\prime}}\rangle}}\langle\partial_{b}u_{n^{\prime\prime}}|u_{n}\rangle\\
+ &  & +\langle u_{m}|u_{n^{\prime}}\rangle\langle\partial_{a}u_{n^{\prime}}|Q|\partial_{b}u_{n^{\prime\prime}}\rangle\langle u_{n^{\prime\prime}}|u_{n}\rangle+\langle u_{m}|u_{n^{\prime}}\rangle\langle\partial_{a}u_{n^{\prime}}|\underset{0}{\underbrace{Q|u_{n^{\prime\prime}}\rangle}}|\langle\partial_{b}u_{n^{\prime\prime}}|u_{n}\rangle\\
+ & = & \langle\partial_{a}u_{m}|Q|\partial_{b}u_{n}\rangle\\
+ & = & \langle\partial_{b}u_{n}|Q|\partial_{a}u_{m}\rangle^{*}=\left(\widetilde{F}_{nm}^{ba}\right)^{*}
+\end{eqnarray*}
+\begin{align*}
+\widetilde{F}_{mn}^{ab} & =\langle\partial_{a}u_{m}|Q|\partial_{b}u_{n}\rangle\\
+ & \rightarrow\left(\partial_{a}U_{mm^{\prime}}^{\dagger}\right)\langle u_{m^{\prime}}|Q|u_{n^{\prime}}\rangle\left(\partial_{b}U_{n^{\prime}n}\right)+U_{mm^{\prime}}^{\dagger}\langle\partial_{a}u_{m^{\prime}}|Q|u_{n^{\prime}}\rangle\left(\partial_{b}U_{n^{\prime}n}\right)\\
+ & +\left(\partial_{a}U_{mm^{\prime}}^{\dagger}\right)\langle u_{m^{\prime}}|Q|\partial_{b}u_{n^{\prime}}\rangle U_{n^{\prime}n}+U_{mm^{\prime}}^{\dagger}\langle\partial_{a}u_{m^{\prime}}|Q|\partial_{b}u_{n^{\prime}}\rangle U_{n^{\prime}n}\\
+ & =U_{mm^{\prime}}^{\dagger}\langle\partial_{a}u_{m^{\prime}}|Q|\partial_{b}u_{n^{\prime}}\rangle U_{n^{\prime}n}=U_{mm^{\prime}}^{\dagger}\widetilde{F}_{m^{\prime}n^{\prime}}^{ab}U_{n^{\prime}n}
+\end{align*}
+%
+\end{minipage}}$\widetilde{F}_{mn}^{bc}$ is the covariant quantum geometry matrix,
+$\widetilde{g}_{mn}^{bc}$ and $\widetilde{\Omega}_{mn}^{a}$ are
+the covariant quantum metric and Berry curvature matrix, respectively
+\begin{align*}
+\widetilde{g}_{mn}^{bc} & =\frac{1}{2}\left(\widetilde{F}_{mn}^{bc}+\widetilde{F}_{mn}^{cb}\right),\\
+\widetilde{\Omega}_{mn}^{a} & =i\epsilon_{abc}\widetilde{F}_{mn}^{bc}.
+\end{align*}
+
+
+\section{Wannier interpolation of quantum geometry}
+
+\subsection{Convention}
+
+Given the Wannier functions (WFs) $|\mathbf{R}j\rangle$, the Hamiltonian
+written in real space is 
+\begin{equation}
+\mathcal{H}_{ij}^{W}\left(\mathbf{R}\right)=\langle\mathbf{0}i|\hat{\mathcal{H}}|\mathbf{R}j\rangle
+\end{equation}
+which can be transformed in reciprocal space as
+
+\begin{equation}
+\mathcal{H}_{ij}^{W}\left(\mathbf{k}\right)=\sum_{\mathbf{R}}e^{i\mathbf{k}\cdot\left(\mathbf{R}+\mathbf{t}_{j}-\mathbf{t}_{i}\right)}\mathcal{H}_{ij}^{W}\left(\mathbf{R}\right)
+\end{equation}
+The eigenequation of $\mathcal{H}_{ij}^{W}\left(\mathbf{k}\right)$
+\begin{equation}
+\mathcal{H}^{W}\left(\mathbf{k}\right)U_{\mathbf{k}}=U_{\mathbf{k}}\varepsilon_{\mathbf{k}}
+\end{equation}
+reproduces the energy bands obtained from DFT calculations. The column
+vectors $|n\rangle$ of $U_{\mathbf{k}}$ transform $|u_{j}^{W}\rangle$
+into the eigenstates $|u_{j}\rangle$ with eigenenergy $\varepsilon_{j}$
+\begin{equation}
+|u_{j\mathbf{k}}\rangle=|u_{j^{\prime}\mathbf{k}}^{W}\rangle U_{\mathbf{k},j^{\prime}j}
+\end{equation}
+where 
+\begin{equation}
+|u_{j\mathbf{k}}^{W}\rangle=\sum_{\mathbf{R}}e^{i\mathbf{k}\cdot\left(\mathbf{R}+\mathbf{t}_{j}-\mathbf{r}\right)}|\mathbf{R}j\rangle
+\end{equation}
+is the Bloch-like function constructed by WFs. 
+
+The derivative of states $|n\rangle$ yields 
+\begin{equation}
+D_{ln}^{a}=\langle l|\partial_{a}n\rangle=\begin{cases}
+\frac{\langle\langle l||\partial_{a}\mathcal{H}^{W}||n\rangle\rangle}{\varepsilon_{n}-\varepsilon_{l}} & \mathrm{if}\ l\neq n\\
+-i\alpha_{n} & \mathrm{if}\ l=n
+\end{cases}
+\end{equation}
+with $\alpha_{n}$ the arbitrary real number from the non-uniform
+gauge. 
+\[
+\left(D_{nl}^{a}\right)^{*}=\langle n|\partial_{a}l\rangle^{*}=\langle\partial_{a}l|n\rangle=-\langle l|\partial_{a}n\rangle=D_{ln}^{a},\ \left(D_{ll}^{a}\right)^{*}=-D_{ll}^{a}
+\]
+yielding that $D^{a}$ is anti-Hermitian. Notice that $D^{a}=U^{\dagger}\partial_{a}U$,
+we have 
+\begin{align*}
+|\partial_{a}u_{\mathbf{k}}\rangle & =|\partial_{a}u_{\mathbf{k}}^{W}\rangle U_{\mathbf{k}}+|u_{\mathbf{k}}^{W}\rangle U_{\mathbf{k}}U_{\mathbf{k}}^{\dagger}\partial_{a}U_{\mathbf{k}}\\
+ & =|\partial_{a}u_{\mathbf{k}}^{W}\rangle U_{\mathbf{k}}+|u_{\mathbf{k}}\rangle D^{a}
+\end{align*}
+
+Berry curvature of sector A 
+\[
+\Omega_{A}^{ab}=-2{\rm Im}\sum_{n}^{A}\langle\partial_{a}u_{n\bm{k}}|\partial_{b}u_{n\bm{k}}\rangle
+\]
+can be written with WFs as 
+\begin{eqnarray*}
+\langle\partial_{a}u_{\bm{k}}|\partial_{b}u_{\bm{k}}\rangle & = & \left(U^{\dagger}\langle\partial_{a}u^{W}|+D^{a\dagger}\langle u|\right)\left(|\partial_{b}u^{W}\rangle U+|u\rangle D^{b}\right)\\
+ & = & U^{\dagger}\langle\partial_{a}u^{W}|\partial_{b}u^{W}\rangle U+D^{a\dagger}\langle u|\partial_{b}u^{W}\rangle U+U^{\dagger}\langle\partial_{a}u^{W}|u\rangle D^{b}+D^{a\dagger}D^{b}\\
+ & = & U^{\dagger}\langle\partial_{a}u^{W}|\partial_{b}u^{W}\rangle U+D^{a\dagger}U^{\dagger}\langle u^{W}|\partial_{b}u^{W}\rangle U+U^{\dagger}\langle\partial_{a}u^{W}|u^{W}\rangle UD^{b}-D^{a}D^{b}\\
+ & = & U^{\dagger}\langle\partial_{a}u^{W}|\partial_{b}u^{W}\rangle U+iD^{a}U^{\dagger}i\langle u^{W}|\partial_{b}u^{W}\rangle U+iU^{\dagger}i\langle u^{W}|\partial_{a}u^{W}\rangle UD^{b}-D^{a}D^{b}
+\end{eqnarray*}
+Defining 
+\[
+\bar{O}=U^{\dagger}O^{W}U
+\]
+\[
+F^{ab,W}=\langle\partial_{a}u^{W}|\partial_{b}u^{W}\rangle
+\]
+\[
+A^{b,W}=i\langle u^{W}|\partial_{b}u^{W}\rangle
+\]
+we have 
+\begin{align*}
+\Omega_{A}^{ab} & =-2{\rm Im}\sum_{n}^{A}\Omega_{nn}^{ab}\\
+ & =-2{\rm Im}\sum_{n}^{A}\left[\bar{F}_{nn}^{ab}+i\left(D^{a}\bar{A}^{b}\right)_{nn}+i\left(\bar{A}^{a}D^{b}\right)_{nn}-\left(D^{a}D^{b}\right)_{nn}\right]
+\end{align*}
+Since that 
+\begin{align*}
+-2\mathrm{Im}\sum_{n}^{A}i\left(D^{a}\bar{A}^{b}+\bar{A}^{a}D^{b}\right)_{nn} & =-2\mathrm{Re}\sum_{n}^{A}\sum_{j}\left(D_{nj}^{a}\bar{A}_{jn}^{b}+\bar{A}_{nj}^{a}D_{jn}^{b}\right)\\
+ & =-2\mathrm{Re}\sum_{n}^{A}\sum_{m}^{A}\left(D_{nm}^{a}\bar{A}_{mn}^{b}+\bar{A}_{nm}^{a}D_{mn}^{b}\right)\\
+ & -2\mathrm{Re}\sum_{n}^{A}\sum_{l}^{B}\left(D_{nl}^{a}\bar{A}_{ln}^{b}+\bar{A}_{nl}^{a}D_{ln}^{b}\right)\\
+ & =-\sum_{n}^{A}\sum_{m}^{A}\left(D_{nm}^{a}\bar{A}_{mn}^{b}+\bar{A}_{nm}^{a}D_{mn}^{b}+D_{nm}^{a*}\bar{A}_{mn}^{b*}+\bar{A}_{nm}^{a*}D_{mn}^{b*}\right)\\
+ & -2\mathrm{Re}\sum_{n}^{A}\sum_{l}^{B}\left(D_{nl}^{a}\bar{A}_{ln}^{b}+\bar{A}_{nl}^{a}D_{ln}^{b}\right)\\
+ & =-\sum_{n}^{A}\sum_{m}^{A}\left(D_{nm}^{a}\bar{A}_{mn}^{b}+\bar{A}_{nm}^{a}D_{mn}^{b}-D_{mn}^{a}\bar{A}_{nm}^{b}-\bar{A}_{mn}^{a}D_{nm}^{b}\right)\\
+ & -2\mathrm{Re}\sum_{n}^{A}\sum_{l}^{B}\left(D_{nl}^{a}\bar{A}_{ln}^{b}+\bar{A}_{nl}^{a}D_{ln}^{b}\right)\\
+ & =-2\mathrm{Re}\sum_{n}^{A}\sum_{l}^{B}\left(D_{nl}^{a}\bar{A}_{ln}^{b}+\bar{A}_{nl}^{a}D_{ln}^{b}\right)
+\end{align*}
+and
+\begin{align*}
+-2\mathrm{Im}\sum_{n}^{A}\left(D^{a}D^{b}\right)_{nn} & =-2\mathrm{Im}\sum_{n}^{A}\sum_{j}D_{nj}^{a}D_{jn}^{b}\\
+ & =-2\mathrm{Im}\sum_{n}^{A}\sum_{m}^{A}D_{nm}^{a}D_{mn}^{b}-2\mathrm{Im}\sum_{n}^{A}\sum_{l}^{B}D_{nl}^{a}D_{ln}^{b}\\
+ & =i\sum_{n}^{A}\sum_{m}^{A}\left(D_{nm}^{a}D_{mn}^{b}-D_{nm}^{a*}D_{mn}^{b*}\right)-2\mathrm{Im}\sum_{n}^{A}\sum_{l}^{B}D_{nl}^{a}D_{ln}^{b}\\
+ & =i\sum_{n}^{A}\sum_{m}^{A}\left(D_{nm}^{a}D_{mn}^{b}-D_{mn}^{a}D_{nm}^{b}\right)-2\mathrm{Im}\sum_{n}^{A}\sum_{l}^{B}D_{nl}^{a}D_{ln}^{b}\\
+ & =-2\mathrm{Im}\sum_{n}^{A}\sum_{l}^{B}D_{nl}^{a}D_{ln}^{b}
+\end{align*}
+ We have 
+\[
+\Omega_{A}^{ab}=\Omega_{A,\text{int}}^{ab}+\Omega_{A,\text{int}}^{ab}
+\]
+where 
+\[
+\Omega_{A,\text{int}}^{ab}=-2\mathrm{Im}\sum_{n}^{A}\sum_{l}^{B}D_{nl}^{a}D_{ln}^{b}
+\]
+\[
+\Omega_{A,\text{ext}}^{ab}=-2\mathrm{Im}\sum_{n}^{A}\bar{F}_{nn}^{ab}-2\mathrm{Re}\sum_{n}^{A}\sum_{l}^{B}\left(D_{nl}^{a}\bar{A}_{ln}^{b}+\bar{A}_{nl}^{a}D_{ln}^{b}\right)
+\]
+
+
+\subsection{Wannier interpolation of $\widetilde{F}_{mn}^{ab}$}
+
+Recalling that $Q=1-|u_{n^{\prime}}\rangle\langle u_{n^{\prime}}|$,
+we obtain
+\begin{align}
+Q|\partial_{a}u_{j\mathbf{k}}\rangle & =Q|\partial_{a}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}j}+Q|u_{j^{\prime}}\rangle D_{j^{\prime}j}^{a}\nonumber \\
+ & =|\partial_{a}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}j}-|u_{n^{\prime}}\rangle\langle u_{n^{\prime}}|\partial_{a}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}j}+|u_{l^{\prime}}\rangle D_{l^{\prime}j}^{a}\nonumber \\
+ & =|\partial_{a}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}j}+i|u_{n^{\prime}}\rangle U_{n^{\prime}j^{\prime\prime}}^{\dagger}i\langle u_{j^{\prime\prime}}^{W}|\partial_{a}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}j}+|u_{l^{\prime}}\rangle D_{l^{\prime}j}^{a}\nonumber \\
+ & =|\partial_{a}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}j}+i|u_{n^{\prime}}\rangle\bar{A}_{n^{\prime}j}^{a}+|u_{l^{\prime}}\rangle D_{l^{\prime}j}^{a}
+\end{align}
+Therefore, we have 
+\begin{align}
+\widetilde{F}_{mn}^{ab} & =\langle\partial_{a}u_{m}|QQ|\partial_{b}u_{n}\rangle\nonumber \\
+ & =\left(U_{j^{\prime\prime}m}^{*}\langle\partial_{a}u_{j^{\prime\prime}}^{W}|-i\bar{A}_{n^{\prime\prime}m}^{a*}\langle u_{n^{\prime\prime}}|+D_{l^{\prime\prime}m}^{a*}\langle u_{l^{\prime\prime}}|\right)\left(|\partial_{b}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}n}+i|u_{n^{\prime}}\rangle\bar{A}_{n^{\prime}n}^{b}+|u_{l^{\prime}}\rangle D_{l^{\prime}n}^{b}\right)\nonumber \\
+ & =U_{mj^{\prime\prime}}^{\dagger}\langle\partial_{a}u_{j^{\prime\prime}}^{W}|\partial_{b}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}n}+\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b}-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b}\nonumber \\
+ & +iU_{mj^{\prime\prime}}^{\dagger}\langle\partial_{a}u_{j^{\prime\prime}}^{W}|u_{n^{\prime}}\rangle\bar{A}_{n^{\prime}n}^{b}-i\bar{A}_{mn^{\prime\prime}}^{a}\langle u_{n^{\prime\prime}}|\partial_{b}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}n}+U_{mj^{\prime\prime}}^{\dagger}\langle\partial_{a}u_{j^{\prime\prime}}^{W}|u_{l^{\prime}}\rangle D_{l^{\prime}n}^{b}-D_{ml^{\prime\prime}}^{a}\langle u_{l^{\prime\prime}}|\partial_{b}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}n}\nonumber \\
+ & =\bar{F}_{mn}^{ab}-\bar{A}_{mn^{\prime\prime}}^{a}\bar{A}_{n^{\prime\prime}n}^{b}+iD_{ml^{\prime\prime}}^{a}\bar{A}_{l^{\prime\prime}n}^{b}-\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b}+\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b}-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b}\nonumber \\
+ & =-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b}+\bar{F}_{mn}^{ab}-\bar{A}_{mn^{\prime\prime}}^{a}\bar{A}_{n^{\prime\prime}n}^{b}+iD_{ml^{\prime\prime}}^{a}\bar{A}_{l^{\prime\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b}\nonumber \\
+ & =-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b}+\bar{F}_{mn}^{ab}-\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b}+\left[\left(iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b}\right)+\left(\begin{array}{c}
+a\leftrightarrow b\\
+m\leftrightarrow n
+\end{array}\right)^{*}\right]\nonumber \\
+ & =\widetilde{F}_{mn,\text{int}}^{ab}+\widetilde{F}_{mn,\text{ext}}^{ab}
+\end{align}
+where 
+\begin{align*}
+\widetilde{F}_{mn,\text{int}}^{ab} & =-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b}\\
+\widetilde{F}_{mn,\text{ext}}^{ab} & =\bar{F}_{mn}^{ab}-\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b}+\left[\left(iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b}\right)+\left(\begin{array}{c}
+a\leftrightarrow b\\
+m\leftrightarrow n
+\end{array}\right)^{*}\right]
+\end{align*}
+
+
+\subsubsection{Berry curvature}
+
+The Berry curvature is computed as 
+\begin{eqnarray*}
+\widetilde{\Omega}_{mn}^{z} & = & i\left(\widetilde{F}_{mn}^{xy}-\widetilde{F}_{mn}^{yz}\right)\\
+ & = & i\left(-D_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y}+D_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x}\right)\\
+ &  & +i\left(\bar{F}_{mn}^{xy}-\bar{F}_{mn}^{yx}-\bar{A}_{mn^{\prime}}^{x}\bar{A}_{n^{\prime}n}^{y}+iD_{ml^{\prime}}^{x}\bar{A}_{l^{\prime}n}^{y}-iD_{nl^{\prime}}^{y*}\bar{A}_{l^{\prime}m}^{x*}+\bar{A}_{mn^{\prime}}^{y}\bar{A}_{n^{\prime}n}^{x}-iD_{ml^{\prime}}^{y}\bar{A}_{l^{\prime}n}^{x}+iD_{nl^{\prime}}^{x*}\bar{A}_{l^{\prime}m}^{y*}\right)\\
+ & = & -i\left(D_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y}-D_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x}\right)\\
+ &  & +i\left(\bar{F}_{mn}^{xy}-\bar{F}_{mn}^{yx}\right)+\left(-D_{ml^{\prime}}^{x}\bar{A}_{l^{\prime}n}^{y}+D_{ml^{\prime}}^{y}\bar{A}_{l^{\prime}n}^{x}-D_{nl^{\prime}}^{x*}\bar{A}_{l^{\prime}m}^{y*}+D_{nl^{\prime}}^{y*}\bar{A}_{l^{\prime}m}^{x*}\right)\\
+ &  & +i\left(-\bar{A}_{mn^{\prime}}^{x}\bar{A}_{n^{\prime}n}^{y}+\bar{A}_{mn^{\prime}}^{y}\bar{A}_{n^{\prime}n}^{x}\right)\\
+ & = & \left(-iD_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y}+iD_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x}\right)\\
+ &  & +\left(i\bar{F}_{mn}^{xy}-i\bar{F}_{mn}^{yx}\right)+\left(-D_{ml^{\prime}}^{x}\bar{A}_{l^{\prime}n}^{y}+D_{ml^{\prime}}^{y}\bar{A}_{l^{\prime}n}^{x}-D_{nl^{\prime}}^{x*}\bar{A}_{l^{\prime}m}^{y*}+D_{nl^{\prime}}^{y*}\bar{A}_{l^{\prime}m}^{x*}\right)\\
+ &  & +\left(-i\bar{A}_{mn^{\prime}}^{x}\bar{A}_{n^{\prime}n}^{y}+i\bar{A}_{mn^{\prime}}^{y}\bar{A}_{n^{\prime}n}^{x}\right)
+\end{eqnarray*}
+By writing 
+\begin{align*}
+\widetilde{\omega}_{mn}^{z} & =-iD_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y}+\frac{1}{2}\bar{\Omega}_{mn}^{z}-D_{ml^{\prime}}^{x}\bar{A}_{l^{\prime}n}^{y}+D_{ml^{\prime}}^{y}\bar{A}_{l^{\prime}n}^{x}-i\bar{A}_{mn^{\prime}}^{x}\bar{A}_{n^{\prime}n}^{y}\\
+\left(\widetilde{\omega}^{z}\right)_{nm}^{*} & =iD_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x}+\frac{1}{2}\bar{\Omega}_{mn}^{z}-D_{nl^{\prime}}^{x*}\bar{A}_{l^{\prime}m}^{y*}+D_{nl^{\prime}}^{y*}\bar{A}_{l^{\prime}m}^{x*}+i\bar{A}_{mn^{\prime}}^{y}\bar{A}_{n^{\prime}n}^{x}
+\end{align*}
+we find that 
+\[
+\widetilde{\Omega}_{mn}^{z}=\widetilde{\omega}_{mn}^{z}+\left(\widetilde{\omega}^{z}\right)_{nm}^{*}
+\]
+which is the code implement of Berry curvature in WannierBerri.
+
+\subsubsection{Quantum metric}
+
+We consider the quantum metric tensor 
+\[
+\widetilde{g}_{mn}^{ab}=\frac{1}{2}\left(\widetilde{F}_{mn}^{ab}+\widetilde{F}_{mn}^{ba}\right)
+\]
+where 
+\begin{align*}
+\widetilde{F}_{mn}^{ab} & =\widetilde{F}_{mn,{\rm int}}^{ab}+\widetilde{F}_{mn,{\rm ext}}^{ab}\\
+\widetilde{F}_{mn,{\rm int}}^{ab} & =-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b}\\
+\widetilde{F}_{mn,{\rm ext}}^{ab} & =\bar{F}_{mn}^{ab}-\bar{A}_{mn^{\prime\prime}}^{a}\bar{A}_{n^{\prime\prime}n}^{b}+iD_{ml^{\prime\prime}}^{a}\bar{A}_{l^{\prime\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b}
+\end{align*}
+Notice that 
+\begin{align*}
+\widetilde{F}_{nm,{\rm int}}^{ab*} & =-\left(D_{nl^{\prime}}^{a}D_{l^{\prime}m}^{b}\right)^{*}=-D_{ml^{\prime}}^{b}D_{l^{\prime}n}^{a}=\widetilde{F}_{mn,{\rm int}}^{ba}\\
+\widetilde{F}_{nm,{\rm ext}}^{ab*} & =\bar{F}_{nm}^{ab*}-\bar{A}_{nn^{\prime\prime}}^{a*}\bar{A}_{n^{\prime\prime}m}^{b*}-iD_{nl^{\prime\prime}}^{a*}\bar{A}_{l^{\prime\prime}m}^{b*}-i\bar{A}_{nl^{\prime}}^{a*}D_{l^{\prime}m}^{b*}\\
+ & =\bar{F}_{mn}^{ba}-\bar{A}_{mn^{\prime\prime}}^{b}\bar{A}_{n^{\prime\prime}n}^{a}+i\bar{A}_{ml^{\prime\prime}}^{b}D_{l^{\prime\prime}n}^{a}+iD_{ml^{\prime}}^{b}\bar{A}_{l^{\prime}n}^{a}\\
+ & =\widetilde{F}_{mn,{\rm ext}}^{ba}
+\end{align*}
+Hence, 
+\[
+g_{mn}^{ab}=\frac{1}{2}\left(\widetilde{F}_{mn}^{ab}+\widetilde{F}_{nm}^{ab*}\right)
+\]
+
+
+\subsubsection{Berry connection polarizability}
+
+We consider the Berry connection polarizability (BCP)
+\[
+\mathcal{G}_{m}^{ab}=\frac{1}{2}\sum_{l\left(\ne m\right)}\frac{A_{ml}^{a}A_{lm}^{b}+A_{ml}^{b}A_{lm}^{a}}{\varepsilon_{m}-\varepsilon_{l}}
+\]
+To calculate BCP, we consider the band normalized quantum geometry
+tensor 
+\[
+\widetilde{F}_{mn}^{ab}=\langle u_{m}|\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)|u_{n}\rangle=\langle\partial_{a}u_{m}|Q|\partial_{b}u_{n}\rangle
+\]
+\[
+\widetilde{\mathcal{F}}_{mn}^{ab}=\frac{\langle\partial_{a}u_{m}|u_{l^{\prime}}\rangle}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\langle u_{l^{\prime}}|\partial_{b}u_{n}\rangle=\langle\partial_{a}u_{m}|\mathcal{Q}_{m}|\partial_{b}u_{n}\rangle
+\]
+\[
+\widetilde{\mathcal{F}}_{mn}^{ab}=\frac{1}{2}\langle\partial_{a}u_{m}|\left(\mathcal{Q}_{m}+\mathcal{Q}_{n}\right)|\partial_{b}u_{n}\rangle
+\]
+where 
+\[
+\mathcal{Q}_{m}=\frac{|u_{l^{\prime}}\rangle\langle u_{l^{\prime}}|}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}
+\]
+\begin{align*}
+|\partial_{a}u_{j\mathbf{k}}\rangle & =|\partial_{a}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}j}+|u_{j^{\prime}}\rangle D_{j^{\prime}j}^{a}
+\end{align*}
+\begin{align*}
+\mathcal{Q}_{m}|\partial_{a}u_{j\mathbf{k}}\rangle & =\frac{1}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}|u_{l^{\prime}}\rangle\langle u_{l^{\prime}}|\partial_{a}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}j}+\frac{1}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}|u_{l^{\prime}}\rangle\langle u_{l^{\prime}}|u_{j^{\prime}}\rangle D_{j^{\prime}j}^{a}\\
+ & =\frac{1}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}|u_{l^{\prime}}\rangle U_{l^{\prime}j^{\prime\prime}}^{\dagger}\langle u_{j^{\prime\prime}}^{W}|\partial_{a}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}j}+\frac{1}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}|u_{l^{\prime}}\rangle D_{l^{\prime}j}^{a}\\
+ & =-i\frac{1}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}|u_{l^{\prime}}\rangle\bar{A}_{l^{\prime}j}^{a}+\frac{1}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}|u_{l^{\prime}}\rangle D_{l^{\prime}j}^{a}\\
+ & =\frac{1}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\left(-i|u_{l^{\prime}}\rangle\bar{A}_{l^{\prime}j}^{a}+|u_{l^{\prime}}\rangle D_{l^{\prime}j}^{a}\right)
+\end{align*}
+\[
+\mathcal{Q}_{m}|\partial_{a}u_{j\mathbf{k}}\rangle=\frac{1}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\left(-i|u_{l^{\prime}}\rangle\bar{A}_{l^{\prime}j}^{a}+|u_{l^{\prime}}\rangle D_{l^{\prime}j}^{a}\right)
+\]
+\[
+Q|\partial_{b}u_{j\mathbf{k}}\rangle=|\partial_{b}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}j}+i|u_{n^{\prime}}\rangle\bar{A}_{n^{\prime}j}^{b}+|u_{l^{\prime}}\rangle D_{l^{\prime}j}^{b}
+\]
+\[
+\mathcal{Q}_{m}Q=\frac{|u_{l^{\prime}}\rangle\langle u_{l^{\prime}}|}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}|u_{l^{\prime\prime}}\rangle\langle u_{l^{\prime\prime}}|=\frac{|u_{l^{\prime}}\rangle\langle u_{l^{\prime}}|}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}=\mathcal{Q}_{m}
+\]
+\begin{align*}
+\langle\partial_{a}u_{m}|\mathcal{Q}_{m}|\partial_{b}u_{n}\rangle & =\langle\partial_{a}u_{m}|\mathcal{Q}_{m}Q|\partial_{b}u_{n}\rangle\\
+ & =\frac{1}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\left(i\bar{A}_{l^{\prime}m}^{a*}\langle u_{l^{\prime}}|+D_{l^{\prime}m}^{a*}\langle u_{l^{\prime}}|\right)\left(|\partial_{b}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}n}+i|u_{n^{\prime}}\rangle\bar{A}_{n^{\prime}n}^{b}+|u_{l^{\prime\prime}}\rangle D_{l^{\prime\prime}n}^{b}\right)\\
+ & =\frac{1}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\left(i\bar{A}_{l^{\prime}m}^{a*}\langle u_{l^{\prime}}|\partial_{b}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}n}-\bar{A}_{l^{\prime}m}^{a*}\langle u_{l^{\prime}}|u_{n^{\prime}}\rangle\bar{A}_{n^{\prime}n}^{b}+i\bar{A}_{l^{\prime}m}^{a*}\langle u_{l^{\prime}}|u_{l^{\prime\prime}}\rangle D_{l^{\prime\prime}n}^{b}\right)\\
+ & +\frac{1}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\left(D_{l^{\prime}m}^{a*}\langle u_{l^{\prime}}|\partial_{b}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}n}+iD_{l^{\prime}m}^{a*}\langle u_{l^{\prime}}|u_{n^{\prime}}\rangle\bar{A}_{n^{\prime}n}^{b}+D_{l^{\prime}m}^{a*}\langle u_{l^{\prime}}|u_{l^{\prime\prime}}\rangle D_{l^{\prime\prime}n}^{b}\right)\\
+ & =\frac{1}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\left(\bar{A}_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b}+iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b}-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b}\right)\\
+ & =\frac{\bar{A}_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\bar{A}_{l^{\prime}n}^{b}+i\frac{\bar{A}_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}D_{l^{\prime}n}^{b}+i\frac{D_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\bar{A}_{l^{\prime}n}^{b}-\frac{D_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}D_{l^{\prime}n}^{b}
+\end{align*}
+\begin{align*}
+\langle\partial_{a}u_{m}|\mathcal{Q}_{n}|\partial_{b}u_{n}\rangle & =\langle\partial_{a}u_{m}|Q\mathcal{Q}_{n}|\partial_{b}u_{n}\rangle\\
+ & =\left(U_{j^{\prime\prime}m}^{*}\langle\partial_{a}u_{j^{\prime\prime}}^{W}|-i\bar{A}_{n^{\prime\prime}m}^{a*}\langle u_{n^{\prime\prime}}|+D_{l^{\prime\prime}m}^{a*}\langle u_{l^{\prime\prime}}|\right)\left(-i|u_{l^{\prime}}\rangle\bar{A}_{l^{\prime}n}^{b}+|u_{l^{\prime}}\rangle D_{l^{\prime}n}^{b}\right)\frac{1}{\varepsilon_{n}-\varepsilon_{l^{\prime}}}\\
+ & =\left(-U_{j^{\prime\prime}m}^{*}\langle\partial_{a}u_{j^{\prime\prime}}^{W}|i|u_{l^{\prime}}\rangle\bar{A}_{l^{\prime}n}^{b}-\bar{A}_{n^{\prime\prime}m}^{a*}\langle u_{n^{\prime\prime}}|u_{l^{\prime}}\rangle\bar{A}_{l^{\prime}n}^{b}-iD_{l^{\prime\prime}m}^{a*}\langle u_{l^{\prime\prime}}||u_{l^{\prime}}\rangle\bar{A}_{l^{\prime}n}^{b}\right)\\
+ & +\left(U_{j^{\prime\prime}m}^{*}\langle\partial_{a}u_{j^{\prime\prime}}^{W}||u_{l^{\prime}}\rangle D_{l^{\prime}n}^{b}-i\bar{A}_{n^{\prime\prime}m}^{a*}\langle u_{n^{\prime\prime}}||u_{l^{\prime}}\rangle D_{l^{\prime}n}^{b}+D_{l^{\prime\prime}m}^{a*}\langle u_{l^{\prime\prime}}||u_{l^{\prime}}\rangle D_{l^{\prime}n}^{b}\right)\frac{1}{\varepsilon_{n}-\varepsilon_{l^{\prime}}}\\
+ & =\left(\bar{A}_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b}+iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b}-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b}\right)\frac{1}{\varepsilon_{n}-\varepsilon_{l^{\prime}}}\\
+ & =-\bar{A}_{ml^{\prime}}^{a}\frac{\bar{A}_{l^{\prime}n}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{n}}-iD_{ml^{\prime}}^{a}\frac{\bar{A}_{l^{\prime}n}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{n}}-i\bar{A}_{ml^{\prime}}^{a}\frac{D_{l^{\prime}n}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{n}}+D_{ml^{\prime}}^{a}\frac{D_{l^{\prime}n}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{n}}
+\end{align*}
+\[
+\widetilde{\mathcal{F}}_{mm}^{ab}=\langle\partial_{a}u_{m}|\mathcal{Q}_{m}|\partial_{b}u_{m}\rangle=\sum_{l\left(\ne m\right)}\frac{A_{ml}^{a}A_{lm}^{b}}{\varepsilon_{m}-\varepsilon_{l}}
+\]
+\begin{align*}
+\widetilde{\mathcal{F}}_{mn}^{ab} & =\frac{1}{2}\left(\frac{\bar{A}_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\bar{A}_{l^{\prime}n}^{b}+i\frac{\bar{A}_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}D_{l^{\prime}n}^{b}+i\frac{D_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\bar{A}_{l^{\prime}n}^{b}-\frac{D_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}D_{l^{\prime}n}^{b}\right)\\
+ & +\frac{1}{2}\left(-\bar{A}_{ml^{\prime}}^{a}\frac{\bar{A}_{l^{\prime}n}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{n}}-iD_{ml^{\prime}}^{a}\frac{\bar{A}_{l^{\prime}n}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{n}}-i\bar{A}_{ml^{\prime}}^{a}\frac{D_{l^{\prime}n}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{n}}+D_{ml^{\prime}}^{a}\frac{D_{l^{\prime}n}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{n}}\right)\\
+ & =\frac{1}{2}\left(\frac{\bar{A}_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}+i\frac{D_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\right)\left(\bar{A}_{l^{\prime}n}^{b}+iD_{l^{\prime}n}^{b}\right)\\
+ & -\frac{1}{2}\left(\bar{A}_{ml^{\prime}}^{a}+iD_{ml^{\prime}}^{a}\right)\left(\frac{\bar{A}_{l^{\prime}n}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{n}}+iD_{ml^{\prime}}^{a}\frac{D_{l^{\prime}n}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{n}}\right)\\
+ & =\frac{1}{2}\left(N_{ml^{\prime}}^{a}M_{l^{\prime}n}^{b}-M_{ml^{\prime}}^{a}N_{l^{\prime}n}^{b}\right)\\
+ & =\widetilde{\mathcal{F}}_{mn,\text{int}}^{ab}+\widetilde{\mathcal{F}}_{mn,\text{ext}}^{ab}
+\end{align*}
+\begin{align*}
+M_{ml^{\prime}}^{a} & =\bar{A}_{ml^{\prime}}^{a}+iD_{ml^{\prime}}^{a}\\
+M_{ml^{\prime}}^{a*} & =\bar{A}_{ml^{\prime}}^{a*}-iD_{ml^{\prime}}^{a*}\\
+ & =\bar{A}_{l^{\prime}m}^{a}+iD_{l^{\prime}m}^{a}\\
+ & =M_{l^{\prime}m}^{a}\\
+N_{ml^{\prime}}^{a} & =\frac{\bar{A}_{ml^{\prime}}^{a}+iD_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}=\frac{M_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\\
+N_{ml^{\prime}}^{a*} & =\frac{M_{ml^{\prime}}^{a*}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\\
+ & =\frac{M_{l^{\prime}m}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\\
+ & =-N_{l^{\prime}m}^{a}
+\end{align*}
+Noting that
+\begin{align*}
+\widetilde{\mathcal{F}}_{nm}^{ab*} & =\frac{1}{2}\left(\frac{\bar{A}_{nl^{\prime}}^{a*}}{\varepsilon_{n}-\varepsilon_{l^{\prime}}}\bar{A}_{l^{\prime}m}^{b*}-i\frac{\bar{A}_{nl^{\prime}}^{a*}}{\varepsilon_{n}-\varepsilon_{l^{\prime}}}D_{l^{\prime}m}^{b*}-i\frac{D_{nl^{\prime}}^{a*}}{\varepsilon_{n}-\varepsilon_{l^{\prime}}}\bar{A}_{l^{\prime}m}^{b*}-\frac{D_{nl^{\prime}}^{a*}}{\varepsilon_{n}-\varepsilon_{l^{\prime}}}D_{l^{\prime}m}^{b*}\right)\\
+ & +\frac{1}{2}\left(-\bar{A}_{nl^{\prime}}^{a*}\frac{\bar{A}_{l^{\prime}m}^{b*}}{\varepsilon_{l^{\prime}}-\varepsilon_{m}}+iD_{nl^{\prime}}^{a*}\frac{\bar{A}_{l^{\prime}m}^{b*}}{\varepsilon_{l^{\prime}}-\varepsilon_{m}}+i\bar{A}_{nl^{\prime}}^{a*}\frac{D_{l^{\prime}m}^{b*}}{\varepsilon_{l^{\prime}}-\varepsilon_{m}}+D_{nl^{\prime}}^{a*}\frac{D_{l^{\prime}m}^{b*}}{\varepsilon_{l^{\prime}}-\varepsilon_{m}}\right)\\
+ & =\frac{1}{2}\left(\bar{A}_{ml^{\prime}}^{b}\frac{\bar{A}_{l^{\prime}n}^{a}}{\varepsilon_{n}-\varepsilon_{l^{\prime}}}+iD_{ml^{\prime}}^{b}\frac{\bar{A}_{l^{\prime}n}^{a}}{\varepsilon_{n}-\varepsilon_{l^{\prime}}}+i\bar{A}_{ml^{\prime}}^{b}\frac{D_{l^{\prime}n}^{a}}{\varepsilon_{n}-\varepsilon_{l^{\prime}}}-D_{ml^{\prime}}^{b}\frac{D_{l^{\prime}n}^{a}}{\varepsilon_{n}-\varepsilon_{l^{\prime}}}\right)\\
+ & +\frac{1}{2}\left(-\frac{\bar{A}_{ml^{\prime}}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{m}}\bar{A}_{l^{\prime}n}^{a}-i\frac{\bar{A}_{ml^{\prime}}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{m}}D_{l^{\prime}n}^{a}-i\frac{D_{ml^{\prime}}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{m}}\bar{A}_{l^{\prime}n}^{a}+\frac{D_{ml^{\prime}}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{m}}D_{l^{\prime}n}^{a}\right)\\
+ & =\widetilde{\mathcal{F}}_{mn}^{ba}
+\end{align*}
+Hence, we can calculate $\widetilde{\mathcal{G}}_{mn}^{ab}$ through
+\[
+\widetilde{\mathcal{G}}_{mn}^{ab}=\frac{1}{2}\text{Re}\left(\widetilde{\mathcal{F}}_{mn}^{ab}+\widetilde{\mathcal{F}}_{nm}^{ab*}\right)
+\]
+
+
+\subsection{Covariant derivatives of $\widetilde{F}_{mn}^{ab}$}
+
+Now we derive the derivatives of $\widetilde{F}_{mn}^{ab}$. Using
+the product rule we have 
+\begin{equation}
+\widetilde{F}_{mn,\mathrm{int}}^{ab:d}=-D_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}=-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}-D_{nl^{\prime}}^{b*}D_{l^{\prime}m}^{a:d*}=-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}-\left(\begin{array}{c}
+a\leftrightarrow b\\
+m\leftrightarrow n
+\end{array}\right)^{*}
+\end{equation}
+We note that 
+\[
+\bar{\mathcal{H}}_{ln}^{,b}=D_{ln^{\prime}}^{b}\bar{\mathcal{H}}_{n^{\prime}n}-\bar{\mathcal{H}}_{ll^{\prime}}D_{l^{\prime}n}^{b}
+\]
+with $U_{\bm{k}}^{\dagger}\mathcal{H}^{W}\left(\mathbf{k}\right)U_{\mathbf{k}}=\varepsilon_{\mathbf{k}}=\bar{\mathcal{H}}$.
+We take the covariant derivative of both side by using the product
+rule 
+\begin{align*}
+D_{ln^{\prime}}^{b:d}\bar{\mathcal{H}}_{n^{\prime}n}+D_{ln^{\prime}}^{b}\bar{\mathcal{H}}_{n^{\prime}n}^{:d}-\bar{\mathcal{H}}_{ll^{\prime}}^{:d}D_{l^{\prime}n}^{b}-\bar{\mathcal{H}}_{ll^{\prime}}D_{l^{\prime}n}^{b:d} & =\bar{\mathcal{H}}_{ln}^{,b:d}\\
+ & =\bar{\mathcal{H}}_{ln}^{,bd}-D_{ln^{\prime}}^{d}\bar{\mathcal{H}}_{n^{\prime}n}^{,b}+\bar{\mathcal{H}}_{ll^{\prime}}^{,b}D_{l^{\prime}n}^{d}
+\end{align*}
+In the Hamiltonian gauge 
+\[
+D_{ln}^{b:d}=\frac{1}{\varepsilon_{nl}}\left[\bar{\mathcal{H}}_{ln}^{,bd}+\left(\bar{\mathcal{H}}_{ll^{\prime}}^{,b}D_{l^{\prime}n}^{d}-D_{ln^{\prime}}^{d}\bar{\mathcal{H}}_{n^{\prime}n}^{,b}+\left(b\leftrightarrow d\right)\right)\right]
+\]
+Thus, we find
+\begin{equation}
+\widetilde{F}_{mn,\mathrm{int}}^{ab:d}=-\frac{D_{ml^{\prime}}^{a}}{\varepsilon_{nl^{\prime}}}\left[\bar{\mathcal{H}}_{l^{\prime}n}^{,bd}+\left(\bar{\mathcal{H}}_{l^{\prime}l^{\prime\prime}}^{,b}D_{l^{\prime\prime}n}^{d}-D_{l^{\prime}n^{\prime}}^{d}\bar{\mathcal{H}}_{n^{\prime}n}^{,b}+\bar{\mathcal{H}}_{l^{\prime}l^{\prime\prime}}^{,d}D_{l^{\prime\prime}n}^{b}-D_{l^{\prime}n^{\prime}}^{b}\bar{\mathcal{H}}_{n^{\prime}n}^{,d}\right)\right]-\left(\begin{array}{c}
+a\leftrightarrow b\\
+m\leftrightarrow n
+\end{array}\right)^{*}
+\end{equation}
+The external term reads
+\begin{align*}
+\widetilde{F}_{mn,\text{ext}}^{ab:d} & =\bar{F}_{mn}^{ab:d}-\bar{A}_{mn^{\prime}}^{a:d}\bar{A}_{n^{\prime}n}^{b}-\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b:d}\\
+ & +iD_{ml^{\prime}}^{a:d}\bar{A}_{l^{\prime}n}^{b}+iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b:d}+i\bar{A}_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}
+\end{align*}
+
+
+\subsubsection{Berry curvature dipole}
+
+The Berry curvature dipole tensor thus reads
+\[
+\partial_{d}\Omega_{A}^{c}=\sum_{n}^{A}\Omega_{nn}^{c:d}=\sum_{n}^{A}\widetilde{\Omega}_{nn}^{c:d}=i\epsilon_{cab}\sum_{n}^{A}\widetilde{F}_{nn}^{ab:d}
+\]
+\[
+\widetilde{F}_{mn,{\rm int}}^{ab:d}=-D_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}
+\]
+\[
+\widetilde{F}_{mn,{\rm ext}}^{ab:d}=\bar{F}_{mn}^{ab:d}-\bar{A}_{mn^{\prime}}^{a:d}\bar{A}_{n^{\prime}n}^{b}-\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b:d}+iD_{ml^{\prime}}^{a:d}\bar{A}_{l^{\prime}n}^{b}+iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b:d}+i\bar{A}_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}
+\]
+\[
+\widetilde{\Omega}_{mn,\text{int}}^{c:d}=i\epsilon_{abc}\left(-D_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}\right)
+\]
+\[
+\widetilde{\Omega}_{mn,\text{ext}}^{c:d}=i\epsilon_{abc}\left(\bar{F}_{mn}^{ab:d}-\bar{A}_{mn^{\prime}}^{a:d}\bar{A}_{n^{\prime}n}^{b}-\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b:d}+iD_{ml^{\prime}}^{a:d}\bar{A}_{l^{\prime}n}^{b}+iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b:d}+i\bar{A}_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}\right)
+\]
+\begin{align*}
+\widetilde{\Omega}_{mn,\text{int}}^{z:d} & =i\left(-D_{ml^{\prime}}^{x:d}D_{l^{\prime}n}^{y}+D_{ml^{\prime}}^{y:d}D_{l^{\prime}n}^{x}-D_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:d}+D_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:d}\right)\\
+ & =-iD_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:d}+iD_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:d}-iD_{ml^{\prime}}^{x:d}D_{l^{\prime}n}^{y}+iD_{ml^{\prime}}^{y:d}D_{l^{\prime}n}^{x}\\
+ & =-iD_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:d}+iD_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:d}+\left(m\leftrightarrow n\right)^{*}
+\end{align*}
+\[
+\left(-iD_{nl^{\prime}}^{x:d}D_{l^{\prime}m}^{y}+iD_{nl^{\prime}}^{y:d}D_{l^{\prime}m}^{x}\right)^{*}=-iD_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:d}+iD_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:d}
+\]
+\begin{align*}
+\widetilde{\Omega}_{mn,\text{ext}}^{z:d} & =\bar{\Omega}_{mn}^{z:d}\\
+ & -i\bar{A}_{mn^{\prime}}^{x:d}\bar{A}_{n^{\prime}n}^{y}+i\bar{A}_{mn^{\prime}}^{y:d}\bar{A}_{n^{\prime}n}^{x}-i\bar{A}_{mn^{\prime}}^{x}\bar{A}_{n^{\prime}n}^{y:d}+i\bar{A}_{mn^{\prime}}^{y}\bar{A}_{n^{\prime}n}^{x:d}\\
+ & -D_{ml^{\prime}}^{x:d}\bar{A}_{l^{\prime}n}^{y}+D_{ml^{\prime}}^{y:d}\bar{A}_{l^{\prime}n}^{x}-D_{ml^{\prime}}^{x}\bar{A}_{l^{\prime}n}^{y:d}+D_{ml^{\prime}}^{y}\bar{A}_{l^{\prime}n}^{x:d}\\
+ & -\bar{A}_{ml^{\prime}}^{x:d}D_{l^{\prime}n}^{y}+\bar{A}_{ml^{\prime}}^{y:d}D_{l^{\prime}n}^{x}-\bar{A}_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:d}+\bar{A}_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:d}\\
+ & =\frac{1}{2}\bar{\Omega}_{mn}^{z:d}-i\bar{A}_{mn^{\prime}}^{x}\bar{A}_{n^{\prime}n}^{y:d}+i\bar{A}_{mn^{\prime}}^{y}\bar{A}_{n^{\prime}n}^{x:d}-D_{ml^{\prime}}^{x}\bar{A}_{l^{\prime}n}^{y:d}+D_{ml^{\prime}}^{y}\bar{A}_{l^{\prime}n}^{x:d}-\bar{A}_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:d}+\bar{A}_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:d}\\
+ & +\left(m\leftrightarrow n\right)^{*}
+\end{align*}
+
+
+\subsubsection{Quantum metric dipole}
+
+\[
+\partial_{d}g_{A}^{ab}=\frac{1}{2}\sum_{n}^{A}\left(\widetilde{F}_{nn}^{ab:d}+\widetilde{F}_{nn}^{ba:d}\right)
+\]
+\[
+\widetilde{F}_{mn,{\rm int}}^{ab:d}=-D_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}
+\]
+\[
+\widetilde{F}_{mn,{\rm ext}}^{ab:d}=\bar{F}_{mn}^{ab:d}-\bar{A}_{mn^{\prime}}^{a:d}\bar{A}_{n^{\prime}n}^{b}-\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b:d}+iD_{ml^{\prime}}^{a:d}\bar{A}_{l^{\prime}n}^{b}+iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b:d}+i\bar{A}_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}
+\]
+\begin{align*}
+\frac{1}{2}\left(\widetilde{F}_{mn,{\rm int}}^{ab:d}+\widetilde{F}_{mn,{\rm int}}^{ba:d}\right) & =\frac{1}{2}\left(-D_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}-D_{ml^{\prime}}^{b:d}D_{l^{\prime}n}^{a}-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}-D_{ml^{\prime}}^{b}D_{l^{\prime}n}^{a:d}\right)\\
+ & =\frac{1}{2}\left(-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}-D_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}\right)+\left(m\leftrightarrow n\right)^{*}
+\end{align*}
+\begin{align*}
+\frac{1}{2}\left(\widetilde{F}_{mn,{\rm ext}}^{ab:d}+\widetilde{F}_{mn,{\rm ext}}^{ba:d}\right) & =\frac{1}{2}\left(\bar{F}_{mn}^{ab:d}+\bar{F}_{mn}^{ba:d}\right)\\
+ & +i\frac{1}{2}D_{ml^{\prime}}^{a:d}\bar{A}_{l^{\prime}n}^{b}+i\frac{1}{2}D_{ml^{\prime}}^{b:d}\bar{A}_{l^{\prime}n}^{a}+i\frac{1}{2}D_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b:d}+i\frac{1}{2}D_{ml^{\prime}}^{b}\bar{A}_{l^{\prime}n}^{a:d}\\
+ & +i\frac{1}{2}\bar{A}_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}+i\frac{1}{2}\bar{A}_{ml^{\prime}}^{b:d}D_{l^{\prime}n}^{a}+i\frac{1}{2}\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}+i\frac{1}{2}\bar{A}_{ml^{\prime}}^{b}D_{l^{\prime}n}^{a:d}\\
+ & -\frac{1}{2}\bar{A}_{mn^{\prime}}^{a:d}\bar{A}_{n^{\prime}n}^{b}-\frac{1}{2}\bar{A}_{mn^{\prime}}^{b:d}\bar{A}_{n^{\prime}n}^{a}-\frac{1}{2}\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b:d}-\frac{1}{2}\bar{A}_{mn^{\prime}}^{b}\bar{A}_{n^{\prime}n}^{a:d}\\
+ & =\frac{1}{2}\left(\bar{F}_{mn}^{ab:d}+iD_{ml^{\prime}}^{a:d}\bar{A}_{l^{\prime}n}^{b}+iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b:d}+i\bar{A}_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}-\bar{A}_{mn^{\prime}}^{a:d}\bar{A}_{n^{\prime}n}^{b}-\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b:d}\right)\\
+ & +\left(m\leftrightarrow n\right)^{*}
+\end{align*}
+
+
+\subsubsection{Berry connection polarizability}
+
+\begin{align*}
+\widetilde{\mathcal{F}}_{mn}^{ab} & =\frac{1}{2}\left(N_{ml^{\prime}}^{a}M_{l^{\prime}n}^{b}-M_{ml^{\prime}}^{a}N_{l^{\prime}n}^{b}\right)
+\end{align*}
+\begin{align*}
+M_{ml^{\prime}}^{a} & =\bar{A}_{ml^{\prime}}^{a}+iD_{ml^{\prime}}^{a}\\
+N_{ml^{\prime}}^{a} & =\frac{\bar{A}_{ml^{\prime}}^{a}+iD_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}=\frac{M_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}
+\end{align*}
+\[
+\widetilde{\mathcal{G}}_{mn}^{ab}=\frac{1}{2}\left(\widetilde{\mathcal{F}}_{mn}^{ab}+\widetilde{\mathcal{F}}_{mn}^{ba}\right)
+\]
+\[
+\widetilde{\mathcal{F}}_{mn}^{ab:d}=\frac{1}{2}\left(N_{ml^{\prime}}^{a:d}M_{l^{\prime}n}^{b}+N_{ml^{\prime}}^{a}M_{l^{\prime}n}^{b:d}-M_{ml^{\prime}}^{a:d}N_{l^{\prime}n}^{b}-M_{ml^{\prime}}^{a}N_{l^{\prime}n}^{b:d}\right)
+\]
+\begin{align*}
+M_{ml^{\prime}}^{a:d} & =\bar{A}_{ml^{\prime}}^{a:d}+iD_{ml^{\prime}}^{a:d}\\
+M_{ml^{\prime}}^{a:d*} & =\bar{A}_{l^{\prime}m}^{a:d}+iD_{l^{\prime}m}^{a:d}\\
+ & =M_{l^{\prime}m}^{a:d}
+\end{align*}
+\begin{align*}
+N_{ml^{\prime}}^{a:d} & =\frac{M_{ml^{\prime}}^{a:d}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-M_{ml^{\prime}}^{a}\frac{v_{m}^{d}-v_{l^{\prime}}^{d}}{\left(\varepsilon_{m}-\varepsilon_{l^{\prime}}\right)^{2}}=\frac{M_{ml^{\prime}}^{a:d}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-N_{ml^{\prime}}^{a}\frac{v_{m}^{d}-v_{l^{\prime}}^{d}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\\
+N_{ml^{\prime}}^{a:d*} & =-N_{l^{\prime}m}^{a:d}
+\end{align*}
+\begin{align*}
+\widetilde{\mathcal{G}}_{mn}^{ab:d} & =\frac{1}{2}\left(\widetilde{\mathcal{F}}_{mn}^{ab:d}+\widetilde{\mathcal{F}}_{mn}^{ba:d}\right)\\
+ & =\frac{1}{2}\left(N_{ml^{\prime}}^{a:d}M_{l^{\prime}n}^{b}+N_{ml^{\prime}}^{a}M_{l^{\prime}n}^{b:d}-M_{ml^{\prime}}^{a:d}N_{l^{\prime}n}^{b}-M_{ml^{\prime}}^{a}N_{l^{\prime}n}^{b:d}\right)\\
+ & +\frac{1}{2}\left(N_{ml^{\prime}}^{b:d}M_{l^{\prime}n}^{a}+N_{ml^{\prime}}^{a}M_{l^{\prime}n}^{b:d}-M_{ml^{\prime}}^{a:d}N_{l^{\prime}n}^{b}-M_{ml^{\prime}}^{a}N_{l^{\prime}n}^{b:d}\right)
+\end{align*}
+\begin{align*}
+\left(\widetilde{\mathcal{F}}_{nm}^{ab:d}\right)^{*} & =\frac{1}{2}\left(N_{nl^{\prime}}^{a:d}M_{l^{\prime}m}^{b}+N_{nl^{\prime}}^{a}M_{l^{\prime}m}^{b:d}-M_{nl^{\prime}}^{a:d}N_{l^{\prime}m}^{b}-M_{nl^{\prime}}^{a}N_{l^{\prime}m}^{b:d}\right)^{*}\\
+ & =\frac{1}{2}\left(N_{nl^{\prime}}^{a:d*}M_{l^{\prime}m}^{b*}+N_{nl^{\prime}}^{a*}M_{l^{\prime}m}^{b:d*}-M_{nl^{\prime}}^{a:d*}N_{l^{\prime}m}^{b*}-M_{nl^{\prime}}^{a*}N_{l^{\prime}m}^{b:d*}\right)\\
+ & =\frac{1}{2}\left(N_{ml^{\prime}}^{b:d}M_{l^{\prime}n}^{a}+N_{ml^{\prime}}^{b}M_{l^{\prime}n}^{a:d}-M_{ml^{\prime}}^{b:d}N_{l^{\prime}n}^{a}-M_{ml^{\prime}}^{b}N_{l^{\prime}n}^{a:d}\right)\\
+ & =\widetilde{\mathcal{F}}_{mn}^{ba:d}
+\end{align*}
+\begin{align*}
+\widetilde{\mathcal{G}}_{mn}^{ab:d} & =\frac{1}{2}\left(\widetilde{\mathcal{F}}_{mn}^{ab:d}+\widetilde{\mathcal{F}}_{mn}^{ba:d}\right)\\
+ & =\frac{1}{2}\left(\widetilde{\mathcal{F}}_{mn}^{ab:d}+\widetilde{\mathcal{F}}_{nm}^{ab:d*}\right)
+\end{align*}
+
+\begin{align*}
+\widetilde{\mathcal{F}}_{mn}^{ab} & =\widetilde{\mathcal{F}}_{mn,\text{int}}^{ab}+\widetilde{\mathcal{F}}_{mn,\text{ext}}^{ab}
+\end{align*}
+
+
+\subsection{Second order derivative of quantum geometry tensor}
+
+We first derive the second order derivative of $\widetilde{F}_{mn}^{ab}$.
+With $\widetilde{F}_{mn,\mathrm{int}}^{ab:d}$ obtained, we can write
+down the second order covariant derivative of $\widetilde{F}_{mn}^{ab}$
+by 
+\[
+\widetilde{F}_{mn}^{ab:de}=\left(\widetilde{F}_{mn}^{ab:d}\right)^{:e}=\left(\widetilde{F}_{mn,\text{int}}^{ab:d}\right)^{:e}+\left(\widetilde{F}_{mn,\text{ext}}^{ab:d}\right)^{:e}
+\]
+For the internal term
+\begin{align*}
+\left(\widetilde{F}_{mn,\text{int}}^{ab:d}\right)^{:e} & =\left(-D_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}\right)^{:e}\\
+ & =-D_{ml^{\prime}}^{a:de}D_{l^{\prime}n}^{b}-D_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b:e}-D_{ml^{\prime}}^{a:e}D_{l^{\prime}n}^{b:d}-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:de}
+\end{align*}
+For the external term
+\begin{align*}
+\left(\widetilde{F}_{mn,\text{ext}}^{ab:d}\right)^{:e} & =\left(\bar{F}_{mn}^{ab:d}-\bar{A}_{mn^{\prime}}^{a:d}\bar{A}_{n^{\prime}n}^{b}-\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b:d}+iD_{ml^{\prime}}^{a:d}\bar{A}_{l^{\prime}n}^{b}+iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b:d}+i\bar{A}_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}\right)^{:e}\\
+ & =\bar{F}_{mn}^{ab:de}-\bar{A}_{mn^{\prime}}^{a:d:e}\bar{A}_{n^{\prime}n}^{b}-\bar{A}_{mn^{\prime}}^{a:d}\bar{A}_{n^{\prime}n}^{b:e}-\bar{A}_{mn^{\prime}}^{a:e}\bar{A}_{n^{\prime}n}^{b:d}-\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b:de}\\
+ & +iD_{ml^{\prime}}^{a:de}\bar{A}_{l^{\prime}n}^{b}+iD_{ml^{\prime}}^{a:d}\bar{A}_{l^{\prime}n}^{b:e}+iD_{ml^{\prime}}^{a:e}\bar{A}_{l^{\prime}n}^{b:d}+iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b:de}\\
+ & +i\bar{A}_{ml^{\prime}}^{a:de}D_{l^{\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b:e}+i\bar{A}_{ml^{\prime}}^{a:e}D_{l^{\prime}n}^{b:d}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:de}
+\end{align*}
+
+
+\subsubsection{Berry curvature quadrupole}
+
+\[
+\partial_{e}\partial_{d}\Omega_{A}^{c}=\sum_{n}^{A}\widetilde{\Omega}_{nn}^{c:de}=i\epsilon_{cab}\sum_{n}^{A}\widetilde{F}_{nn}^{ab:de}
+\]
+
+\begin{align*}
+\widetilde{\Omega}_{mn,\text{int}}^{z:d} & =i\left(-D_{ml^{\prime}}^{x:d}D_{l^{\prime}n}^{y}+D_{ml^{\prime}}^{y:d}D_{l^{\prime}n}^{x}-D_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:d}+D_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:d}\right)\\
+ & =-iD_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:d}+iD_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:d}-iD_{ml^{\prime}}^{x:d}D_{l^{\prime}n}^{y}+iD_{ml^{\prime}}^{y:d}D_{l^{\prime}n}^{x}\\
+ & =-iD_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:d}+iD_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:d}+\left(m\leftrightarrow n\right)^{*}
+\end{align*}
+\[
+\widetilde{\Omega}_{mn,\text{int}}^{z:de}=-iD_{ml^{\prime}}^{x:e}D_{l^{\prime}n}^{y:d}-iD_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:de}+iD_{ml^{\prime}}^{y:e}D_{l^{\prime}n}^{x:d}+iD_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:de}+\left(m\leftrightarrow n\right)^{*}
+\]
+\begin{align*}
+\widetilde{\Omega}_{mn,\text{ext}}^{z:d} & =\frac{1}{2}\bar{\Omega}_{mn}^{z:d}-i\bar{A}_{mn^{\prime}}^{x}\bar{A}_{n^{\prime}n}^{y:d}+i\bar{A}_{mn^{\prime}}^{y}\bar{A}_{n^{\prime}n}^{x:d}-D_{ml^{\prime}}^{x}\bar{A}_{l^{\prime}n}^{y:d}+D_{ml^{\prime}}^{y}\bar{A}_{l^{\prime}n}^{x:d}-\bar{A}_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:d}+\bar{A}_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:d}\\
+ & +\left(m\leftrightarrow n\right)^{*}
+\end{align*}
+\begin{align*}
+\widetilde{\Omega}_{mn,\text{ext}}^{z:de} & =\frac{1}{2}\bar{\Omega}_{mn}^{z:de}-i\bar{A}_{mn^{\prime}}^{x:e}\bar{A}_{n^{\prime}n}^{y:d}-i\bar{A}_{mn^{\prime}}^{x}\bar{A}_{n^{\prime}n}^{y:de}+i\bar{A}_{mn^{\prime}}^{y:e}\bar{A}_{n^{\prime}n}^{x:d}+i\bar{A}_{mn^{\prime}}^{y}\bar{A}_{n^{\prime}n}^{x:de}\\
+ & -D_{ml^{\prime}}^{x:e}\bar{A}_{l^{\prime}n}^{y:d}-D_{ml^{\prime}}^{x}\bar{A}_{l^{\prime}n}^{y:de}+D_{ml^{\prime}}^{y:e}\bar{A}_{l^{\prime}n}^{x:d}+D_{ml^{\prime}}^{y}\bar{A}_{l^{\prime}n}^{x:de}\\
+ & -\bar{A}_{ml^{\prime}}^{x:e}D_{l^{\prime}n}^{y:d}-\bar{A}_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:de}+\bar{A}_{ml^{\prime}}^{y:e}D_{l^{\prime}n}^{x:d}+\bar{A}_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:de}+\left(m\leftrightarrow n\right)^{*}
+\end{align*}
+
+
+\subsubsection{BCP}
+
+\[
+\widetilde{\mathcal{F}}_{mn}^{ab:d}=\frac{1}{2}\left(N_{ml^{\prime}}^{a:d}M_{l^{\prime}n}^{b}+N_{ml^{\prime}}^{a}M_{l^{\prime}n}^{b:d}-M_{ml^{\prime}}^{a:d}N_{l^{\prime}n}^{b}-M_{ml^{\prime}}^{a}N_{l^{\prime}n}^{b:d}\right)
+\]
+\begin{align*}
+\widetilde{\mathcal{F}}_{mn}^{ab:de} & =\frac{1}{2}\left(N_{ml^{\prime}}^{a:de}M_{l^{\prime}n}^{b}+N_{ml^{\prime}}^{a:d}M_{l^{\prime}n}^{b:e}\right.\\
+ & +N_{ml^{\prime}}^{a:e}M_{l^{\prime}n}^{b:d}+N_{ml^{\prime}}^{a}M_{l^{\prime}n}^{b:de}\\
+ & -M_{ml^{\prime}}^{a:de}N_{l^{\prime}n}^{b}-M_{ml^{\prime}}^{a:d}N_{l^{\prime}n}^{b:e}\\
+ & \left.-M_{ml^{\prime}}^{a:e}N_{l^{\prime}n}^{b:d}-M_{ml^{\prime}}^{a}N_{l^{\prime}n}^{b:de}\right)
+\end{align*}
+\begin{align*}
+M_{ml^{\prime}}^{a} & =\bar{A}_{ml^{\prime}}^{a}+iD_{ml^{\prime}}^{a}\\
+N_{ml^{\prime}}^{a} & =\frac{\bar{A}_{ml^{\prime}}^{a}+iD_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}=\frac{M_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}
+\end{align*}
+\begin{align*}
+M_{ml^{\prime}}^{a:d} & =\bar{A}_{ml^{\prime}}^{a:d}+iD_{ml^{\prime}}^{a:d}\\
+M_{ml^{\prime}}^{a:d*} & =M_{l^{\prime}m}^{a:d}
+\end{align*}
+\[
+M_{ml^{\prime}}^{a:de}=\bar{A}_{ml^{\prime}}^{a:de}+iD_{ml^{\prime}}^{a:de}
+\]
+\begin{align*}
+N_{ml^{\prime}}^{a:d} & =\frac{M_{ml^{\prime}}^{a:d}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-M_{ml^{\prime}}^{a}\frac{v_{m}^{d}-v_{l^{\prime}}^{d}}{\left(\varepsilon_{m}-\varepsilon_{l^{\prime}}\right)^{2}}\\
+ & =\frac{M_{ml^{\prime}}^{a:d}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-N_{ml^{\prime}}^{a}\frac{v_{m}^{d}-v_{l^{\prime}}^{d}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\\
+N_{ml^{\prime}}^{a:d*} & =-N_{l^{\prime}m}^{a:d}
+\end{align*}
+\begin{align*}
+N_{ml^{\prime}}^{a:de} & =\frac{M_{ml^{\prime}}^{a:de}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-M_{ml^{\prime}}^{a:d}\frac{v_{m}^{e}-v_{l^{\prime}}^{e}}{\left(\varepsilon_{m}-\varepsilon_{l^{\prime}}\right)^{2}}\\
+ & -M_{ml^{\prime}}^{a:e}\frac{v_{m}^{d}-v_{l^{\prime}}^{d}}{\left(\varepsilon_{m}-\varepsilon_{l^{\prime}}\right)^{2}}+2M_{ml^{\prime}}^{a}\frac{\left(v_{m}^{d}-v_{l^{\prime}}^{d}\right)\left(v_{m}^{e}-v_{l^{\prime}}^{e}\right)}{\left(\varepsilon_{m}-\varepsilon_{l^{\prime}}\right)^{3}}-M_{ml^{\prime}}^{a}\frac{v_{m}^{d:e}-v_{l^{\prime}}^{d:e}}{\left(\varepsilon_{m}-\varepsilon_{l^{\prime}}\right)^{2}}\\
+ & =\frac{M_{ml^{\prime}}^{a:de}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-M_{ml^{\prime}}^{a:e}\frac{v_{m}^{d}-v_{l^{\prime}}^{d}}{\left(\varepsilon_{m}-\varepsilon_{l^{\prime}}\right)^{2}}-\left(\frac{M_{ml^{\prime}}^{a:d}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-M_{ml^{\prime}}^{a}\frac{v_{m}^{d}-v_{l^{\prime}}^{d}}{\left(\varepsilon_{m}-\varepsilon_{l^{\prime}}\right)^{2}}\right)\frac{v_{m}^{e}-v_{l^{\prime}}^{e}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}+M_{ml^{\prime}}^{a}\frac{\left(v_{m}^{d}-v_{l^{\prime}}^{d}\right)\left(v_{m}^{e}-v_{l^{\prime}}^{e}\right)}{\left(\varepsilon_{m}-\varepsilon_{l^{\prime}}\right)^{3}}-M_{ml^{\prime}}^{a}\frac{v_{m}^{d:e}-v_{l^{\prime}}^{d:e}}{\left(\varepsilon_{m}-\varepsilon_{l^{\prime}}\right)^{2}}\\
+ & =\frac{M_{ml^{\prime}}^{a:de}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-N_{ml^{\prime}}^{a:e}\frac{v_{m}^{d}-v_{l^{\prime}}^{d}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-N_{ml^{\prime}}^{a:d}\frac{v_{m}^{e}-v_{l^{\prime}}^{e}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-N_{ml^{\prime}}^{a}\frac{v_{m}^{d:e}-v_{l^{\prime}}^{d:e}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}
+\end{align*}
+
+
+\subsection{Orbital magnetic quadrupole}
+
+\subsubsection{Orbital magnetization}
+
+We first review the construction of orbital magnetization (dipole
+moment). In the framework of covariant matrix, the orbital magnetization
+matrix is given by 
+\[
+\frac{2\hbar}{e}\widetilde{M}_{mn}^{c}=-i\epsilon_{cab}\left(\widetilde{H}_{mn}^{ab}+\widetilde{G}_{mn}^{ab}-2\mu\widetilde{F}_{mn}^{ab}\right)
+\]
+\begin{equation}
+\widetilde{F}_{mn}^{ab}=\langle u_{m}|\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)|u_{n}\rangle=\langle\partial_{a}u_{m}|Q|\partial_{b}u_{n}\rangle
+\end{equation}
+\begin{align}
+\widetilde{G}_{mn}^{ab} & =\frac{1}{2}\langle u_{m}|\mathcal{H}\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)+\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)\mathcal{H}|u_{n}\rangle\nonumber \\
+ & =\frac{1}{2}\left(\mathcal{H}_{mn^{\prime}}\widetilde{F}_{n^{\prime}n}^{ab}+\widetilde{F}_{mn^{\prime}}^{ab}\mathcal{H}_{n^{\prime}n}\right)
+\end{align}
+\begin{equation}
+\widetilde{H}_{mn}^{ab}=\langle u_{m}|\left(\partial_{a}P\right)Q\mathcal{H}Q\left(\partial_{b}P\right)|u_{n}\rangle=\langle\partial_{a}u_{m}|Q\mathcal{H}Q|\partial_{b}u_{n}\rangle
+\end{equation}
+To see this relation, we consider the orbital magnetic moment at zero
+temperature
+\begin{align*}
+M^{c} & =-\frac{e}{2\hbar}i\epsilon_{cab}\sum_{n\in\text{occ},\bm{k}}\langle\partial_{a}u_{n}|\varepsilon_{n}+H-2\mu|\partial_{b}u_{n}\rangle\\
+ & =\frac{e}{2\hbar}\epsilon_{cab}\text{Im}\sum_{n\in\text{occ},\bm{k}}\langle\partial_{a}u_{n}|\varepsilon_{n}+H-2\mu|\partial_{b}u_{n}\rangle\\
+ & =\frac{e}{2\hbar}\epsilon_{cab}\text{Im}\sum_{\bm{k}}\sum_{n\in\text{occ}}\sum_{m}\langle\partial_{a}u_{n}|\varepsilon_{n}+H-2\mu|u_{m}\rangle\langle u_{m}|\partial_{b}u_{n}\rangle\\
+ & =\frac{e}{2\hbar}\epsilon_{cab}\text{Im}\sum_{\bm{k}}\sum_{n\in\text{occ}}\left(\sum_{m\in\text{occ}}+\sum_{m\in\text{unocc}}\right)\langle\partial_{a}u_{n}|\varepsilon_{n}+H-2\mu|u_{m}\rangle\langle u_{m}|\partial_{b}u_{n}\rangle
+\end{align*}
+If $m\in\text{occ}$
+\begin{align*}
+ & \epsilon_{cab}\text{Im}\sum_{n,m\in\text{occ}}\langle\partial_{a}u_{n}|\varepsilon_{n}+H-2\mu|u_{m}\rangle\langle u_{m}|\partial_{b}u_{n}\rangle\\
+= & \epsilon_{cab}\sum_{n,m\in\text{occ}}\left(\varepsilon_{n}+\varepsilon_{m}-2\mu\right)\text{Im}\langle\partial_{a}u_{n}|u_{m}\rangle\langle u_{m}|\partial_{b}u_{n}\rangle
+\end{align*}
+The integrand is symmetric under $a\leftrightarrow b$, as 
+\begin{align*}
+ & \sum_{n,m\in\text{occ}}\left(\varepsilon_{n}+\varepsilon_{m}-2\mu\right)\text{Im}\langle\partial_{b}u_{n}|u_{m}\rangle\langle u_{m}|\partial_{a}u_{n}\rangle\\
+= & \sum_{n,m\in\text{occ}}\left(\varepsilon_{n}+\varepsilon_{m}-2\mu\right)\text{Im}\langle\partial_{a}u_{m}|u_{n}\rangle\langle u_{n}|\partial_{b}u_{m}\rangle\\
+= & \sum_{n,m\in\text{occ}}\left(\varepsilon_{n}+\varepsilon_{m}-2\mu\right)\text{Im}\langle\partial_{a}u_{n}|u_{m}\rangle\langle u_{m}|\partial_{b}u_{n}\rangle
+\end{align*}
+Then the summation with $\epsilon_{cab}$ becomes zero. Therefore
+\begin{align*}
+M^{c} & =\frac{e}{2\hbar}\epsilon_{cab}\text{Im}\sum_{\bm{k}}\sum_{n\in\text{occ}}\sum_{m\in\text{unocc}}\langle\partial_{a}u_{n}|\varepsilon_{n}+H-2\mu|u_{m}\rangle\langle u_{m}|\partial_{b}u_{n}\rangle\\
+ & =\frac{e}{2\hbar}\epsilon_{cab}\text{Im}\sum_{\bm{k}}\sum_{n\in\text{occ}}\langle\partial_{a}u_{n}|\left(\varepsilon_{n}+H-2\mu\right)Q|\partial_{b}u_{n}\rangle\\
+ & =\frac{e}{2\hbar}\epsilon_{cab}\text{Im}\sum_{\bm{k}}\sum_{n\in\text{occ}}\langle\partial_{a}u_{n}|Q\left(\varepsilon_{n}+H-2\mu\right)Q|\partial_{b}u_{n}\rangle
+\end{align*}
+Thus, we have 
+\begin{align*}
+ & -i\epsilon_{cab}\left(\widetilde{H}_{mn}^{ab}+\widetilde{G}_{mn}^{ab}-2\mu\widetilde{F}_{mn}^{ab}\right)\\
+= & -i\epsilon_{cab}\left(\langle\partial_{a}u_{m}|Q\mathcal{H}Q|\partial_{b}u_{n}\rangle+\frac{\varepsilon_{m}+\varepsilon_{n}}{2}\langle\partial_{a}u_{m}|Q|\partial_{b}u_{n}\rangle-2\mu\langle\partial_{a}u_{m}|Q|\partial_{b}u_{n}\rangle\right)\\
+= & -i\epsilon_{cab}\langle\partial_{a}u_{m}|Q\left(\mathcal{H}+\frac{\varepsilon_{m}+\varepsilon_{n}}{2}-2\mu\right)Q|\partial_{b}u_{n}\rangle
+\end{align*}
+and $\sum_{\bm{k}}\widetilde{M}_{m^{\prime}m^{\prime}}^{c}=M^{c}$
+is indeed the orbital magnetization. 
+
+The implement of $\bm{M}_{\text{orb}}$ in WannierBerri is realized
+through three functions. First, it calculates the covariant H matrix
+\[
+\widetilde{H}_{mn}^{ab}=\langle u_{m}|\left(\partial_{a}P\right)Q\mathcal{H}Q\left(\partial_{b}P\right)|u_{n}\rangle=\langle\partial_{a}u_{m}|Q\mathcal{H}Q|\partial_{b}u_{n}\rangle
+\]
+Within the framework of Wannier Interpolation, we have already know
+that 
+\[
+Q|\partial_{a}u_{j\mathbf{k}}\rangle=|\partial_{a}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}j}+i|u_{n^{\prime}}\rangle\bar{A}_{n^{\prime}j}^{a}+|u_{l^{\prime}}\rangle D_{l^{\prime}j}^{a}
+\]
+Then 
+\begin{eqnarray*}
+\langle\partial_{a}u_{m}|Q\mathcal{H}Q|\partial_{b}u_{n}\rangle & = & \left(U_{j^{\prime}m}^{*}\langle\partial_{a}u_{j^{\prime}}^{W}|-i\bar{A}_{n^{\prime}m}^{a*}\langle u_{n^{\prime}}|+D_{l^{\prime}m}^{a*}\langle u_{l^{\prime}}|\right)\mathcal{H}\left(|\partial_{b}u_{j^{\prime\prime}}^{W}\rangle U_{j^{\prime\prime}n}+i|u_{n^{\prime\prime}}\rangle\bar{A}_{n^{\prime\prime}n}^{b}+|u_{l^{\prime\prime}}\rangle D_{l^{\prime\prime}n}^{b}\right)\\
+ & = & U_{mj^{\prime}}^{\dagger}\langle\partial_{a}u_{j^{\prime}}^{W}|\mathcal{H}|\partial_{b}u_{j^{\prime\prime}}^{W}\rangle U_{j^{\prime\prime}n}+\bar{A}_{mn^{\prime}}^{a}\langle u_{n^{\prime}}|\mathcal{H}|u_{n^{\prime\prime}}\rangle\bar{A}_{n^{\prime\prime}n}^{b}-D_{ml^{\prime}}^{a}\langle u_{l^{\prime}}|\mathcal{H}|u_{l^{\prime\prime}}\rangle D_{l^{\prime\prime}n}^{b}\\
+ &  & +iU_{mj^{\prime}}^{\dagger}\langle\partial_{a}u_{j^{\prime}}^{W}|\mathcal{H}|u_{n^{\prime\prime}}\rangle\bar{A}_{n^{\prime\prime}n}^{b}-i\bar{A}_{mn^{\prime}}^{a}\langle u_{n^{\prime}}|\mathcal{H}|\partial_{b}u_{j^{\prime\prime}}^{W}\rangle U_{j^{\prime\prime}n}\\
+ &  & +U_{mj^{\prime}}^{\dagger}\langle\partial_{a}u_{j^{\prime}}^{W}|\mathcal{H}|u_{l^{\prime\prime}}\rangle D_{l^{\prime\prime}n}^{b}-D_{ml^{\prime}}^{a}\langle u_{l^{\prime}}|\mathcal{H}|\partial_{b}u_{j^{\prime\prime}}^{W}\rangle U_{j^{\prime\prime}n}\\
+ &  & -i\bar{A}_{mn^{\prime}}^{a}\langle u_{n^{\prime}}|\mathcal{H}|u_{l^{\prime\prime}}\rangle D_{l^{\prime\prime}n}^{b}-iD_{ml^{\prime}}^{a}\langle u_{l^{\prime}}|\mathcal{H}|u_{n^{\prime\prime}}\rangle\bar{A}_{n^{\prime\prime}n}^{b}\\
+ & = & U_{mj^{\prime}}^{\dagger}H_{j^{\prime}j}^{W,ab}U_{j^{\prime\prime}n}+\bar{A}_{mm^{\prime}}^{a}\mathcal{H}_{m^{\prime}n^{\prime}}\bar{A}_{n^{\prime}n}^{b}-2A_{mn^{\prime\prime}}^{a}\varepsilon_{n^{\prime\prime}}\bar{A}_{n^{\prime\prime}n}^{b}-D_{ml^{\prime}}^{a}\mathcal{H}_{l^{\prime}l^{\prime\prime}}D_{l^{\prime\prime}n}^{b}\\
+ &  & +iU_{mj^{\prime}}^{\dagger}\langle\partial_{a}u_{j^{\prime}}^{W}|u_{j^{\prime\prime}}^{W}\rangle U_{j^{\prime\prime}n^{\prime\prime}}\varepsilon_{n^{\prime\prime}}\bar{A}_{n^{\prime\prime}n}^{b}-i\bar{A}_{mn^{\prime}}^{a}\varepsilon_{n^{\prime}}U_{n^{\prime}j^{\prime}}^{\dagger}\langle u_{j^{\prime}}^{W}|\partial_{b}u_{j^{\prime\prime}}^{W}\rangle U_{j^{\prime\prime}n}\\
+ &  & -iU_{mj^{\prime}}^{\dagger}i\langle\partial_{a}u_{j^{\prime}}^{W}|\mathcal{H}|u_{j^{\prime\prime}}^{W}\rangle U_{j^{\prime\prime}l^{\prime\prime}}D_{l^{\prime\prime}n}^{b}+iD_{ml^{\prime}}^{a}U_{l^{\prime}j^{\prime}}^{\dagger}i\langle u_{j^{\prime}}^{W}|\mathcal{H}|\partial_{b}u_{j^{\prime\prime}}^{W}\rangle U_{j^{\prime\prime}n}\\
+ & = & \bar{H}_{mn}^{ab}-\bar{A}_{mm^{\prime}}^{a}\mathcal{H}_{m^{\prime}n^{\prime}}\bar{A}_{n^{\prime}n}^{b}-D_{ml^{\prime}}^{a}\mathcal{H}_{l^{\prime}l^{\prime\prime}}D_{l^{\prime\prime}n}^{b}\\
+ &  & -\bar{A}_{mn^{\prime\prime}}^{a}\varepsilon_{n^{\prime\prime}}\bar{A}_{n^{\prime\prime}n}^{b}-i\bar{A}_{mn^{\prime}}^{a}\varepsilon_{n^{\prime}}\bar{A}_{n^{\prime}n}^{b}\\
+ &  & +iU_{mj^{\prime}}^{\dagger}\left(B_{j^{\prime\prime}j^{\prime}}^{W,a}\right)^{*}U_{j^{\prime\prime}l^{\prime\prime}}D_{l^{\prime\prime}n}^{b}+iD_{ml^{\prime}}^{a}U_{l^{\prime}j^{\prime}}^{\dagger}B_{j^{\prime}j^{\prime\prime}}^{W,b}U_{j^{\prime\prime}n}\\
+ & = & \bar{H}_{mn}^{ab}-\bar{A}_{mm^{\prime}}^{a}\mathcal{H}_{m^{\prime}n^{\prime}}\bar{A}_{n^{\prime}n}^{b}-D_{ml^{\prime}}^{a}\mathcal{H}_{l^{\prime}l^{\prime\prime}}D_{l^{\prime\prime}n}^{b}\\
+ &  & -iU_{j^{\prime}m}^{*}\left(B_{j^{\prime\prime}j^{\prime}}^{W,a}\right)^{*}\left(U_{l^{\prime\prime}j^{\prime\prime}}^{\dagger}\right)^{*}\left(D_{nl^{\prime\prime}}^{b}\right)^{*}+iD_{ml^{\prime}}^{a}\bar{B}_{l^{\prime}n}^{b}\\
+ & = & \bar{H}_{mn}^{ab}-\bar{A}_{mm^{\prime}}^{a}\mathcal{H}_{m^{\prime}n^{\prime}}\bar{A}_{n^{\prime}n}^{b}-D_{ml^{\prime}}^{a}\mathcal{H}_{l^{\prime}l^{\prime\prime}}D_{l^{\prime\prime}n}^{b}\\
+ &  & +iD_{ml^{\prime}}^{a}\bar{B}_{l^{\prime}n}^{b}-i\left(D_{nl^{\prime\prime}}^{b}\bar{B}_{l^{\prime\prime}m^{\prime}}^{W,a}\right)^{*}
+\end{eqnarray*}
+\begin{eqnarray*}
+B_{ij}^{W,a} & = & i\langle u_{i}^{W}|\mathcal{H}|\partial_{a}u_{j}^{W}\rangle\\
+H_{ij}^{W,ab} & = & \langle\partial_{b}u_{i}^{W}|\mathcal{H}|\partial_{b}u_{j}^{W}\rangle
+\end{eqnarray*}
+Thus
+\begin{align*}
+\widetilde{H}_{mn}^{ab} & =\widetilde{H}_{mn,\text{int}}^{ab}+\widetilde{H}_{mn,\text{ext}}^{ab}\\
+\widetilde{H}_{mn,\text{int}}^{ab} & =-D_{ml^{\prime}}^{a}\mathcal{H}_{l^{\prime}l^{\prime\prime}}D_{l^{\prime\prime}n}^{b}\\
+\widetilde{H}_{mn,\text{ext}}^{ab} & =\bar{H}_{mn}^{ab}-\bar{A}_{mm^{\prime}}^{a}\mathcal{H}_{m^{\prime}n^{\prime}}\bar{A}_{n^{\prime}n}^{b}+iD_{ml^{\prime}}^{a}\bar{B}_{l^{\prime}n}^{b}-i\left(D_{nl^{\prime\prime}}^{b}\bar{B}_{l^{\prime\prime}m^{\prime}}^{W,a}\right)^{*}
+\end{align*}
+In WannierBerri, $\bar{H}^{ab}=U^{\dagger}\left(H^{W}\right)^{ab}U$
+is defined through the $\mathbb{C}$ matrix (CC). 
+\[
+\frac{2\hbar}{e}\widetilde{M}_{mn}^{c}=-i\epsilon_{cab}\left(\widetilde{H}_{mn}^{ab}+\widetilde{G}_{mn}^{ab}-2\mu\widetilde{F}_{mn}^{ab}\right)
+\]
+\[
+\widetilde{M}_{mn}^{z\left(H\right)}=-i\widetilde{H}_{mn}^{xy}+i\widetilde{H}_{mn}^{yx}
+\]
+\[
+-i\widetilde{H}_{mn}^{xy}=
+\]
+
+The orbital magnetic quadrupole moment in zero temperature limit reads
+\[
+M_{lk}=\frac{e}{2\hbar}\sum_{\bm{k}}\sum_{n\in\text{occ}}\left\{ \left[\frac{2}{3}\sum_{m\left(\neq n\right)}\text{Re}A_{nm}^{l}M_{mn}^{k}-\frac{1}{12}\epsilon_{ijk}\partial_{i}W_{n}^{lj}\right]+\left[-2\sum_{m\left(\neq n\right)}\frac{\text{Re}A_{nm}^{l}M_{mn}^{k}}{\varepsilon_{n}-\varepsilon_{m}}-\frac{1}{3}\epsilon_{ijk}\partial_{i}g_{n}^{lj}\right]\left(\varepsilon_{n}-\mu\right)\right\} 
+\]
+where $W_{n}^{lj}=\langle u_{n}|\partial_{l}\partial_{j}\mathcal{H}|u_{n}\rangle$.
+It contains four distinct contributions. 
+\[
+M_{lk}=M_{lk}^{\text{ME1}}+M_{lk}^{\text{ME2}}+M_{lk}^{\text{W}}+M_{lk}^{\text{QM}}
+\]
+where 
+\begin{align*}
+M_{lk}^{\text{ME1}} & =\sum_{\bm{k}}\sum_{n\in\text{occ}}\sum_{m\left(\neq n\right)}\frac{2}{3}\text{Re}A_{nm}^{l}M_{mn}^{k}\\
+M_{lk}^{\text{ME2}} & =-2\sum_{\bm{k}}\sum_{n\in\text{occ}}\sum_{m\left(\neq n\right)}\frac{\text{Re}A_{nm}^{l}M_{mn}^{k}}{\varepsilon_{n}-\varepsilon_{m}}\left(\varepsilon_{n}-\mu\right)\\
+M_{lk}^{\text{W}} & =-\frac{1}{12}\epsilon_{ijk}\sum_{\bm{k}}\sum_{n\in\text{occ}}\partial_{i}W_{n}^{lj}\\
+M_{lk}^{\text{QM}} & =-\frac{1}{3}\epsilon_{ijk}\sum_{\bm{k}}\sum_{n\in\text{occ}}\partial_{i}g_{n}^{lj}\left(\varepsilon_{n}-\mu\right)
+\end{align*}
+\begin{align*}
+M_{mn}^{k} & =\frac{ie}{2\hbar}\epsilon_{ijk}\langle u_{m}|\partial_{i}\left(\varepsilon_{n}+\mathcal{H}\right)Q|\partial_{j}u_{n}\rangle\\
+ & =\frac{e}{2\hbar}\epsilon_{ijk}\sum_{p\left(\neq n\right)}\left(v_{mp}^{i}+v_{n}^{i}\delta_{mp}\right)A_{pn}^{j}
+\end{align*}
+\begin{align*}
+\frac{ie}{2\hbar}\langle u_{m}|\partial_{i}\left(\varepsilon_{n}+\mathcal{H}\right)Q|\partial_{j}u_{n}\rangle & =\langle u_{m}|\partial_{i}\varepsilon_{n}|\partial_{j}u_{n}\rangle+\langle u_{m}|\left(\partial_{i}\mathcal{H}\right)Q|\partial_{j}u_{n}\rangle\\
+ & =\frac{e}{2\hbar}v_{n}^{i}\langle u_{m}|i\partial_{j}u_{n}\rangle+i\frac{e}{2\hbar}\sum_{p\left(\neq n\right)}\langle u_{m}|\partial_{i}\mathcal{H}|u_{p}\rangle\langle u_{p}|\partial_{j}u_{n}\rangle\\
+ & =\frac{e}{2\hbar}v_{n}^{i}\langle u_{m}|i\partial_{j}u_{n}\rangle+\frac{e}{2\hbar}\sum_{p\left(\neq n\right)}\langle u_{m}|\partial_{i}\mathcal{H}|u_{p}\rangle\langle u_{p}|i\partial_{j}u_{n}\rangle\\
+ & =\frac{e}{2\hbar}v_{n}^{i}A_{mn}^{j}+\frac{e}{2\hbar}\sum_{p\left(\neq n\right)}v_{mp}^{i}A_{pn}^{j}\\
+ & =\frac{e}{2\hbar}\sum_{p\left(\neq n\right)}\left(v_{mp}^{i}+v_{n}^{i}\delta_{mp}\right)A_{pn}^{j}
+\end{align*}
+
+
+\subsubsection{Inverse Mass Dipole (Der3E)}
+
+\[
+W_{n}^{lj}=\langle u_{n}|\partial_{l}\partial_{j}\mathcal{H}|u_{n}\rangle
+\]
+\[
+\overline{\mathcal{H}}^{,b}=\overline{\partial_{b}\mathcal{H}}=U^{\dagger}\partial_{b}\mathcal{H}^{W}U
+\]
+\[
+\overline{\mathcal{H}}_{mn}^{,b:d}=\overline{\mathcal{H}}_{mn}^{,bd}-D_{ml^{\prime}}^{d}\overline{\mathcal{H}}_{l^{\prime}n}^{,b}+\overline{\mathcal{H}}_{ml^{\prime}}^{,b}D_{l^{\prime}n}^{d}
+\]
+
+\begin{align*}
+\left(\overline{\mathcal{H}}_{mn}^{,a:b}\right)^{:d} & =\overline{\mathcal{H}}_{mn}^{,ab:d}-D_{ml^{\prime}}^{b:d}\overline{\mathcal{H}}_{l^{\prime}n}^{,a}-D_{ml^{\prime}}^{b}\overline{\mathcal{H}}_{l^{\prime}n}^{,a:d}+\overline{\mathcal{H}}_{ml^{\prime}}^{,a:d}D_{l^{\prime}n}^{b}+\overline{\mathcal{H}}_{ml^{\prime}}^{,a}D_{l^{\prime}n}^{b:d}
+\end{align*}
+
+DerWln: dW
+\[
+\overline{\mathcal{H}}_{mn}^{,ab:d}=\overline{\mathcal{H}}_{mn}^{,abd}-D_{ml^{\prime}}^{d}\overline{\mathcal{H}}_{l^{\prime}n}^{,ab}+\overline{\mathcal{H}}_{ml^{\prime}}^{,ab}D_{l^{\prime}n}^{d}
+\]
+
+InvMas: dV
+\[
+\overline{\mathcal{H}}_{mn}^{,a:b}=\overline{\mathcal{H}}_{mn}^{,ab}-D_{ml^{\prime}}^{b}\overline{\mathcal{H}}_{l^{\prime}n}^{,a}+\overline{\mathcal{H}}_{ml^{\prime}}^{,a}D_{l^{\prime}n}^{b}
+\]
+
+\begin{align*}
+M_{xx} & =\epsilon_{ijk}W^{lj}v^{i}=W^{xz}v^{y}-W^{xy}v^{z}\\
+M_{yy} & =\epsilon_{ijk}W^{lj}v^{i}=W^{yx}v^{z}-W^{yz}v^{x}\\
+M_{zz} & =\epsilon_{ijk}W^{lj}v^{i}=W^{zy}v^{x}-W^{zx}v^{y}
+\end{align*}
+
+
+\subsubsection{Quantum metric dipole }
+
+The covariant derivative of quantum metric has already been implemented
+through DerMetric. 
+
+\subsubsection{ME1 }
+
+\begin{align*}
+\langle u_{m}|\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)Q\mathcal{H}Q\left(\partial_{c}P\right)|u_{n}\rangle & =\langle u_{m}|\left(\partial_{a}|u_{m^{\prime}}\rangle\langle u_{m^{\prime}}|\right)Q\left(\partial_{b}|u_{m^{\prime\prime}}\rangle\langle u_{m^{\prime\prime}}|\right)Q\mathcal{H}Q\left(\partial_{c}|u_{n^{\prime}}\rangle\langle u_{n^{\prime}}|\right)|u_{n}\rangle\\
+ & =\langle\partial_{a}u_{m}|u_{l^{\prime}}\rangle\langle u_{l^{\prime}}|\left(|\partial_{b}u_{m^{\prime\prime}}\rangle\langle u_{m^{\prime\prime}}|\right)|u_{l^{\prime\prime}}\rangle\langle u_{l^{\prime\prime}}|\mathcal{H}Q\left(\partial_{c}|u_{n^{\prime}}\rangle\langle u_{n^{\prime}}|\right)|u_{n}\rangle\\
+ & +\langle\partial_{a}u_{m}|u_{l^{\prime}}\rangle\langle u_{l^{\prime}}|\left(|u_{m^{\prime\prime}}\rangle\langle\partial_{b}u_{m^{\prime\prime}}|\right)|u_{l^{\prime\prime}}\rangle\langle u_{l^{\prime\prime}}|\mathcal{H}Q\left(\partial_{c}|u_{n^{\prime}}\rangle\langle u_{n^{\prime}}|\right)|u_{n}\rangle
+\end{align*}
+
+Notice that the inter-band matrix element of orbital magnetization
+reads
+\begin{align*}
+M_{mn}^{k} & =\frac{ie}{2\hbar}\epsilon_{ijk}\langle u_{m}|\partial_{i}\left(\varepsilon_{n}+\mathcal{H}\right)Q|\partial_{j}u_{n}\rangle\\
+ & =\frac{ie}{2\hbar}\epsilon_{ijk}\frac{\sum_{p\left(\neq n\right)}\left(v_{mp}^{i}+v_{n}^{i}\delta_{mp}\right)v_{pn}^{j}}{\varepsilon_{n}-\varepsilon_{p}}\\
+ & =\frac{ie}{2\hbar}\epsilon_{ijk}\left(\sum_{p\left(\neq n\right)}\frac{v_{mp}^{i}v_{pn}^{j}}{\varepsilon_{n}-\varepsilon_{p}}+\frac{v_{n}^{i}v_{mn}^{j}}{\varepsilon_{n}-\varepsilon_{m}}\right)
+\end{align*}
+Then 
+\begin{align*}
+\sum_{n\in\text{occ}}\sum_{m\left(\neq n\right)}\text{Re}A_{nm}^{l}M_{mn}^{k} & =\text{Re}\sum_{n\in\text{occ}}\sum_{m\left(\neq n\right)}\frac{iv_{nm}^{l}}{\varepsilon_{m}-\varepsilon_{n}}\frac{ie}{2\hbar}\epsilon_{ijk}\left(\sum_{p\left(\neq n\right)}\frac{v_{mp}^{i}v_{pn}^{j}}{\varepsilon_{n}-\varepsilon_{p}}+\frac{v_{n}^{i}v_{mn}^{j}}{\varepsilon_{n}-\varepsilon_{m}}\right)\\
+ & =\frac{e}{2\hbar}\epsilon_{ijk}\sum_{n\in\text{occ}}\left(\sum_{m,p\left(\neq n\right)}\frac{v_{nm}^{l}v_{mp}^{i}v_{pn}^{j}}{\left(\varepsilon_{n}-\varepsilon_{m}\right)\left(\varepsilon_{n}-\varepsilon_{p}\right)}+\sum_{m\left(\neq n\right)}\frac{v_{nm}^{l}v_{mn}^{j}v_{n}^{i}}{\left(\varepsilon_{n}-\varepsilon_{m}\right)^{2}}\right)
+\end{align*}
+If $m\in occ,n\in occ$
+
+We find that these two term can be obtained by defining two new gauge-covariant
+quantities: 
+\begin{align*}
+{\color{blue}\widetilde{V}_{mn}^{abc}} & \mathrel{\color{blue}\equiv}{\color{blue}\langle u_{m}|\left(\partial_{a}P\right)Q\left(\partial_{b}\mathcal{H}\right)Q\left(\partial_{c}P\right)|u_{n}}\mathclose{\color{blue}\rangle}\\
+{\color{blue}} & \mathrel{\color{blue}=}{\color{blue}\langle\partial_{a}u_{m}|Q\left(\partial_{b}\mathcal{H}\right)Q|\partial_{c}u_{n}}\mathclose{\color{blue}\rangle}\\
+{\color{blue}} & \mathrel{\color{blue}=}\mathinner{\color{blue}\frac{v_{ml^{\prime}}^{a}v_{l^{\prime}l^{\prime\prime}}^{b}v_{l^{\prime\prime}n}^{c}}{\left(\varepsilon_{m}-\varepsilon_{l^{\prime}}\right)\left(\varepsilon_{n}-\varepsilon_{l^{\prime\prime}}\right)}}
+\end{align*}
+and 
+\begin{align*}
+{\color{blue}\widetilde{\Gamma}_{mn}^{abc}} & \mathrel{\color{blue}=}{\color{blue}\frac{1}{2}\langle u_{m}|\left(\partial_{d}\mathcal{H}\right)\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)+\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)\left(\partial_{d}\mathcal{H}\right)|u_{n}}\mathclose{\color{blue}\rangle}\\
+{\color{blue}} & \mathrel{\color{blue}=}{\color{blue}\frac{1}{2}}\mathinner{\color{blue}\left[\left(\partial_{b}\mathcal{H}\right)_{mm^{\prime}}\widetilde{F}_{m^{\prime}n}^{ac}+\widetilde{F}_{mn^{\prime}}^{ac}\left(\partial_{b}\mathcal{H}\right)_{n^{\prime}n}\right]}\\
+{\color{blue}} & \mathrel{\color{blue}=}{\color{blue}\frac{1}{2}}\mathinner{\color{blue}\frac{v_{mm^{\prime}}^{b}v_{m^{\prime}l^{\prime\prime}}^{a}v_{l^{\prime\prime}n}^{c}+v_{ml^{\prime\prime}}^{a}v_{l^{\prime\prime}n^{\prime}}^{c}v_{n^{\prime}n}^{b}}{\left(\varepsilon_{m^{\prime}}-\varepsilon_{l^{\prime\prime}}\right)\left(\varepsilon_{n}-\varepsilon_{l^{\prime\prime}}\right)}}
+\end{align*}
+
+Next, we calculate these quantities 
+\begin{align*}
+\widetilde{V}_{mn}^{abc} & \equiv\langle u_{m}|\left(\partial_{a}P\right)Q\left(\partial_{b}\mathcal{H}\right)Q\left(\partial_{c}P\right)|u_{n}\rangle\\
+ & =\left(U_{j^{\prime\prime}m}^{*}\langle\partial_{a}u_{j^{\prime\prime}}^{W}|-i\bar{A}_{n^{\prime\prime}m}^{a*}\langle u_{n^{\prime\prime}}|+D_{l^{\prime\prime}m}^{a*}\langle u_{l^{\prime\prime}}|\right)\left(\partial_{b}\mathcal{H}\right)\left(|\partial_{c}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}n}+i|u_{n^{\prime}}\rangle\bar{A}_{n^{\prime}n}^{c}+|u_{l^{\prime}}\rangle D_{l^{\prime}n}^{c}\right)\\
+ & =U_{mj^{\prime\prime}}^{\dagger}\langle\partial_{a}u_{j^{\prime\prime}}^{W}|\left(\partial_{b}\mathcal{H}\right)|\partial_{c}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}n}+\bar{A}_{mn^{\prime\prime}}^{a}\langle u_{n^{\prime\prime}}|\left(\partial_{b}\mathcal{H}\right)|u_{n^{\prime}}\rangle\bar{A}_{n^{\prime}n}^{c}-D_{ml^{\prime\prime}}^{a}\langle u_{l^{\prime\prime}}|\left(\partial_{b}\mathcal{H}\right)|u_{l^{\prime}}\rangle D_{l^{\prime}n}^{c}\\
+ & +U_{mj^{\prime\prime}}^{\dagger}\langle\partial_{a}u_{j^{\prime\prime}}^{W}|\left(\partial_{b}\mathcal{H}\right)i|u_{n^{\prime}}\rangle\bar{A}_{n^{\prime}n}^{c}-i\bar{A}_{mn^{\prime\prime}}^{a}\langle u_{n^{\prime\prime}}|\left(\partial_{b}\mathcal{H}\right)|\partial_{c}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}n}\\
+ & +U_{mj^{\prime\prime}}^{\dagger}\langle\partial_{a}u_{j^{\prime\prime}}^{W}|\left(\partial_{b}\mathcal{H}\right)|u_{l^{\prime}}\rangle D_{l^{\prime}n}^{c}-D_{ml^{\prime\prime}}^{a}\langle u_{l^{\prime\prime}}|\left(\partial_{b}\mathcal{H}\right)|\partial_{c}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}n}\\
+ & -i\bar{A}_{mn^{\prime\prime}}^{a}\langle u_{n^{\prime\prime}}|\left(\partial_{b}\mathcal{H}\right)|u_{l^{\prime}}\rangle D_{l^{\prime}n}^{c}-iD_{ml^{\prime\prime}}^{a}\langle u_{l^{\prime\prime}}|\left(\partial_{b}\mathcal{H}\right)|u_{n^{\prime}}\rangle\bar{A}_{n^{\prime}n}^{c}\\
+ & =\overline{V}_{mn}^{abc}+\bar{A}_{mn^{\prime\prime}}^{a}\overline{v}_{n^{\prime\prime}n^{\prime}}^{b}\bar{A}_{n^{\prime}n}^{c}-D_{ml^{\prime\prime}}^{a}\overline{v}_{l^{\prime\prime}l^{\prime}}^{b}D_{l^{\prime}n}^{c}\\
+ & -U_{mj^{\prime\prime}}^{\dagger}\left(R_{j^{\prime}j^{\prime\prime}}^{W,ba}\right)^{*}U_{j^{\prime}n^{\prime}}\bar{A}_{n^{\prime}n}^{c}-\bar{A}_{mn^{\prime\prime}}^{a}U_{n^{\prime\prime}j^{\prime\prime}}^{\dagger}R_{j^{\prime\prime}j^{\prime}}^{W,bc}U_{j^{\prime}n}\\
+ & +iU_{mj^{\prime\prime}}^{\dagger}\left(R_{j^{\prime}j^{\prime\prime}}^{W,ba}\right)^{*}U_{j^{\prime}n^{\prime}}D_{l^{\prime}n}^{c}+iD_{ml^{\prime\prime}}^{a}U_{n^{\prime\prime}j^{\prime\prime}}^{\dagger}R_{j^{\prime\prime}j^{\prime}}^{W,bc}U_{j^{\prime}n}\\
+ & -i\bar{A}_{mn^{\prime\prime}}^{a}\overline{v}_{n^{\prime\prime}l^{\prime}}^{b}D_{l^{\prime}n}^{c}-iD_{ml^{\prime\prime}}^{a}\overline{v}_{l^{\prime\prime}n^{\prime}}^{b}\bar{A}_{n^{\prime}n}^{c}\\
+ & =\overline{V}_{mn}^{abc}+\bar{A}_{mn^{\prime\prime}}^{a}\overline{v}_{n^{\prime\prime}n^{\prime}}^{b}\bar{A}_{n^{\prime}n}^{c}-D_{ml^{\prime\prime}}^{a}\overline{v}_{l^{\prime\prime}l^{\prime}}^{b}D_{l^{\prime}n}^{c}\\
+ & -\bar{A}_{mn^{\prime\prime}}^{a}\overline{R}_{n^{\prime\prime}n}^{W,bc}+iD_{ml^{\prime\prime}}^{a}\overline{R}_{n^{\prime\prime}n}^{W,bc}-\left(\bar{A}_{nn^{\prime}}^{c}\overline{R}_{n^{\prime}m}^{W,ba}\right)^{*}-i\left(D_{nl^{\prime}}^{c}\overline{R}_{l^{\prime}m}^{W,ba}\right)^{*}\\
+ & -i\bar{A}_{mn^{\prime\prime}}^{a}\overline{v}_{n^{\prime\prime}l^{\prime}}^{b}D_{l^{\prime}n}^{c}-iD_{ml^{\prime\prime}}^{a}\overline{v}_{l^{\prime\prime}n^{\prime}}^{b}\bar{A}_{n^{\prime}n}^{c}
+\end{align*}
+\begin{align*}
+\widetilde{V}_{mn}^{abc} & =\overline{V}_{mn}^{abc}+\bar{A}_{mn^{\prime\prime}}^{a}\overline{v}_{n^{\prime\prime}n^{\prime}}^{b}\bar{A}_{n^{\prime}n}^{c}-D_{ml^{\prime\prime}}^{a}\overline{v}_{l^{\prime\prime}l^{\prime}}^{b}D_{l^{\prime}n}^{c}\\
+ & -\bar{A}_{mn^{\prime\prime}}^{a}\overline{J}_{n^{\prime\prime}n}^{W,bc}+iD_{ml^{\prime\prime}}^{a}\overline{J}_{n^{\prime\prime}n}^{W,bc}-\left(\bar{A}_{nn^{\prime}}^{c}\overline{J}_{n^{\prime}m}^{W,ba}\right)^{*}-i\left(D_{nl^{\prime}}^{c}\overline{J}_{l^{\prime}m}^{W,ba}\right)^{*}\\
+ & -i\bar{A}_{mn^{\prime\prime}}^{a}\overline{v}_{n^{\prime\prime}l^{\prime}}^{b}D_{l^{\prime}n}^{c}-iD_{ml^{\prime\prime}}^{a}\overline{v}_{l^{\prime\prime}n^{\prime}}^{b}\bar{A}_{n^{\prime}n}^{c}
+\end{align*}
+\begin{align*}
+v_{ij}^{W,a} & =\langle u_{i}^{W}|\left(\partial_{a}\mathcal{H}\right)|u_{j}^{W}\rangle\\
+J_{ij}^{W,ab} & =i\langle u_{i}^{W}|\left(\partial_{a}\mathcal{H}\right)|\partial_{b}u_{j}^{W}\rangle\\
+V_{ij}^{W,abc} & =\langle\partial_{a}u_{i}^{W}|\left(\partial_{b}\mathcal{H}\right)|\partial_{c}u_{j}^{W}\rangle
+\end{align*}
+In $\bar{A}_{mn^{\prime\prime}}^{a}\overline{v}_{n^{\prime\prime}n^{\prime}}^{b}\bar{A}_{n^{\prime}n}^{c}$,
+$\overline{v}_{n^{\prime\prime}n^{\prime}}^{b}=\langle u_{n^{\prime\prime}}|\left(\partial_{b}\mathcal{H}\right)|u_{n^{\prime}}\rangle$
+can be calculated by Fermi velocity. However, in $D_{ml^{\prime\prime}}^{a}\overline{v}_{l^{\prime\prime}l^{\prime}}^{b}D_{l^{\prime}n}^{c}$,
+the velocity element $\overline{v}_{l^{\prime\prime}l^{\prime}}^{b}$
+is calculated through 
+\[
+\overline{v}_{l^{\prime\prime}l^{\prime}}^{b}=U_{l^{\prime\prime}j^{\prime\prime}}^{\dagger}v_{j^{\prime\prime}j^{\prime}}^{W,b}U_{j^{\prime}l^{\prime}}
+\]
+\[
+|u_{j}^{W}\rangle=\sum_{\bm{R}}e^{i\bm{k}\cdot\left(\bm{R}+\bm{t}_{j}-\bm{r}\right)}|\bm{R}j\rangle
+\]
+
+\begin{align*}
+\left(A^{W}\right)_{ij}^{a} & =i\langle u_{i}^{W}|\partial_{a}u_{j}^{W}\rangle\\
+ & =i\sum_{\bm{R}^{\prime}\bm{R}}e^{-i\bm{k}\cdot\left(\bm{R}^{\prime}+\bm{t}_{i}-\bm{r}\right)}\langle\bm{R}^{\prime}i|i\left(\bm{R}+\bm{t}_{j}-\bm{r}\right)_{a}e^{i\bm{k}\cdot\left(\bm{R}+\bm{t}_{j}-\bm{r}\right)}|\bm{R}j\rangle\\
+ & =i\sum_{\bm{R}^{\prime}\bm{R}}e^{-i\bm{k}\cdot\left(\bm{t}_{i}-\bm{t}_{j}\right)}e^{i\bm{k}\cdot\left(\bm{R}-\bm{R}^{\prime}\right)}\langle\bm{R}^{\prime}i|i\left(\bm{R}+\bm{t}_{j}-\bm{r}\right)_{a}|\bm{R}j\rangle\\
+ & =-\sum_{\bm{R}^{\prime\prime}\bm{R}}e^{-i\bm{k}\cdot\left(\bm{t}_{i}-\bm{t}_{j}\right)}e^{i\bm{k}\cdot\bm{R}^{\prime\prime}}\langle\bm{0}i|\left(\bm{R}+\bm{t}_{j}-\left(\bm{r}+\bm{R}^{\prime}\right)\right)_{a}|\bm{R}^{\prime\prime}j\rangle\\
+ & =-\sum_{\bm{R}^{\prime\prime}\bm{R}}e^{-i\bm{k}\cdot\left(\bm{t}_{i}-\bm{t}_{j}\right)}e^{i\bm{k}\cdot\bm{R}^{\prime\prime}}\langle\bm{0}i|\left(\bm{R}^{\prime\prime}+\bm{t}_{j}-\bm{r}\right)_{a}|\bm{R}^{\prime\prime}j\rangle\\
+ & =\sum_{\bm{R}}e^{i\bm{k}\cdot\left(\bm{t}_{j}-\bm{t}_{i}\right)}e^{i\bm{k}\cdot\bm{R}}\langle\bm{0}i|\left(r_{a}-t_{j}^{a}\right)|\bm{R}j\rangle\\
+ & =e^{i\bm{k}\cdot\left(\bm{t}_{j}-\bm{t}_{i}\right)}\sum_{\bm{R}}e^{i\bm{k}\cdot\bm{R}}\mathbb{A}_{ij}^{a}\left(\bm{R}\right)
+\end{align*}
+\[
+\mathbb{A}_{ij}^{a}\left(\bm{R}\right)=\langle\bm{0}i|\left(r_{a}-t_{j}^{a}\right)|\bm{R}j\rangle
+\]
+\begin{align*}
+\left(B^{W}\right)_{ij}^{a} & =i\langle u_{i}^{W}|\mathcal{H}|\partial_{a}u_{j}^{W}\rangle\\
+ & =i\sum_{\bm{R}^{\prime}\bm{R}}e^{-i\bm{k}\cdot\left(\bm{R}^{\prime}+\bm{t}_{i}-\bm{r}\right)}\langle\bm{R}^{\prime}i|\mathcal{H}i\left(\bm{R}+\bm{t}_{j}-\bm{r}\right)_{a}e^{i\bm{k}\cdot\left(\bm{R}+\bm{t}_{j}-\bm{r}\right)}|\bm{R}j\rangle\\
+ & =\sum_{\bm{R}}e^{i\bm{k}\cdot\left(\bm{t}_{j}-\bm{t}_{i}\right)}e^{i\bm{k}\cdot\bm{R}}\langle\bm{0}i|\mathcal{H}\left(r_{a}-R_{a}-t_{j}^{a}\right)|\bm{R}j\rangle\\
+ & =e^{i\bm{k}\cdot\left(\bm{t}_{j}-\bm{t}_{i}\right)}\sum_{\bm{R}}e^{i\bm{k}\cdot\bm{R}}\mathbb{B}_{ij}^{a}\left(\bm{R}\right)
+\end{align*}
+\[
+\mathbb{B}_{ij}^{a}\left(\bm{R}\right)=\langle\bm{0}i|\mathcal{H}\left(r_{a}-R_{a}-t_{j}^{a}\right)|\bm{R}j\rangle
+\]
+\begin{align*}
+J_{ij}^{W,ab} & =i\langle u_{i}^{W}|\left(\partial_{a}\mathcal{H}\right)|\partial_{b}u_{j}^{W}\rangle\\
+ & =\sum_{\bm{R}}e^{i\bm{k}\cdot\left(\bm{t}_{j}-\bm{t}_{i}\right)}e^{i\bm{k}\cdot\bm{R}}\langle\bm{0}i|\left(\partial_{a}\mathcal{H}\right)\left(r_{b}-R_{b}-t_{j}^{b}\right)|\bm{R}j\rangle\\
+ & =e^{i\bm{k}\cdot\left(\bm{t}_{j}-\bm{t}_{i}\right)}\sum_{\bm{R}}e^{i\bm{k}\cdot\bm{R}}\mathbb{J}_{ij}^{ab}\left(\bm{R}\right)
+\end{align*}
+where 
+\[
+\mathbb{J}_{ij}^{ab}\left(\bm{R}\right)=\langle\bm{0}i|\left(\partial_{a}\mathcal{H}\right)\left(r_{b}-R_{b}-t_{j}^{b}\right)|\bm{R}j\rangle
+\]
+
+\[
+M_{lk}^{\text{ME1}}=\sum_{\bm{k}}\sum_{n\in\text{occ}}\sum_{m\left(\neq n\right)}\frac{2}{3}\text{Re}A_{nm}^{l}M_{mn}^{k}
+\]
+
+To calculate gamma term, we need to consider the covariant derivative
+of $W_{n}^{lj}$. Defining $W_{n}^{lj,i}\equiv\left\langle u_{n}\right|\partial_{i}\partial_{l}\partial_{j}H\left|u_{n}\right\rangle $,
+then 
+\[
+\left\langle u_{n}\right|\partial_{l}\partial_{j}H\left|u_{n}\right\rangle 
+\]
+\[
+\bar{H}=U^{\dagger}H^{W}U
+\]
+\[
+\bar{H}^{,j}=\overline{\partial_{j}H}=U^{\dagger}\partial_{j}H^{W}U
+\]
+Inverse mass 
+\[
+\partial_{i}v_{n}^{j}=\partial_{i}\overline{v_{j}}=\partial_{i}\overline{\partial_{j}H}=\partial_{i}\bar{H}^{,j}\equiv\bar{H}^{,j:i}
+\]
+
+Derivative of $M^{ab}$ 
+\begin{align*}
+M_{n}^{c} & =-i\frac{e}{2\hbar}\epsilon_{cab}\sum_{\bm{k}}\sum_{n\in\text{occ}}\langle\partial_{a}u_{n}|\left(\varepsilon_{n}+\mathcal{H}-2\mu\right)|\partial_{b}u_{n}\rangle\\
+ & =i\frac{e}{2\hbar}\epsilon_{cab}\sum_{\bm{k}}\sum_{n\in\text{occ}}\langle u_{n}|\partial_{a}\left(\varepsilon_{n}+\mathcal{H}-2\mu\right)|\partial_{b}u_{n}\rangle\\
+ & =i\frac{e}{2\hbar}\epsilon_{cab}\sum_{\bm{k}}\sum_{n\in\text{occ}}\langle u_{n}|\partial_{a}\left(\varepsilon_{n}+\mathcal{H}\right)|\partial_{b}u_{n}\rangle
+\end{align*}
+\begin{align*}
+\partial_{d}M_{n}^{c} & =i\frac{e}{2\hbar}\epsilon_{cab}\sum_{\bm{k}}\sum_{n\in\text{occ}}\partial_{d}\langle u_{n}|\partial_{a}\left(\varepsilon_{n}+\mathcal{H}\right)|\partial_{b}u_{n}\rangle\\
+ & =i\frac{e}{2\hbar}\epsilon_{cab}\sum_{\bm{k}}\sum_{n\in\text{occ}}\langle\partial_{d}u_{n}|\partial_{a}\left(\varepsilon_{n}+\mathcal{H}\right)|\partial_{b}u_{n}\rangle\\
+ & +\langle u_{n}|\partial_{d}\partial_{a}\left(\varepsilon_{n}+\mathcal{H}\right)|\partial_{b}u_{n}\rangle
+\end{align*}
+\[
+\partial_{a}\partial_{b}\partial_{c}\varepsilon_{n}
+\]
+\[
+\partial_{c}\varepsilon_{n}=\overline{\mathcal{H}}^{,c}
+\]
+\[
+M_{mn}^{c}=-i\frac{e}{2\hbar}\epsilon_{cab}\langle\partial_{a}u_{m}|\left(\mathcal{H}+\varepsilon_{m}-2\mu\right)|\partial_{b}u_{n}\rangle
+\]
+\[
+\widetilde{M}_{mn}^{c}=-i\frac{e}{2\hbar}\epsilon_{cab}\left(\widetilde{H}_{mn}^{ab}+\widetilde{G}_{mn}^{ab}-2\mu\widetilde{F}_{mn}^{ab}\right)
+\]
+\[
+\widetilde{M}_{mn}^{c:d}=-i\frac{e}{2\hbar}\epsilon_{cab}\left(\widetilde{H}_{mn}^{ab:d}+\widetilde{G}_{mn}^{ab:d}-2\mu\widetilde{F}_{mn}^{ab:d}\right)
+\]
+\[
+\widetilde{M}_{mn}^{c:d}=\widetilde{M}_{mn}^{c,d}-D_{ml^{\prime}}^{d}\widetilde{M}_{l^{\prime}n}^{c}+\widetilde{M}_{ml^{\prime}}^{c}D_{l^{\prime}n}^{d}
+\]
+\[
+\widetilde{M}_{mn}^{c,d}=-i\frac{e}{2\hbar}\epsilon_{cab}\left(\widetilde{H}_{mn}^{ab,d}+\widetilde{G}_{mn}^{ab,d}-2\mu\widetilde{F}_{mn}^{ab,d}\right)
+\]
+\begin{align*}
+\widetilde{H}_{mn}^{ab,d} & =\langle u_{m}|\partial_{d}\left[\left(\partial_{a}P\right)Q\mathcal{H}Q\left(\partial_{b}P\right)\right]|u_{n}\rangle\\
+\widetilde{G}_{mn}^{ab,d} & =\frac{1}{2}\langle u_{m}|\partial_{d}\left[\mathcal{H}\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)+\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)\mathcal{H}\right]|u_{n}\rangle\\
+\widetilde{F}_{mn}^{ab,d} & =\langle u_{m}|\partial_{d}\left[\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)\right]|u_{n}\rangle
+\end{align*}
+\[
+D_{ml^{\prime}}^{d}\widetilde{M}_{l^{\prime}n}^{c}=
+\]
+\begin{align*}
+\widetilde{H}_{mn}^{ab,d} & =\langle u_{m}|\left(\partial_{a}P\right)Q\left(\partial_{d}\mathcal{H}\right)Q\left(\partial_{b}P\right)|u_{n}\rangle\\
+ & =\langle u_{m}|\left(\partial_{a}|u_{m^{\prime}}\rangle\langle u_{m^{\prime}}|\right)Q\left(\partial_{d}\mathcal{H}\right)Q\left(\partial_{b}|u_{n^{\prime}}\rangle\langle u_{n^{\prime}}|\right)|u_{n}\rangle\\
+ & =\langle\partial_{a}u_{m}|Q\left(\partial_{d}\mathcal{H}\right)Q|\partial_{b}u_{n}\rangle\\
+ & =\langle\partial_{a}u_{m}|u_{l^{\prime}}\rangle\langle u_{l^{\prime}}|\left(\partial_{d}\mathcal{H}\right)|u_{l^{\prime\prime}}\rangle\langle u_{l^{\prime\prime}}|\partial_{b}u_{n}\rangle\\
+ & =\frac{v_{ml^{\prime}}^{a}v_{l^{\prime}l^{\prime\prime}}^{d}v_{l^{\prime\prime}n}^{b}}{\left(\varepsilon_{m}-\varepsilon_{l^{\prime}}\right)\left(\varepsilon_{n}-\varepsilon_{l^{\prime\prime}}\right)}
+\end{align*}
+\begin{align*}
+\widetilde{G}_{mn}^{ab,d} & =\frac{1}{2}\langle u_{m}|\left(\partial_{d}\mathcal{H}\right)\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)+\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)\left(\partial_{d}\mathcal{H}\right)|u_{n}\rangle\\
+ & =\frac{1}{2}\left[\langle u_{m}|\left(\partial_{d}\mathcal{H}\right)\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)|u_{n}\rangle+\langle u_{m}|\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)\left(\partial_{d}\mathcal{H}\right)|u_{n}\rangle\right]\\
+ & =\frac{1}{2}\left[\langle u_{m}|\left(\partial_{d}\mathcal{H}\right)\left(\partial_{a}|u_{m^{\prime}}\rangle\langle u_{m^{\prime}}|\right)|u_{l^{\prime\prime}}\rangle\langle u_{l^{\prime\prime}}|\left(\partial_{b}|u_{n^{\prime}}\rangle\langle u_{n^{\prime}}|\right)|u_{n}\rangle+\langle u_{m}|\left(\partial_{a}|u_{m^{\prime}}\rangle\langle u_{m^{\prime}}|\right)|u_{l^{\prime\prime}}\rangle\langle u_{l^{\prime\prime}}|\left(\partial_{b}|u_{n^{\prime}}\rangle\langle u_{n^{\prime}}|\right)\left(\partial_{d}\mathcal{H}\right)|u_{n}\rangle\right]\\
+ & =\frac{1}{2}\left[\langle u_{m}|\left(\partial_{d}\mathcal{H}\right)|u_{m^{\prime}}\rangle\langle\partial_{a}u_{m^{\prime}}|u_{l^{\prime\prime}}\rangle\langle u_{l^{\prime\prime}}|\partial_{b}u_{n}\rangle+\langle\partial_{a}u_{m}|u_{l^{\prime\prime}}\rangle\langle u_{l^{\prime\prime}}|\partial_{b}u_{n^{\prime}}\rangle\langle u_{n^{\prime}}|\left(\partial_{d}\mathcal{H}\right)|u_{n}\rangle\right]\\
+ & =\frac{1}{2}\frac{v_{mm^{\prime}}^{d}v_{m^{\prime}l^{\prime\prime}}^{a}v_{l^{\prime\prime}n}^{b}+v_{ml^{\prime\prime}}^{a}v_{l^{\prime\prime}n^{\prime}}^{b}v_{n^{\prime}n}^{d}}{\left(\varepsilon_{m^{\prime}}-\varepsilon_{l^{\prime\prime}}\right)\left(\varepsilon_{n}-\varepsilon_{l^{\prime\prime}}\right)}
+\end{align*}
+\begin{align*}
+\widetilde{F}_{mn}^{ab,d} & =\langle u_{m}|\left(\partial_{a}P\right)\left(\partial_{d}Q\right)\left(\partial_{b}P\right)|u_{n}\rangle\\
+ & =\langle u_{m}|\left(\partial_{a}|u_{m^{\prime}}\rangle\langle u_{m^{\prime}}|\right)\left(\partial_{d}|u_{l^{\prime\prime}}\rangle\langle u_{l^{\prime\prime}}|\right)\left(\partial_{b}|u_{n^{\prime}}\rangle\langle u_{n^{\prime}}|\right)|u_{n}\rangle\\
+ & =\langle u_{m}|\partial_{a}u_{m^{\prime}}\rangle\langle u_{m^{\prime}}|\partial_{d}u_{l^{\prime\prime}}\rangle\langle u_{l^{\prime\prime}}|\partial_{b}u_{n}\rangle+\langle\partial_{a}u_{m}|u_{l^{\prime\prime}}\rangle\langle\partial_{d}u_{l^{\prime\prime}}|u_{n^{\prime}}\rangle\langle\partial_{b}u_{n^{\prime}}|u_{n}\rangle\\
+ & =\frac{v_{mm^{\prime}}^{a}v_{m^{\prime}l^{\prime\prime}}^{d}v_{l^{\prime\prime}n}^{b}}{\left(\varepsilon_{m^{\prime}}-\varepsilon_{m}\right)\left(\varepsilon_{l^{\prime\prime}}-\varepsilon_{m^{\prime}}\right)\left(\varepsilon_{n}-\varepsilon_{l^{\prime\prime}}\right)}-\frac{v_{ml^{\prime\prime}}^{a}v_{l^{\prime\prime}n^{\prime}}^{d}v_{n^{\prime}n}^{b}}{\left(\varepsilon_{l^{\prime\prime}}-\varepsilon_{m}\right)\left(\varepsilon_{n^{\prime}}-\varepsilon_{l^{\prime\prime}}\right)\left(\varepsilon_{n}-\varepsilon_{n^{\prime}}\right)}
+\end{align*}
+
+
+\subsection{Calculation of $\partial_{i}g_{n}^{lj}$}
+
+\[
+g_{n}^{lj}=\text{Re}\sum_{m\left(\neq n\right)}A_{nm}^{l}A_{mn}^{j}=\text{Re}\sum_{m\left(\neq n\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}
+\]
+\begin{align*}
+\partial_{i}g_{n}^{lj} & =\text{Re}\sum_{m\left(\neq n\right)}\left[\frac{\langle\partial_{i}u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|\partial_{i}u_{n}\rangle}{\varepsilon_{nm}^{2}}\right.\\
+ & +\frac{\langle u_{n}|v_{l}|\partial_{i}u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle\partial_{i}u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & +\frac{\langle u_{n}|\partial_{i}v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|\partial_{i}v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & +\left.\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\partial_{i}\frac{1}{\varepsilon_{nm}^{2}}\right]\\
+ & =\text{Re}\sum_{m\left(\neq n\right)}\left[\sum_{p\left(\neq n\right)}\frac{\langle\partial_{i}u_{n}|u_{p}\rangle\langle u_{p}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{p}\rangle\langle u_{p}|\partial_{i}u_{n}\rangle}{\varepsilon_{nm}^{2}}\right.\\
+ & +\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{l}|u_{p}\rangle\langle u_{p}|\partial_{i}u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle\partial_{i}u_{m}|u_{p}\rangle\langle u_{p}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & +\frac{\langle u_{n}|\partial_{i}v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|\partial_{i}v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & -\left.2\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\frac{\partial_{i}\varepsilon_{n}-\partial_{i}\varepsilon_{m}}{\varepsilon_{nm}^{3}}\right]\\
+ & =\text{Re}\sum_{m\left(\neq n\right)}\left[\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|v_{i}|u_{p}\rangle\langle u_{p}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{np}}+\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{p}\rangle\langle u_{p}|v_{i}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{np}}\right.\\
+ & +\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{l}|u_{p}\rangle\langle u_{p}|v_{i}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{mp}}+\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{i}|u_{p}\rangle\langle u_{p}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{mp}}\\
+ & +\frac{\Gamma_{nm}^{il}\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\frac{\langle u_{n}|v_{l}|u_{m}\rangle\Gamma_{mn}^{ij}}{\varepsilon_{nm}^{2}}\\
+ & -\left.2\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\frac{v_{n}^{i}-v_{m}^{i}}{\varepsilon_{nm}^{3}}\right]\\
+ & =\text{Re}\sum_{m\left(\neq n\right)}\left[\sum_{p\left(\neq n\right)}\left(\frac{\mathbf{V}^{i}}{\Delta\varepsilon}\right)_{np}\mathbf{V}_{pm}^{l}\left(\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}\right)_{mn}-\sum_{p\left(\neq n\right)}\left(\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{2}}\right)_{nm}\mathbf{V}_{mp}^{j}\left(\frac{\mathbf{V}^{i}}{\Delta\varepsilon}\right)_{pn}\right.\\
+ & -\sum_{p\left(\neq m\right)}\mathbf{V}_{np}^{l}\left(\frac{\mathbf{V}^{i}}{\Delta\varepsilon}\right)_{pm}\left(\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}\right)_{mn}+\sum_{p\left(\neq m\right)}\left(\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{2}}\right)_{nm}\left(\frac{\mathbf{V}^{i}}{\Delta\varepsilon}\right)_{mp}\mathbf{V}_{pn}^{j}\\
+ & +\left(\bm{\Gamma}^{il}\right)_{nm}\left(\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}\right)_{mn}+\left(\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{2}}\right)_{nm}\left(\bm{\Gamma}^{ij}\right)_{mn}\\
+ & +\left.2\left(\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{2}}\right)_{nm}\left(\frac{\mathbf{V}^{j}}{\Delta\varepsilon}\right)_{mn}\mathbf{V}_{n}^{i}-2\left(\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{2}}\right)_{nm}\mathbf{V}_{m}^{i}\left(\frac{\mathbf{V}^{j}}{\Delta\varepsilon}\right)_{mn}\right]
+\end{align*}
+\[
+g_{n}^{lj}=\text{Re}\sum_{m\left(\neq n\right)}A_{nm}^{l}A_{mn}^{j}=\text{Re}\sum_{m\left(\neq n\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}
+\]
+\begin{align*}
+\partial_{i}g_{n}^{lj} & =\text{Re}\sum_{m\left(\neq n\right)}\left[\sum_{p\left(\neq n\right)}\frac{\langle\partial_{i}u_{n}|u_{p}\rangle\langle u_{p}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{p}\rangle\langle u_{p}|\partial_{i}u_{n}\rangle}{\varepsilon_{nm}^{2}}\right.\\
+ & +\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{l}|u_{p}\rangle\langle u_{p}|\partial_{i}u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle\partial_{i}u_{m}|u_{p}\rangle\langle u_{p}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & +\frac{\langle u_{n}|\partial_{i}v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|\partial_{i}v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & -\left.2\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\frac{\partial_{i}\varepsilon_{n}-\partial_{i}\varepsilon_{m}}{\varepsilon_{nm}^{3}}\right]
+\end{align*}
+\[
+\partial_{k}\partial_{i}g_{n}^{lj}=\partial_{k}\partial_{i}g_{n}^{lj,\text{I}}+\partial_{k}\partial_{i}g_{n}^{lj,\text{II}}+\partial_{k}\partial_{i}g_{n}^{lj,\text{III}}
+\]
+\begin{align*}
+\partial_{k}\partial_{i}g_{n}^{lj,\text{I}} & =\text{Re}\sum_{m\left(\neq n\right)}\left[-2\langle u_{n}|\partial_{i}v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\frac{\partial_{k}\varepsilon_{n}-\partial_{k}\varepsilon_{m}}{\varepsilon_{nm}^{3}}+\frac{\langle u_{n}|\partial_{i}v_{l}|u_{m}\rangle\langle u_{m}|\partial_{k}v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\right.\\
+ & -2\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|\partial_{i}v_{j}|u_{n}\rangle\frac{\partial_{k}\varepsilon_{n}-\partial_{k}\varepsilon_{m}}{\varepsilon_{nm}^{3}}+\frac{\langle u_{n}|\partial_{k}v_{l}|u_{m}\rangle\langle u_{m}|\partial_{i}v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & -6\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\frac{\left(\partial_{i}\varepsilon_{n}-\partial_{i}\varepsilon_{m}\right)\left(\partial_{k}\varepsilon_{n}-\partial_{k}\varepsilon_{m}\right)}{\varepsilon_{nm}^{4}}-2\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\frac{\partial_{k}\partial_{i}\varepsilon_{n}-\partial_{k}\partial_{i}\varepsilon_{m}}{\varepsilon_{nm}^{3}}\\
+ & \left.-2\langle u_{n}|\partial_{k}v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\frac{\partial_{i}\varepsilon_{n}-\partial_{i}\varepsilon_{m}}{\varepsilon_{nm}^{3}}-2\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|\partial_{k}v_{j}|u_{n}\rangle\frac{\partial_{i}\varepsilon_{n}-\partial_{i}\varepsilon_{m}}{\varepsilon_{nm}^{3}}\right]
+\end{align*}
+\begin{align*}
+\partial_{k}\partial_{i}g_{n}^{lj,\text{I}} & =2\left[\bm{\Gamma}^{il}\left[\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{3}},\mathbf{V}_{F}^{k}\right]\right]_{nn}-\left[\frac{\bm{\Gamma}^{il}}{\Delta\varepsilon}\frac{\bm{\Gamma}^{kj}}{\Delta\varepsilon}\right]_{nn}\\
+ & -2\left[\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{3}}\left[\bm{\Gamma}^{ij},\mathbf{V}_{F}^{k}\right]\right]_{nn}-\left[\frac{\bm{\Gamma}^{kl}}{\Delta\varepsilon}\frac{\bm{\Gamma}^{ij}}{\Delta\varepsilon}\right]_{nn}\\
+ & -6\left[\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{2}}\left(\mathbf{V}_{F}^{i}\mathbf{V}_{F}^{k}\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}+\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}\mathbf{V}_{F}^{i}\mathbf{V}_{F}^{k}-\mathbf{V}_{F}^{k}\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}\mathbf{V}_{F}^{i}-\mathbf{V}_{F}^{i}\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}\mathbf{V}_{F}^{k}\right)\right]_{nn}
+\end{align*}
+\begin{align*}
+\partial_{k}\partial_{i}g_{n}^{lj,\text{II}} & =\text{Re}\sum_{m\left(\neq n\right)}\left[-2\sum_{p\left(\neq n\right)}\langle\partial_{i}u_{n}|u_{p}\rangle\langle u_{p}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\frac{\partial_{k}\varepsilon_{n}-\partial_{k}\varepsilon_{m}}{\varepsilon_{nm}^{3}}\right.\\
+ & -\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|\partial_{i}u_{p}\rangle\langle u_{p}|\partial_{k}v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\sum_{p\left(\neq n\right)}\frac{\langle\partial_{i}u_{n}|u_{p}\rangle\langle u_{p}|v_{l}|u_{m}\rangle\langle u_{m}|\partial_{k}v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & -2\sum_{p\left(\neq n\right)}\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{p}\rangle\langle u_{p}|\partial_{i}u_{n}\rangle\frac{\partial_{k}\varepsilon_{n}-\partial_{k}\varepsilon_{m}}{\varepsilon_{nm}^{3}}\\
+ & +\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|\partial_{k}v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{p}\rangle\langle u_{p}|\partial_{i}u_{n}\rangle}{\varepsilon_{nm}^{2}}+\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|\partial_{k}v_{j}|u_{p}\rangle\langle u_{p}|\partial_{i}u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & -2\sum_{p\left(\neq m\right)}\langle u_{n}|v_{l}|u_{p}\rangle\langle u_{p}|\partial_{i}u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\frac{\partial_{k}\varepsilon_{n}-\partial_{k}\varepsilon_{m}}{\varepsilon_{nm}^{3}}\\
+ & +\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|\partial_{k}v_{l}|u_{p}\rangle\langle u_{p}|\partial_{i}u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{l}|u_{p}\rangle\langle u_{p}|\partial_{i}u_{m}\rangle\langle u_{m}|\partial_{k}v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & -2\sum_{p\left(\neq m\right)}\langle u_{n}|v_{l}|u_{m}\rangle\langle\partial_{i}u_{m}|u_{p}\rangle\langle u_{p}|v_{j}|u_{n}\rangle\frac{\partial_{k}\varepsilon_{n}-\partial_{k}\varepsilon_{m}}{\varepsilon_{nm}^{3}}\\
+ & +\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|\partial_{k}v_{l}|u_{m}\rangle\langle\partial_{i}u_{m}|u_{p}\rangle\langle u_{p}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle\partial_{i}u_{m}|u_{p}\rangle\langle u_{p}|\partial_{k}v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & +\sum_{p\left(\neq n\right)}\frac{\langle\partial_{k}u_{n}|u_{p}\rangle\langle u_{p}|\partial_{i}v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|\partial_{i}v_{l}|u_{p}\rangle\langle u_{p}|\partial_{k}u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & +\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|\partial_{i}v_{l}|u_{m}\rangle\langle\partial_{k}u_{m}|u_{p}\rangle\langle u_{p}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|\partial_{i}v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{p}\rangle\langle u_{p}|\partial_{k}u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & +\sum_{p\left(\neq n\right)}\frac{\langle\partial_{k}u_{n}|u_{p}\rangle\langle u_{p}|v_{l}|u_{m}\rangle\langle u_{m}|\partial_{i}v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{l}|u_{p}\rangle\langle u_{p}|\partial_{k}u_{m}\rangle\langle u_{m}|\partial_{i}v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & +\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle\partial_{k}u_{m}|u_{p}\rangle\langle u_{p}|\partial_{i}v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|\partial_{i}v_{j}|u_{p}\rangle\langle u_{p}|\partial_{k}u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & -2\sum_{p\left(\neq n\right)}\langle\partial_{k}u_{n}|u_{p}\rangle\langle u_{p}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\frac{\partial_{i}\varepsilon_{n}-\partial_{i}\varepsilon_{m}}{\varepsilon_{nm}^{3}}\\
+ & -2\sum_{p\left(\neq m\right)}\langle u_{n}|v_{l}|u_{p}\rangle\langle u_{p}|\partial_{k}u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\frac{\partial_{i}\varepsilon_{n}-\partial_{i}\varepsilon_{m}}{\varepsilon_{nm}^{3}}\\
+ & -2\sum_{p\left(\neq m\right)}\langle u_{n}|v_{l}|u_{m}\rangle\langle\partial_{k}u_{m}|u_{p}\rangle\langle u_{p}|v_{j}|u_{n}\rangle\frac{\partial_{i}\varepsilon_{n}-\partial_{i}\varepsilon_{m}}{\varepsilon_{nm}^{3}}\\
+ & \left.-2\sum_{p\left(\neq n\right)}\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{p}\rangle\langle u_{p}|\partial_{k}u_{n}\rangle\frac{\partial_{i}\varepsilon_{n}-\partial_{i}\varepsilon_{m}}{\varepsilon_{nm}^{3}}\right]
+\end{align*}
+
+\begin{align*}
+\langle u_{n}|\partial_{i}u_{p}\rangle & =-\frac{\langle u_{n}|v_{i}|u_{p}\rangle}{\varepsilon_{np}}=-\left[\frac{\mathbf{V}^{i}}{\Delta\varepsilon}\right]_{np}\\
+\langle\partial_{i}u_{n}|u_{p}\rangle & =\frac{\langle u_{n}|v_{i}|u_{p}\rangle}{\varepsilon_{np}}=\left[\frac{\mathbf{V}^{i}}{\Delta\varepsilon}\right]_{np}
+\end{align*}
+\begin{align*}
+\partial_{k}\partial_{i}g_{n}^{lj,\text{II}} & =\text{Re}\left[2\left[\frac{\mathbf{V}^{i}}{\Delta\varepsilon},\mathbf{V}^{l}\right]\left[\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{3}},\mathbf{V}_{F}^{k}\right]+2\left[\mathbf{V}_{F}^{k},\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{3}}\right]\left[\mathbf{V}^{j},\frac{\mathbf{V}^{i}}{\Delta\varepsilon}\right]\right.\\
+ & +2\left[\frac{\mathbf{V}^{k}}{\Delta\varepsilon},\mathbf{V}^{l}\right]\left[\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{3}},\mathbf{V}_{F}^{i}\right]+2\left[\mathbf{V}_{F}^{i},\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{3}}\right]\left[\mathbf{V}^{j},\frac{\mathbf{V}^{k}}{\Delta\varepsilon}\right]\\
+ & +\left[\frac{\mathbf{V}^{i}}{\Delta\varepsilon},\bm{\Gamma}^{kl}\right]\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}+\frac{\bm{\Gamma}^{kl}}{\Delta\varepsilon^{2}}\left[\frac{\mathbf{V}^{i}}{\Delta\varepsilon},\mathbf{V}^{j}\right]\\
+ & +\left[\frac{\mathbf{V}^{k}}{\Delta\varepsilon},\bm{\Gamma}^{il}\right]\frac{\mathbf{V}^{j}}{\Delta\varepsilon^{2}}+\frac{\bm{\Gamma}^{il}}{\Delta\varepsilon^{2}}\left[\frac{\mathbf{V}^{k}}{\Delta\varepsilon},\mathbf{V}^{j}\right]\\
+ & +\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{2}}\left[\frac{\mathbf{V}^{i}}{\Delta\varepsilon},\bm{\Gamma}^{kj}\right]+\left[\frac{\mathbf{V}^{i}}{\Delta\varepsilon},\mathbf{V}^{l}\right]\frac{\bm{\Gamma}^{kj}}{\Delta\varepsilon^{2}}\\
+ & \left.+\frac{\mathbf{V}^{l}}{\Delta\varepsilon^{2}}\left[\frac{\mathbf{V}^{k}}{\Delta\varepsilon},\bm{\Gamma}^{ij}\right]+\left[\frac{\mathbf{V}^{k}}{\Delta\varepsilon},\mathbf{V}^{l}\right]\frac{\bm{\Gamma}^{ij}}{\Delta\varepsilon^{2}}\right]
+\end{align*}
+\begin{align*}
+\partial_{k}\partial_{i}g_{n}^{lj,\text{III}} & =\\
+\\\\
+\end{align*}
+\begin{align*}
+\partial_{i}g_{n}^{lj} & =\text{Re}\sum_{m\left(\neq n\right)}\left[\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|v_{i}|u_{p}\rangle\langle u_{p}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{np}}+\sum_{p\left(\neq n\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{p}\rangle\langle u_{p}|v_{i}|u_{n}\rangle}{\varepsilon_{nm}^{2}\varepsilon_{np}}\right.\\
+ & +\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{l}|u_{p}\rangle\langle u_{p}|\partial_{i}u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\sum_{p\left(\neq m\right)}\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle\partial_{i}u_{m}|u_{p}\rangle\langle u_{p}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & +\frac{\langle u_{n}|\partial_{i}v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}+\frac{\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|\partial_{i}v_{j}|u_{n}\rangle}{\varepsilon_{nm}^{2}}\\
+ & -\left.2\langle u_{n}|v_{l}|u_{m}\rangle\langle u_{m}|v_{j}|u_{n}\rangle\frac{\partial_{i}\varepsilon_{n}-\partial_{i}\varepsilon_{m}}{\varepsilon_{nm}^{3}}\right]
+\end{align*}
+
+
+\subsection{Drude term}
+
+\begin{align*}
+X_{nm}^{:d} & =X_{nm}^{,d}+X_{nl^{\prime}}D_{l^{\prime}m}^{d}-D_{nl^{\prime}}^{d}X_{l^{\prime}m}\\
+X_{nl}^{:d} & =X_{nl}^{,d}+X_{nn^{\prime}}D_{n^{\prime}l}^{d}-D_{nl^{\prime}}^{d}X_{l^{\prime}l}\\
+X_{ln}^{:d} & =X_{ln}^{,d}+X_{ll^{\prime}}D_{l^{\prime}n}^{d}-D_{ln^{\prime}}^{d}X_{n^{\prime}n}
+\end{align*}
+\[
+\partial_{b}\mathcal{H}_{n^{\prime}n^{\prime}}^{,a}=\mathcal{H}_{n^{\prime}n^{\prime}}^{,a:b}=\mathcal{H}_{n^{\prime}n^{\prime}}^{,ab}+\mathcal{H}_{n^{\prime}l^{\prime}}^{,a}D_{l^{\prime}n^{\prime}}^{b}-D_{n^{\prime}l^{\prime}}^{b}\mathcal{H}_{l^{\prime}n^{\prime}}^{,a}
+\]
+\begin{align*}
+\partial_{c}\left(\partial_{b}\mathcal{H}_{n^{\prime}n^{\prime}}^{,a}\right) & =\partial_{c}\left(\mathcal{H}_{n^{\prime}n^{\prime}}^{,ab}+\mathcal{H}_{n^{\prime}l^{\prime}}^{,a}D_{l^{\prime}n^{\prime}}^{b}-D_{n^{\prime}l^{\prime}}^{b}\mathcal{H}_{l^{\prime}n^{\prime}}^{,a}\right)\\
+ & =\mathcal{H}_{n^{\prime}n^{\prime}}^{,ab:c}+\mathcal{H}_{n^{\prime}l^{\prime}}^{,a:c}D_{l^{\prime}n^{\prime}}^{b}+\mathcal{H}_{n^{\prime}l^{\prime}}^{,a}D_{l^{\prime}n^{\prime}}^{b:c}-D_{n^{\prime}l^{\prime}}^{b:c}\mathcal{H}_{l^{\prime}n^{\prime}}^{,a}-D_{n^{\prime}l^{\prime}}^{b}\mathcal{H}_{l^{\prime}n^{\prime}}^{,a:c}
+\end{align*}
+\begin{align*}
+\partial_{d}\left(\partial_{c}\left(\partial_{b}\mathcal{H}_{n^{\prime}n^{\prime}}^{,a}\right)\right) & =\partial_{d}\left(\mathcal{H}_{n^{\prime}n^{\prime}}^{,ab:c}+\mathcal{H}_{n^{\prime}l^{\prime}}^{,a:c}D_{l^{\prime}n^{\prime}}^{b}+\mathcal{H}_{n^{\prime}l^{\prime}}^{,a}D_{l^{\prime}n^{\prime}}^{b:c}-D_{n^{\prime}l^{\prime}}^{b:c}\mathcal{H}_{l^{\prime}n^{\prime}}^{,a}-D_{n^{\prime}l^{\prime}}^{b}\mathcal{H}_{l^{\prime}n^{\prime}}^{,a:c}\right)\\
+ & ={\color{red}\mathcal{H}_{n^{\prime}n^{\prime}}^{,ab:cd}}+{\color{red}\mathcal{H}_{n^{\prime}l^{\prime}}^{,a:cd}}D_{l^{\prime}n^{\prime}}^{b}+\mathcal{H}_{n^{\prime}l^{\prime}}^{,a:c}D_{l^{\prime}n^{\prime}}^{b:d}+\mathcal{H}_{n^{\prime}l^{\prime}}^{,a:d}D_{l^{\prime}n^{\prime}}^{b:c}+\mathcal{H}_{n^{\prime}l^{\prime}}^{,a}D_{l^{\prime}n^{\prime}}^{b:cd}\\
+ & -D_{n^{\prime}l^{\prime}}^{b:cd}\mathcal{H}_{l^{\prime}n^{\prime}}^{,a}-D_{n^{\prime}l^{\prime}}^{b:c}\mathcal{H}_{l^{\prime}n^{\prime}}^{,a:d}-D_{n^{\prime}l^{\prime}}^{b:d}\mathcal{H}_{l^{\prime}n^{\prime}}^{,a:c}-D_{n^{\prime}l^{\prime}}^{b}\mathcal{H}_{l^{\prime}n^{\prime}}^{,a:cd}
+\end{align*}
+\begin{align*}
+\mathcal{H}_{n^{\prime}n^{\prime}}^{,ab:cd} & =\left(\mathcal{H}_{n^{\prime}n^{\prime}}^{,ab:c}\right)^{:d}\\
+ & =\left(\mathcal{H}_{n^{\prime}n^{\prime}}^{,abc}+\mathcal{H}_{n^{\prime}l^{\prime}}^{,ab}D_{l^{\prime}n^{\prime}}^{c}-D_{n^{\prime}l^{\prime}}^{c}\mathcal{H}_{l^{\prime}n^{\prime}}^{,ab}\right)^{:d}\\
+ & =\mathcal{H}_{n^{\prime}n^{\prime}}^{,abc:d}+\mathcal{H}_{n^{\prime}l^{\prime}}^{,ab:d}D_{l^{\prime}n^{\prime}}^{c}+\mathcal{H}_{n^{\prime}l^{\prime}}^{,ab}D_{l^{\prime}n^{\prime}}^{c:d}-D_{n^{\prime}l^{\prime}}^{c:d}\mathcal{H}_{l^{\prime}n^{\prime}}^{,ab}-D_{n^{\prime}l^{\prime}}^{c}\mathcal{H}_{l^{\prime}n^{\prime}}^{,ab:d}
+\end{align*}
+\begin{align*}
+\mathcal{H}_{l^{\prime}n^{\prime}}^{,a:cd} & =\left(\mathcal{H}_{l^{\prime}n^{\prime}}^{,a:c}\right)^{:d}\\
+ & =\left(\mathcal{H}_{l^{\prime}n^{\prime}}^{,ac}+\mathcal{H}_{l^{\prime}l^{\prime\prime}}^{,a}D_{l^{\prime\prime}n^{\prime}}^{c}-D_{l^{\prime}n^{\prime\prime}}^{c}\mathcal{H}_{n^{\prime\prime}n^{\prime\prime}}^{,a}\right)^{:d}\\
+ & =\mathcal{H}_{l^{\prime}n^{\prime}}^{,ac:d}+\mathcal{H}_{l^{\prime}l^{\prime\prime}}^{,a:d}D_{l^{\prime\prime}n^{\prime}}^{c}+\mathcal{H}_{l^{\prime}l^{\prime\prime}}^{,a}D_{l^{\prime\prime}n^{\prime}}^{c:d}-D_{l^{\prime}n^{\prime\prime}}^{c:d}\mathcal{H}_{n^{\prime\prime}n^{\prime}}^{,a}-D_{l^{\prime}n^{\prime\prime}}^{c}\mathcal{H}_{n^{\prime\prime}n^{\prime}}^{,a:d}
+\end{align*}
+-----------------
+
+\[
+\widetilde{\mathcal{F}}_{n^{\prime}n^{\prime}}^{ab}=\frac{1}{2}\left(N_{n^{\prime}l^{\prime}}^{a}M_{l^{\prime}n^{\prime}}^{b}-M_{n^{\prime}l^{\prime}}^{a}N_{l^{\prime}n^{\prime}}^{b}\right)
+\]
+\begin{align*}
+M_{ml^{\prime}}^{a} & =\bar{A}_{ml^{\prime}}^{a}+iD_{ml^{\prime}}^{a}\\
+N_{ml^{\prime}}^{a} & =\frac{M_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}
+\end{align*}
+\begin{align*}
+\mathcal{\mathfrak{g}}_{n} & =\frac{1}{\varepsilon-\varepsilon_{n}}\\
+\mathcal{\mathfrak{g}}_{m} & =\frac{1}{\varepsilon-\varepsilon_{m}}\\
+G_{n}^{R}G_{m}^{R} & =\frac{1}{\left(\varepsilon-\varepsilon_{n}+i\eta\right)\left(\varepsilon-\varepsilon_{m}+i\eta\right)}\\
+ & =\frac{1}{\varepsilon_{n}-\varepsilon_{m}}\left(\frac{1}{\varepsilon-\varepsilon_{n}+i\eta}-\frac{1}{\varepsilon-\varepsilon_{m}+i\eta}\right)\\
+ & =\frac{1}{\varepsilon_{n}-\varepsilon_{m}}\left(G_{n}^{R}-G_{m}^{R}\right)\\
+\frac{1}{\varepsilon_{n}-\varepsilon_{m}} & =\frac{G_{n}^{R}G_{m}^{R}}{G_{n}^{R}-G_{m}^{R}}=\frac{1}{G_{m}^{R-1}-G_{n}^{R-1}}\\
+\mathcal{\mathfrak{g}}_{n}^{-1} & =\varepsilon-\varepsilon_{n}\\
+\mathcal{\mathfrak{g}}_{m}^{-1} & =\varepsilon-\varepsilon_{m}\\
+\mathcal{\mathfrak{g}}_{m}^{-1}-\mathcal{\mathfrak{g}}_{n}^{-1} & =\varepsilon_{n}-\varepsilon_{m}\\
+\frac{1}{\varepsilon_{n}-\varepsilon_{m}} & =\frac{1}{\mathcal{\mathfrak{g}}_{m}^{-1}-\mathcal{\mathfrak{g}}_{n}^{-1}}
+\end{align*}
+
+\end{document}

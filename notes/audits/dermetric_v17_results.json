@@ -1,0 +1,187 @@
+{
+  "two_band": {
+    "active": [
+      0
+    ],
+    "external_terms": true,
+    "original_xxx": 0.0,
+    "candidate_xxx": 1.4,
+    "candidate_vs_basic_matrix_error": 0.0,
+    "finite_difference": [
+      {
+        "step": 0.001,
+        "original_max_error": 1.3999999999999846,
+        "candidate_max_error": 1.532107773982716e-14
+      },
+      {
+        "step": 0.0001,
+        "original_max_error": 1.3999999999997348,
+        "candidate_max_error": 2.651212582804874e-13
+      },
+      {
+        "step": 1e-05,
+        "original_max_error": 1.3999999999930732,
+        "candidate_max_error": 6.926681450636352e-12
+      }
+    ]
+  },
+  "two_band_full_active": {
+    "active": [
+      0,
+      1
+    ],
+    "external_terms": true,
+    "original_xxx": 2.8,
+    "candidate_xxx": 0.0,
+    "candidate_vs_basic_matrix_error": 0.0,
+    "finite_difference": [
+      {
+        "step": 0.0001,
+        "original_max_error": 2.8,
+        "candidate_max_error": 0.0
+      }
+    ]
+  },
+  "four_band": [
+    {
+      "active": [
+        0
+      ],
+      "external_terms": false,
+      "original_xxx": 0.001548325009839848,
+      "candidate_xxx": 0.001548325009839848,
+      "candidate_vs_basic_matrix_error": 1.734723475976807e-18,
+      "finite_difference": [
+        {
+          "step": 0.01,
+          "original_max_error": 2.6089622262581713e-07,
+          "candidate_max_error": 2.6089622262581713e-07
+        },
+        {
+          "step": 0.001,
+          "original_max_error": 2.6088840601734553e-09,
+          "candidate_max_error": 2.6088840601734553e-09
+        },
+        {
+          "step": 0.0001,
+          "original_max_error": 2.617223798795365e-11,
+          "candidate_max_error": 2.617223798795365e-11
+        }
+      ]
+    },
+    {
+      "active": [
+        0
+      ],
+      "external_terms": true,
+      "original_xxx": 0.020420910228384742,
+      "candidate_xxx": 0.16249216393559715,
+      "candidate_vs_basic_matrix_error": 2.7755575615628914e-17,
+      "finite_difference": [
+        {
+          "step": 0.01,
+          "original_max_error": 0.14207176897399312,
+          "candidate_max_error": 5.152667807151179e-07
+        },
+        {
+          "step": 0.001,
+          "original_max_error": 0.1420712588598311,
+          "candidate_max_error": 5.15261869282746e-09
+        },
+        {
+          "step": 0.0001,
+          "original_max_error": 0.14207125376000776,
+          "candidate_max_error": 5.2795351423995385e-11
+        }
+      ]
+    },
+    {
+      "active": [
+        0,
+        1
+      ],
+      "external_terms": false,
+      "original_xxx": 0.004182458352503924,
+      "candidate_xxx": 0.004182458352503924,
+      "candidate_vs_basic_matrix_error": 3.469446951953614e-18,
+      "finite_difference": [
+        {
+          "step": 0.01,
+          "original_max_error": 9.816449436580998e-07,
+          "candidate_max_error": 9.816449436580998e-07
+        },
+        {
+          "step": 0.001,
+          "original_max_error": 9.81650388753863e-09,
+          "candidate_max_error": 9.81650388753863e-09
+        },
+        {
+          "step": 0.0001,
+          "original_max_error": 9.839562498115129e-11,
+          "candidate_max_error": 9.839562498115129e-11
+        }
+      ]
+    },
+    {
+      "active": [
+        0,
+        1
+      ],
+      "external_terms": true,
+      "original_xxx": 0.08278307957790629,
+      "candidate_xxx": 0.17517267721001142,
+      "candidate_vs_basic_matrix_error": 2.0816681711721685e-17,
+      "finite_difference": [
+        {
+          "step": 0.01,
+          "original_max_error": 0.09238994797092706,
+          "candidate_max_error": 8.064777492211572e-07
+        },
+        {
+          "step": 0.001,
+          "original_max_error": 0.09238960113548336,
+          "candidate_max_error": 8.06478344522743e-09
+        },
+        {
+          "step": 0.0001,
+          "original_max_error": 0.0923895976668552,
+          "candidate_max_error": 8.080191377102253e-11
+        }
+      ]
+    }
+  ],
+  "degenerate_active_pair": {
+    "active": [
+      0,
+      1
+    ],
+    "external_terms": true,
+    "original_xxx": 0.07167270043890996,
+    "candidate_xxx": 0.16189667617555153,
+    "candidate_vs_basic_matrix_error": 2.0816681711721685e-17,
+    "finite_difference": [
+      {
+        "step": 0.01,
+        "original_max_error": 0.090224129180442,
+        "candidate_max_error": 6.237230378430825e-07
+      },
+      {
+        "step": 0.001,
+        "original_max_error": 0.09022397727102847,
+        "candidate_max_error": 6.237235075645664e-09
+      },
+      {
+        "step": 0.0001,
+        "original_max_error": 0.09022397575124418,
+        "candidate_max_error": 6.223359327872657e-11
+      }
+    ]
+  },
+  "provenance": {
+    "source": "v1.7/wannierberri/formula/covariant.py",
+    "source_sha256": "7c6cedd6ded790c3a4788522c074eb7793f2bb6761fb8221ec986073fc6aae73",
+    "formula_base_used": "/private/tmp/wb-v17-reference/wannierberri/formula/formula.py",
+    "formula_base_sha256": "98b6209f51e28ce158550e2dec6ca1fa1e5daf94fdc7005047308f807e955f1e",
+    "method": "AST-extracted archived classes, NumPy einsum, analytic model-data adapter; candidate changed in memory only"
+  }
+}

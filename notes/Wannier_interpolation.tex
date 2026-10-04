@@ -1,0 +1,443 @@
+%% LyX 2.4.4 created this file.  For more info, see https://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[12pt,english]{revtex4-2}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setcounter{secnumdepth}{3}
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+\usepackage{babel}
+\begin{document}
+\title{Wannier interpolation of higher-order conductivities induced by quantum
+geometry multipole}
+\maketitle
+
+\section{Useful relations of covariant derivative}
+
+In the following, all the primed indices are assumed to be summed.
+$n,m$ are summed over set $A$, and $p,l$ are summed over set $B$.
+Under 
+\[
+|n\rangle\stackrel{U^{A}}{\longrightarrow}\sum_{m}^{A}|m\rangle U_{mn}^{A},\ |l\rangle\stackrel{U^{B}}{\longrightarrow}\sum_{p}^{B}|p\rangle U_{pl}^{B}
+\]
+$X_{nl}=\langle n|\hat{X}|l\rangle$ is covariant transformed as
+\[
+X_{nl}\stackrel{U^{A}}{\longrightarrow}\sum_{m}^{A}\left(U^{A}\right)_{nm}^{\dagger}X_{ml},\ X_{nl}\stackrel{U^{B}}{\longrightarrow}\sum_{p}^{B}X_{mp}U_{pl}^{B}
+\]
+Yet, the derivative $X_{nl}^{,d}\equiv\langle n|\partial_{d}\hat{X}|l\rangle$
+is not covariant transformed. 
+
+We can define the covariant derivative 
+\[
+X_{nl}^{:d}\equiv\partial_{d}X_{nl}+D_{nn^{\prime}}^{d}X_{n^{\prime}l}-X_{nl^{\prime}}D_{l^{\prime}l}^{d}
+\]
+Matrix element
+\begin{equation}
+X_{nl}^{:d}=X_{nl}^{,d}-D_{nl^{\prime}}^{d}X_{l^{\prime}l}+X_{nn^{\prime}}D_{n^{\prime}l}^{d}
+\end{equation}
+\begin{equation}
+X_{nm}^{:d}=X_{nm}^{,d}-D_{nl^{\prime}}^{d}X_{l^{\prime}m}+X_{nl^{\prime}}D_{l^{\prime}m}^{d}
+\end{equation}
+Hamiltonian 
+\begin{equation}
+H_{nm}^{:d}=H_{nm}^{,d},\ H_{nl}^{:d}=0
+\end{equation}
+Trace rule
+\begin{equation}
+\partial_{d}X_{n^{\prime}n^{\prime}}=X_{n^{\prime}n^{\prime}}^{:d}
+\end{equation}
+Product rule 
+\begin{equation}
+\left(X_{rs^{\prime}}Y_{s^{\prime}t}\right)^{:d}=X_{rs^{\prime}}^{:d}Y_{s^{\prime}t}+X_{rs^{\prime}}Y_{s^{\prime}t}^{:d}
+\end{equation}
+Chain rule 
+\begin{equation}
+\widetilde{f}_{ij}=\delta_{ij}f\left(\epsilon_{i}\right)
+\end{equation}
+\[
+\widetilde{f}_{ij}^{:d}=H_{ij}^{:d}\times\begin{cases}
+\frac{df\left(\epsilon\right)}{d\epsilon} & \mathrm{if}\ \epsilon_{i}=\epsilon_{j}\\
+\frac{f\left(\epsilon_{i}\right)-f\left(\epsilon_{j}\right)}{\epsilon_{i}-\epsilon_{j}} & \mathrm{if}\ \epsilon_{i}\neq\epsilon_{j}
+\end{cases}
+\]
+
+
+\section{Gauge-covariant matrices}
+
+Let $P=\sum_{n}^{A}|u_{n}\rangle\langle u_{n}|$ and $Q=1-P$. The
+states $|u_{n}\rangle$ are not necessary the eigenstates of energy,
+and 
+\begin{equation}
+\mathcal{H}_{mn}=\langle u_{m}|\mathcal{H}|u_{n}\rangle
+\end{equation}
+is not necessary diagonal. We write four gauge-covariant quantities
+\begin{equation}
+\widetilde{F}_{mn}^{ab}=\langle u_{m}|\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)|u_{n}\rangle=\langle\partial_{a}u_{m}|Q|\partial_{b}u_{n}\rangle
+\end{equation}
+\begin{align}
+\widetilde{G}_{mn}^{ab} & =\frac{1}{2}\langle u_{m}|\mathcal{H}\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)+\left(\partial_{a}P\right)Q\left(\partial_{b}P\right)\mathcal{H}|u_{n}\rangle\nonumber \\
+ & =\frac{1}{2}\left(\mathcal{H}_{mn^{\prime}}\widetilde{F}_{n^{\prime}n}^{ab}+\widetilde{F}_{mn^{\prime}}^{ab}\mathcal{H}_{n^{\prime}n}\right)
+\end{align}
+\begin{equation}
+\widetilde{H}_{mn}^{ab}=\langle u_{m}|\left(\partial_{a}P\right)Q\mathcal{H}Q\left(\partial_{b}P\right)|u_{n}\rangle=\langle\partial_{a}u_{m}|Q\mathcal{H}Q|\partial_{b}u_{n}\rangle
+\end{equation}
+
+\begin{equation}
+\widetilde{S}_{mn}^{ab}=\frac{\hbar^{2}}{m}\delta_{ab}\delta_{mn}+2\left(\widetilde{G}_{mn}^{ab}-\widetilde{H}_{mn}^{ab}\right)
+\end{equation}
+The four matrices $\widetilde{O}_{mn}^{ab}$ are Hermitian in the
+sence that $\widetilde{O}_{mn}^{ab}=\left(\widetilde{O}_{nm}^{ba}\right)^{*}$.
+They transform covariantly under gauge transformation $|u_{n}\rangle\rightarrow|u_{n}^{\prime}\rangle=\sum_{m}^{A}|u_{m}\rangle U_{mn}$
+\begin{equation}
+\widetilde{O}^{ab}\rightarrow U^{\dagger}\widetilde{O}^{ab}U
+\end{equation}
+
+$\widetilde{F}_{mn}^{bc}$ is the covariant quantum geometry matrix,
+$\widetilde{g}_{mn}^{bc}$ and $\widetilde{\Omega}_{mn}^{a}$ are
+the covariant quantum metric and Berry curvature matrix, respectively
+\begin{align}
+\widetilde{g}_{mn}^{bc} & =\frac{1}{2}\left(\widetilde{F}_{mn}^{bc}+\widetilde{F}_{mn}^{cb}\right),\\
+\widetilde{\Omega}_{mn}^{a} & =i\epsilon_{abc}\widetilde{F}_{mn}^{bc}.
+\end{align}
+
+
+\section{Wannier interpolation of quantum geometry}
+
+\subsection{Convention}
+
+Given the Wannier functions (WFs) $|\mathbf{R}j\rangle$, the Hamiltonian
+written in real space is 
+\begin{equation}
+\mathcal{H}_{ij}^{W}\left(\mathbf{R}\right)=\langle\mathbf{0}i|\hat{\mathcal{H}}|\mathbf{R}j\rangle
+\end{equation}
+which can be transformed in reciprocal space as
+
+\begin{equation}
+\mathcal{H}_{ij}^{W}\left(\mathbf{k}\right)=\sum_{\mathbf{R}}e^{i\mathbf{k}\cdot\left(\mathbf{R}+\mathbf{t}_{j}-\mathbf{t}_{i}\right)}\mathcal{H}_{ij}^{W}\left(\mathbf{R}\right)
+\end{equation}
+The eigenequation of $\mathcal{H}_{ij}^{W}\left(\mathbf{k}\right)$
+\begin{equation}
+\mathcal{H}^{W}\left(\mathbf{k}\right)U_{\mathbf{k}}=U_{\mathbf{k}}\varepsilon_{\mathbf{k}}
+\end{equation}
+reproduces the energy bands obtained from DFT calculations. The column
+vectors $|n\rangle$ of $U_{\mathbf{k}}$ transform $|u_{j}^{W}\rangle$
+into the eigenstates $|u_{j}\rangle$ with eigenenergy $\varepsilon_{j}$
+\begin{equation}
+|u_{j\mathbf{k}}\rangle=|u_{j^{\prime}\mathbf{k}}^{W}\rangle U_{\mathbf{k},j^{\prime}j}
+\end{equation}
+where 
+\begin{equation}
+|u_{j\mathbf{k}}^{W}\rangle=\sum_{\mathbf{R}}e^{i\mathbf{k}\cdot\left(\mathbf{R}+\mathbf{t}_{j}-\mathbf{r}\right)}|\mathbf{R}j\rangle
+\end{equation}
+is the Bloch-like function constructed by WFs. 
+
+The derivative of states $|n\rangle$ yields 
+\begin{equation}
+D_{ln}^{a}=\langle l|\partial_{a}n\rangle=\begin{cases}
+\frac{\langle\langle l||\partial_{a}\mathcal{H}^{W}||n\rangle\rangle}{\varepsilon_{n}-\varepsilon_{l}} & \mathrm{if}\ l\neq n\\
+-i\alpha_{n} & \mathrm{if}\ l=n
+\end{cases}
+\end{equation}
+with $\alpha_{n}$ the arbitrary real number from the non-uniform
+gauge. 
+\[
+\left(D_{nl}^{a}\right)^{*}=\langle n|\partial_{a}l\rangle^{*}=\langle\partial_{a}l|n\rangle=-\langle l|\partial_{a}n\rangle=D_{ln}^{a},\ \left(D_{ll}^{a}\right)^{*}=-D_{ll}^{a}
+\]
+yielding that $D^{a}$ is anti-Hermitian. Notice that $D^{a}=U^{\dagger}\partial_{a}U$,
+we have 
+\begin{align}
+|\partial_{a}u_{\mathbf{k}}\rangle & =|\partial_{a}u_{\mathbf{k}}^{W}\rangle U_{\mathbf{k}}+|u_{\mathbf{k}}^{W}\rangle U_{\mathbf{k}}U_{\mathbf{k}}^{\dagger}\partial_{a}U_{\mathbf{k}}\nonumber \\
+ & =|\partial_{a}u_{\mathbf{k}}^{W}\rangle U_{\mathbf{k}}+|u_{\mathbf{k}}\rangle D^{a}
+\end{align}
+
+Berry curvature of sector A 
+\[
+\Omega_{A}^{ab}=-2{\rm Im}\sum_{n}^{A}\langle\partial_{a}u_{n\bm{k}}|\partial_{b}u_{n\bm{k}}\rangle
+\]
+can be written with WFs as 
+\begin{equation}
+\langle\partial_{a}u_{\bm{k}}|\partial_{b}u_{\bm{k}}\rangle=U^{\dagger}\langle\partial_{a}u^{W}|\partial_{b}u^{W}\rangle U+iD^{a}U^{\dagger}i\langle u^{W}|\partial_{b}u^{W}\rangle U+iU^{\dagger}i\langle u^{W}|\partial_{a}u^{W}\rangle UD^{b}-D^{a}D^{b}
+\end{equation}
+Defining 
+\[
+\bar{O}=U^{\dagger}O^{W}U
+\]
+\[
+F^{ab,W}=\langle\partial_{a}u^{W}|\partial_{b}u^{W}\rangle
+\]
+\[
+A^{b,W}=i\langle u^{W}|\partial_{b}u^{W}\rangle
+\]
+we have 
+\begin{align*}
+\Omega_{A}^{ab} & =-2{\rm Im}\sum_{n}^{A}\Omega_{nn}^{ab}\\
+ & =-2{\rm Im}\sum_{n}^{A}\left[\bar{F}_{nn}^{ab}+i\left(D^{a}\bar{A}^{b}\right)_{nn}+i\left(\bar{A}^{a}D^{b}\right)_{nn}-\left(D^{a}D^{b}\right)_{nn}\right]
+\end{align*}
+Since that 
+\[
+-2\mathrm{Im}\sum_{n}^{A}i\left(D^{a}\bar{A}^{b}+\bar{A}^{a}D^{b}\right)_{nn}=-2\mathrm{Re}\sum_{n}^{A}\sum_{l}^{B}\left(D_{nl}^{a}\bar{A}_{ln}^{b}+\bar{A}_{nl}^{a}D_{ln}^{b}\right)
+\]
+and 
+\[
+-2\mathrm{Im}\sum_{n}^{A}\left(D^{a}D^{b}\right)_{nn}=-2\mathrm{Im}\sum_{n}^{A}\sum_{l}^{B}D_{nl}^{a}D_{ln}^{b}
+\]
+We have 
+\begin{equation}
+\Omega_{A}^{ab}=\Omega_{A,\text{int}}^{ab}+\Omega_{A,\text{int}}^{ab}
+\end{equation}
+where 
+\begin{equation}
+\Omega_{A,\text{int}}^{ab}=-2\mathrm{Im}\sum_{n}^{A}\sum_{l}^{B}D_{nl}^{a}D_{ln}^{b}
+\end{equation}
+\begin{equation}
+\Omega_{A,\text{ext}}^{ab}=-2\mathrm{Im}\sum_{n}^{A}\bar{F}_{nn}^{ab}-2\mathrm{Re}\sum_{n}^{A}\sum_{l}^{B}\left(D_{nl}^{a}\bar{A}_{ln}^{b}+\bar{A}_{nl}^{a}D_{ln}^{b}\right)
+\end{equation}
+
+
+\subsection{Wannier interpolation of $\widetilde{F}_{mn}^{ab}$}
+
+Recalling that $Q=1-|u_{n^{\prime}}\rangle\langle u_{n^{\prime}}|$,
+we obtain
+\begin{equation}
+Q|\partial_{a}u_{j\mathbf{k}}\rangle=|\partial_{a}u_{j^{\prime}}^{W}\rangle U_{j^{\prime}j}+i|u_{n^{\prime}}\rangle\bar{A}_{n^{\prime}j}^{a}+|u_{l^{\prime}}\rangle D_{l^{\prime}j}^{a}
+\end{equation}
+Therefore, we have 
+\begin{equation}
+\widetilde{F}_{mn}^{ab}=\langle\partial_{a}u_{m}|QQ|\partial_{b}u_{n}\rangle=\widetilde{F}_{mn,\text{int}}^{ab}+\widetilde{F}_{mn,\text{ext}}^{ab},
+\end{equation}
+where 
+\begin{align}
+\widetilde{F}_{mn,\text{int}}^{ab} & =-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b}\\
+\widetilde{F}_{mn,\text{ext}}^{ab} & =\bar{F}_{mn}^{ab}-\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b}+\left[\left(iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b}\right)+\left(\begin{array}{c}
+a\leftrightarrow b\\
+m\leftrightarrow n
+\end{array}\right)^{*}\right]
+\end{align}
+
+
+\subsubsection{Berry curvature}
+
+The Berry curvature is computed as 
+\[
+\widetilde{\Omega}_{mn}^{z}=i\left(\widetilde{F}_{mn}^{xy}-\widetilde{F}_{mn}^{yz}\right)=\widetilde{\omega}_{mn}^{z}+\left(\widetilde{\omega}^{z}\right)_{nm}^{*}
+\]
+where 
+\begin{align}
+\widetilde{\omega}_{mn}^{z} & =-iD_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y}+\frac{1}{2}\bar{\Omega}_{mn}^{z}-D_{ml^{\prime}}^{x}\bar{A}_{l^{\prime}n}^{y}+D_{ml^{\prime}}^{y}\bar{A}_{l^{\prime}n}^{x}-i\bar{A}_{mn^{\prime}}^{x}\bar{A}_{n^{\prime}n}^{y}\\
+\left(\widetilde{\omega}^{z}\right)_{nm}^{*} & =iD_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x}+\frac{1}{2}\bar{\Omega}_{mn}^{z}-D_{nl^{\prime}}^{x*}\bar{A}_{l^{\prime}m}^{y*}+D_{nl^{\prime}}^{y*}\bar{A}_{l^{\prime}m}^{x*}+i\bar{A}_{mn^{\prime}}^{y}\bar{A}_{n^{\prime}n}^{x}
+\end{align}
+which is the code implement of Berry curvature in $\texttt{WannierBerri}$.
+The covariant formula of Berry curvature was implemented by class
+$\texttt{Omega}$ in $\texttt{formula/covariant.py}$. 
+
+\subsubsection{Berry connection polarizability}
+
+We consider the Berry connection polarizability (BCP)
+\begin{equation}
+\mathcal{G}_{m}^{ab}=\frac{1}{2}\sum_{l\left(\ne m\right)}\frac{A_{ml}^{a}A_{lm}^{b}+A_{ml}^{b}A_{lm}^{a}}{\varepsilon_{m}-\varepsilon_{l}}
+\end{equation}
+To calculate BCP, we consider the band normalized quantum geometry
+tensor 
+\begin{equation}
+\widetilde{\mathcal{F}}_{mn}^{ab}=\frac{1}{2}\langle\partial_{a}u_{m}|\left(\mathcal{Q}_{m}+\mathcal{Q}_{n}\right)|\partial_{b}u_{n}\rangle
+\end{equation}
+where 
+\begin{equation}
+\mathcal{Q}_{m}=\frac{|u_{l^{\prime}}\rangle\langle u_{l^{\prime}}|}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}.
+\end{equation}
+One can easily check that 
+\begin{equation}
+\mathcal{G}_{m}^{ab}=\frac{1}{2}\text{Re}\left(\widetilde{\mathcal{F}}_{mm}^{ab}+\widetilde{\mathcal{F}}_{mm}^{ba}\right).
+\end{equation}
+Since that 
+\begin{equation}
+\mathcal{Q}_{m}|\partial_{a}u_{j\mathbf{k}}\rangle=\frac{1}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\left(-i|u_{l^{\prime}}\rangle\bar{A}_{l^{\prime}j}^{a}+|u_{l^{\prime}}\rangle D_{l^{\prime}j}^{a}\right)
+\end{equation}
+and 
+\begin{equation}
+\mathcal{Q}_{m}Q=\frac{|u_{l^{\prime}}\rangle\langle u_{l^{\prime}}|}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}|u_{l^{\prime\prime}}\rangle\langle u_{l^{\prime\prime}}|=\frac{|u_{l^{\prime}}\rangle\langle u_{l^{\prime}}|}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}=\mathcal{Q}_{m},
+\end{equation}
+we derive that 
+\begin{equation}
+\langle\partial_{a}u_{m}|\mathcal{Q}_{m}|\partial_{b}u_{n}\rangle=\langle\partial_{a}u_{m}|\mathcal{Q}_{m}Q|\partial_{b}u_{n}\rangle=\frac{\bar{A}_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\bar{A}_{l^{\prime}n}^{b}+i\frac{\bar{A}_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}D_{l^{\prime}n}^{b}+i\frac{D_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\bar{A}_{l^{\prime}n}^{b}-\frac{D_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}D_{l^{\prime}n}^{b}
+\end{equation}
+and 
+\begin{equation}
+\langle\partial_{a}u_{m}|\mathcal{Q}_{n}|\partial_{b}u_{n}\rangle=\langle\partial_{a}u_{m}|Q\mathcal{Q}_{n}|\partial_{b}u_{n}\rangle=-\bar{A}_{ml^{\prime}}^{a}\frac{\bar{A}_{l^{\prime}n}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{n}}-iD_{ml^{\prime}}^{a}\frac{\bar{A}_{l^{\prime}n}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{n}}-i\bar{A}_{ml^{\prime}}^{a}\frac{D_{l^{\prime}n}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{n}}+D_{ml^{\prime}}^{a}\frac{D_{l^{\prime}n}^{b}}{\varepsilon_{l^{\prime}}-\varepsilon_{n}}
+\end{equation}
+Thus, 
+\begin{equation}
+\widetilde{\mathcal{F}}_{mn}^{ab}=\frac{1}{2}\left(N_{ml^{\prime}}^{a}M_{l^{\prime}n}^{b}-M_{ml^{\prime}}^{a}N_{l^{\prime}n}^{b}\right)
+\end{equation}
+with 
+\begin{align}
+M_{ml^{\prime}}^{a} & =\bar{A}_{ml^{\prime}}^{a}+iD_{ml^{\prime}}^{a}\\
+N_{ml^{\prime}}^{a} & =\frac{\bar{A}_{ml^{\prime}}^{a}+iD_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}=\frac{M_{ml^{\prime}}^{a}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}
+\end{align}
+Notice that 
+\begin{equation}
+\widetilde{\mathcal{F}}_{nm}^{ab*}=\widetilde{\mathcal{F}}_{mn}^{ba}
+\end{equation}
+we can calculate $\widetilde{\mathcal{G}}_{mn}^{ab}$ through
+\begin{equation}
+\widetilde{\mathcal{G}}_{mn}^{ab}=\frac{1}{2}\text{Re}\left(\widetilde{\mathcal{F}}_{mn}^{ab}+\widetilde{\mathcal{F}}_{nm}^{ab*}\right),
+\end{equation}
+and this is how I implement $\widetilde{\mathcal{G}}_{mn}^{ab}$ in
+$\texttt{WannierBerri}$ code by a new class $\texttt{BCP}$ in $\texttt{formula/covariant.py}$. 
+
+\subsection{Covariant derivatives of $\widetilde{F}_{mn}^{ab}$}
+
+Now we derive the derivatives of $\widetilde{F}_{mn}^{ab}$. Using
+the product rule we have 
+\begin{equation}
+\widetilde{F}_{mn,\mathrm{int}}^{ab:d}=-D_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}=-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}-D_{nl^{\prime}}^{b*}D_{l^{\prime}m}^{a:d*}=-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}-\left(\begin{array}{c}
+a\leftrightarrow b\\
+m\leftrightarrow n
+\end{array}\right)^{*}
+\end{equation}
+We note that 
+\[
+\bar{\mathcal{H}}_{ln}^{,b}=D_{ln^{\prime}}^{b}\bar{\mathcal{H}}_{n^{\prime}n}-\bar{\mathcal{H}}_{ll^{\prime}}D_{l^{\prime}n}^{b}
+\]
+with $U_{\bm{k}}^{\dagger}\mathcal{H}^{W}\left(\mathbf{k}\right)U_{\mathbf{k}}=\varepsilon_{\mathbf{k}}=\bar{\mathcal{H}}$.
+We take the covariant derivative of both side by using the product
+rule 
+\begin{align}
+D_{ln^{\prime}}^{b:d}\bar{\mathcal{H}}_{n^{\prime}n}+D_{ln^{\prime}}^{b}\bar{\mathcal{H}}_{n^{\prime}n}^{:d}-\bar{\mathcal{H}}_{ll^{\prime}}^{:d}D_{l^{\prime}n}^{b}-\bar{\mathcal{H}}_{ll^{\prime}}D_{l^{\prime}n}^{b:d} & =\bar{\mathcal{H}}_{ln}^{,b:d}\nonumber \\
+ & =\bar{\mathcal{H}}_{ln}^{,bd}-D_{ln^{\prime}}^{d}\bar{\mathcal{H}}_{n^{\prime}n}^{,b}+\bar{\mathcal{H}}_{ll^{\prime}}^{,b}D_{l^{\prime}n}^{d}
+\end{align}
+In the Hamiltonian gauge 
+\[
+D_{ln}^{b:d}=\frac{1}{\varepsilon_{nl}}\left[\bar{\mathcal{H}}_{ln}^{,bd}+\left(\bar{\mathcal{H}}_{ll^{\prime}}^{,b}D_{l^{\prime}n}^{d}-D_{ln^{\prime}}^{d}\bar{\mathcal{H}}_{n^{\prime}n}^{,b}+\left(b\leftrightarrow d\right)\right)\right]
+\]
+Thus, we find
+\begin{equation}
+\widetilde{F}_{mn,\mathrm{int}}^{ab:d}=-\frac{D_{ml^{\prime}}^{a}}{\varepsilon_{nl^{\prime}}}\left[\bar{\mathcal{H}}_{l^{\prime}n}^{,bd}+\left(\bar{\mathcal{H}}_{l^{\prime}l^{\prime\prime}}^{,b}D_{l^{\prime\prime}n}^{d}-D_{l^{\prime}n^{\prime}}^{d}\bar{\mathcal{H}}_{n^{\prime}n}^{,b}+\bar{\mathcal{H}}_{l^{\prime}l^{\prime\prime}}^{,d}D_{l^{\prime\prime}n}^{b}-D_{l^{\prime}n^{\prime}}^{b}\bar{\mathcal{H}}_{n^{\prime}n}^{,d}\right)\right]-\left(\begin{array}{c}
+a\leftrightarrow b\\
+m\leftrightarrow n
+\end{array}\right)^{*}
+\end{equation}
+The external term reads
+\begin{align}
+\widetilde{F}_{mn,\text{ext}}^{ab:d} & =\bar{F}_{mn}^{ab:d}-\bar{A}_{mn^{\prime}}^{a:d}\bar{A}_{n^{\prime}n}^{b}-\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b:d}\\
+ & +iD_{ml^{\prime}}^{a:d}\bar{A}_{l^{\prime}n}^{b}+iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b:d}+i\bar{A}_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}.\nonumber 
+\end{align}
+
+
+\subsubsection{Berry curvature dipole}
+
+The Berry curvature dipole tensor thus reads
+\begin{equation}
+\partial_{d}\Omega_{A}^{c}=\sum_{n}^{A}\Omega_{nn}^{c:d}=\sum_{n}^{A}\widetilde{\Omega}_{nn}^{c:d}=i\epsilon_{cab}\sum_{n}^{A}\widetilde{F}_{nn}^{ab:d}
+\end{equation}
+We can find that 
+\begin{equation}
+\widetilde{\Omega}_{mn}^{z:d}=\widetilde{\Omega}_{mn,\text{int}}^{z:d}+\widetilde{\Omega}_{mn,\text{ext}}^{z:d}
+\end{equation}
+where 
+\begin{align*}
+\widetilde{\Omega}_{mn,\text{int}}^{z:d} & =i\left(-D_{ml^{\prime}}^{x:d}D_{l^{\prime}n}^{y}+D_{ml^{\prime}}^{y:d}D_{l^{\prime}n}^{x}-D_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:d}+D_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:d}\right)\\
+ & =-iD_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:d}+iD_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:d}+\left(m\leftrightarrow n\right)^{*}
+\end{align*}
+and 
+\begin{align}
+\widetilde{\Omega}_{mn,\text{ext}}^{z:d} & =\frac{1}{2}\bar{\Omega}_{mn}^{z:d}-i\bar{A}_{mn^{\prime}}^{x}\bar{A}_{n^{\prime}n}^{y:d}+i\bar{A}_{mn^{\prime}}^{y}\bar{A}_{n^{\prime}n}^{x:d}-D_{ml^{\prime}}^{x}\bar{A}_{l^{\prime}n}^{y:d}+D_{ml^{\prime}}^{y}\bar{A}_{l^{\prime}n}^{x:d}-\bar{A}_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:d}+\bar{A}_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:d}\\
+ & +\left(m\leftrightarrow n\right)^{*}\nonumber 
+\end{align}
+This is how the Berry curvature dipole tensor was implemented by class
+$\texttt{DerOmega}$ in $\texttt{formula/covariant.py}$. 
+
+\subsubsection{Berry connection polarizability dipole }
+
+Similarly, we first calculate the covariant derivative of the band
+normalized quantum geometry tensor 
+\begin{equation}
+\widetilde{\mathcal{F}}_{mn}^{ab:d}=\frac{1}{2}\left(N_{ml^{\prime}}^{a:d}M_{l^{\prime}n}^{b}+N_{ml^{\prime}}^{a}M_{l^{\prime}n}^{b:d}-M_{ml^{\prime}}^{a:d}N_{l^{\prime}n}^{b}-M_{ml^{\prime}}^{a}N_{l^{\prime}n}^{b:d}\right)
+\end{equation}
+where 
+\begin{align}
+M_{ml^{\prime}}^{a:d} & =\bar{A}_{ml^{\prime}}^{a:d}+iD_{ml^{\prime}}^{a:d}\\
+M_{ml^{\prime}}^{a:d*} & =\bar{A}_{l^{\prime}m}^{a:d}+iD_{l^{\prime}m}^{a:d}=M_{l^{\prime}m}^{a:d}
+\end{align}
+and 
+\begin{align}
+N_{ml^{\prime}}^{a:d} & =\frac{M_{ml^{\prime}}^{a:d}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-M_{ml^{\prime}}^{a}\frac{v_{m}^{d}-v_{l^{\prime}}^{d}}{\left(\varepsilon_{m}-\varepsilon_{l^{\prime}}\right)^{2}}=\frac{M_{ml^{\prime}}^{a:d}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-N_{ml^{\prime}}^{a}\frac{v_{m}^{d}-v_{l^{\prime}}^{d}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}\\
+N_{ml^{\prime}}^{a:d*} & =-N_{l^{\prime}m}^{a:d}
+\end{align}
+Then, we obtain that 
+\begin{align}
+\widetilde{\mathcal{G}}_{mn}^{ab:d} & =\frac{1}{2}\text{Re}\left(\widetilde{\mathcal{F}}_{mn}^{ab:d}+\widetilde{\mathcal{F}}_{mn}^{ba:d}\right)\nonumber \\
+ & =\frac{1}{2}\text{Re}\left(\widetilde{\mathcal{F}}_{mn}^{ab:d}+\widetilde{\mathcal{F}}_{nm}^{ab:d*}\right)
+\end{align}
+which has been used to define the new class $\texttt{DerBCP}$ in
+$\texttt{formula/covariant.py}$ to calculate the covariant derivative
+of BCP. 
+
+\subsection{Second order derivative of quantum geometry tensor}
+
+We first derive the second order derivative of $\widetilde{F}_{mn}^{ab}$.
+With $\widetilde{F}_{mn,\mathrm{int}}^{ab:d}$ obtained, we can write
+down the second order covariant derivative of $\widetilde{F}_{mn}^{ab}$
+by 
+\begin{equation}
+\widetilde{F}_{mn}^{ab:de}=\left(\widetilde{F}_{mn}^{ab:d}\right)^{:e}=\left(\widetilde{F}_{mn,\text{int}}^{ab:d}\right)^{:e}+\left(\widetilde{F}_{mn,\text{ext}}^{ab:d}\right)^{:e}
+\end{equation}
+For the internal term
+\begin{align}
+\left(\widetilde{F}_{mn,\text{int}}^{ab:d}\right)^{:e} & =\left(-D_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}\right)^{:e}\nonumber \\
+ & =-D_{ml^{\prime}}^{a:de}D_{l^{\prime}n}^{b}-D_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b:e}-D_{ml^{\prime}}^{a:e}D_{l^{\prime}n}^{b:d}-D_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:de}
+\end{align}
+For the external term
+\begin{align}
+\left(\widetilde{F}_{mn,\text{ext}}^{ab:d}\right)^{:e} & =\left(\bar{F}_{mn}^{ab:d}-\bar{A}_{mn^{\prime}}^{a:d}\bar{A}_{n^{\prime}n}^{b}-\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b:d}+iD_{ml^{\prime}}^{a:d}\bar{A}_{l^{\prime}n}^{b}+iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b:d}+i\bar{A}_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:d}\right)^{:e}\nonumber \\
+ & =\bar{F}_{mn}^{ab:de}-\bar{A}_{mn^{\prime}}^{a:d:e}\bar{A}_{n^{\prime}n}^{b}-\bar{A}_{mn^{\prime}}^{a:d}\bar{A}_{n^{\prime}n}^{b:e}-\bar{A}_{mn^{\prime}}^{a:e}\bar{A}_{n^{\prime}n}^{b:d}-\bar{A}_{mn^{\prime}}^{a}\bar{A}_{n^{\prime}n}^{b:de}\nonumber \\
+ & +iD_{ml^{\prime}}^{a:de}\bar{A}_{l^{\prime}n}^{b}+iD_{ml^{\prime}}^{a:d}\bar{A}_{l^{\prime}n}^{b:e}+iD_{ml^{\prime}}^{a:e}\bar{A}_{l^{\prime}n}^{b:d}+iD_{ml^{\prime}}^{a}\bar{A}_{l^{\prime}n}^{b:de}\nonumber \\
+ & +i\bar{A}_{ml^{\prime}}^{a:de}D_{l^{\prime}n}^{b}+i\bar{A}_{ml^{\prime}}^{a:d}D_{l^{\prime}n}^{b:e}+i\bar{A}_{ml^{\prime}}^{a:e}D_{l^{\prime}n}^{b:d}+i\bar{A}_{ml^{\prime}}^{a}D_{l^{\prime}n}^{b:de}
+\end{align}
+
+
+\subsubsection{Berry curvature quadrupole}
+
+The Berry curvature quadrupole tensor thus reads
+\begin{equation}
+\partial_{e}\partial_{d}\Omega_{A}^{c}=\sum_{n}^{A}\widetilde{\Omega}_{nn}^{c:de}=i\epsilon_{cab}\sum_{n}^{A}\widetilde{F}_{nn}^{ab:de}
+\end{equation}
+We consider $\partial_{e}\partial_{d}\Omega_{A}^{z}$, where other
+components can be similarly obtained. We find that 
+\begin{equation}
+\widetilde{\Omega}_{mn,\text{int}}^{z:de}=-iD_{ml^{\prime}}^{x:e}D_{l^{\prime}n}^{y:d}-iD_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:de}+iD_{ml^{\prime}}^{y:e}D_{l^{\prime}n}^{x:d}+iD_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:de}+\left(m\leftrightarrow n\right)^{*}
+\end{equation}
+and 
+\begin{align}
+\widetilde{\Omega}_{mn,\text{ext}}^{z:de} & =\frac{1}{2}\bar{\Omega}_{mn}^{z:de}-i\bar{A}_{mn^{\prime}}^{x:e}\bar{A}_{n^{\prime}n}^{y:d}-i\bar{A}_{mn^{\prime}}^{x}\bar{A}_{n^{\prime}n}^{y:de}+i\bar{A}_{mn^{\prime}}^{y:e}\bar{A}_{n^{\prime}n}^{x:d}+i\bar{A}_{mn^{\prime}}^{y}\bar{A}_{n^{\prime}n}^{x:de}\nonumber \\
+ & -D_{ml^{\prime}}^{x:e}\bar{A}_{l^{\prime}n}^{y:d}-D_{ml^{\prime}}^{x}\bar{A}_{l^{\prime}n}^{y:de}+D_{ml^{\prime}}^{y:e}\bar{A}_{l^{\prime}n}^{x:d}+D_{ml^{\prime}}^{y}\bar{A}_{l^{\prime}n}^{x:de}\nonumber \\
+ & -\bar{A}_{ml^{\prime}}^{x:e}D_{l^{\prime}n}^{y:d}-\bar{A}_{ml^{\prime}}^{x}D_{l^{\prime}n}^{y:de}+\bar{A}_{ml^{\prime}}^{y:e}D_{l^{\prime}n}^{x:d}+\bar{A}_{ml^{\prime}}^{y}D_{l^{\prime}n}^{x:de}+\left(m\leftrightarrow n\right)^{*}
+\end{align}
+This supports the implement of Berry curvature quadrupole through
+the class $\texttt{Der2Omega}$ in $\texttt{formula/covariant.py}$. 
+
+\subsubsection{Berry connection polarizability quadrupole}
+
+We directly find that 
+\begin{align*}
+\widetilde{\mathcal{F}}_{mn}^{ab:de} & =\frac{1}{2}\left(N_{ml^{\prime}}^{a:de}M_{l^{\prime}n}^{b}+N_{ml^{\prime}}^{a:d}M_{l^{\prime}n}^{b:e}+N_{ml^{\prime}}^{a:e}M_{l^{\prime}n}^{b:d}+N_{ml^{\prime}}^{a}M_{l^{\prime}n}^{b:de}\right)\\
+ & +\frac{1}{2}\left(-M_{ml^{\prime}}^{a:de}N_{l^{\prime}n}^{b}-M_{ml^{\prime}}^{a:d}N_{l^{\prime}n}^{b:e}-M_{ml^{\prime}}^{a:e}N_{l^{\prime}n}^{b:d}-M_{ml^{\prime}}^{a}N_{l^{\prime}n}^{b:de}\right)
+\end{align*}
+where 
+\begin{equation}
+M_{ml^{\prime}}^{a:de}=\bar{A}_{ml^{\prime}}^{a:de}+iD_{ml^{\prime}}^{a:de}
+\end{equation}
+and 
+\begin{equation}
+N_{ml^{\prime}}^{a:de}=\frac{M_{ml^{\prime}}^{a:de}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-N_{ml^{\prime}}^{a:e}\frac{v_{m}^{d}-v_{l^{\prime}}^{d}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-N_{ml^{\prime}}^{a:d}\frac{v_{m}^{e}-v_{l^{\prime}}^{e}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}-N_{ml^{\prime}}^{a}\frac{v_{m}^{d:e}-v_{l^{\prime}}^{d:e}}{\varepsilon_{m}-\varepsilon_{l^{\prime}}}
+\end{equation}
+The BCP quadrupole is then given by 
+\begin{equation}
+\partial_{e}\partial_{d}\mathcal{G}_{mn}^{ab}=\widetilde{\mathcal{G}}_{mn}^{ab:de}=\frac{1}{2}\left(\widetilde{\mathcal{F}}_{mn}^{ab:de}+\widetilde{\mathcal{F}}_{nm}^{ab:de*}\right)
+\end{equation}
+which supports the implement of BCP quadrupole in the class $\texttt{Der2BCP}$
+in $\texttt{formula/covariant.py}$. 
+\end{document}

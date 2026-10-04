@@ -1,0 +1,147 @@
+\documentclass[prx,amsmath,amssymb,superscriptaddress,longbibliography]{revtex4-2}
+% \documentclass[10pt,prl,superscriptaddress,longbibliography]{revtex4-2}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{stmaryrd}
+\usepackage{graphicx}
+\usepackage{physics}
+\usepackage{bbding}
+\usepackage{dsfont}
+\usepackage[colorlinks=true,linkcolor=blue,anchorcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\begin{document}
+
+
+% \title{Supplemental Material \\ Quasisymmetry Enrichment of Continuous Topological Phase Transitions}
+
+\title{Personally implemented formulae in WannierBerri}
+
+
+\author{Jiayu Li}
+\email{jyli93@hku.hk}
+\affiliation{Department of Physics, Southern University of Science and Technology, Shenzhen, China}
+\affiliation{New Cornerstone Science Laboratory, Department of Physics, The University of Hong Kong, Hong Kong, China}
+
+% \affiliation{HK Institute of Quantum Science \& Technology, The University of Hong Kong, Hong Kong, China}
+% \affiliation{State Key Laboratory of Optical Quantum Materials, The University of Hong Kong, Hong Kong, China}
+
+
+
+\maketitle
+\tableofcontents
+% \date{\today}
+
+\newpage
+
+% \renewcommand{\theequation}{S\arabic{equation}}
+% \setcounter{equation}{0}
+% \renewcommand{\thefigure}{S\arabic{figure}}
+
+\section{Basic ingredients}
+
+\subsection{Berry connection}
+
+Single band Berry connection (Abelian Berry connection):
+\begin{equation}
+    A_n^i(\bm{k}) = i \langle u_n(\bm{k})| \partial_{k_i} u_n(\bm{k}) \rangle \equiv i \langle{u_n}| \partial_{i}{u_n}\rangle 
+\end{equation}
+Interband Berry connection (non-Abelian Berry connection):
+\begin{equation}
+    A_{nm}^i(\bm{k}) = i \langle u_n(\bm{k})| \partial_{k_i} u_m(\bm{k}) \rangle \equiv i \langle{u_n}| \partial_{i}{u_m}\rangle 
+\end{equation}
+
+\subsection{Quantum geometry tensor (QMT)}
+
+Quantum geometry tensor: 
+\begin{align}
+     Q_{n}^{ij}(\bm{k}) &=  \langle{\partial_{k_i} u_n(\bm{k})}|(1 - |u_n(\bm{k})\rangle\langle{u_n(\bm{k})}|)|{\partial_{k_j} u_n(\bm{k})}\rangle \nonumber \\
+     &\equiv \langle \partial_{i} u_n |(1 - |u_n\rangle\langle u_n |)|{\partial_{j} u_n}\rangle  \nonumber  \\
+     &= \sum_{m(\neq n)}  \langle \partial_i u_n | u_m \rangle\langle u_m | \partial_j u_n \rangle \nonumber \\
+     &= \sum_{m(\neq n)}  A_{nm}^i A_{mn}^j \nonumber \\
+     &= G_n^{ij}(\bm{k}) - \frac{i}{2}\Omega_n^{ij}(\bm{k}) 
+\end{align}
+Quantum metric tensor: 
+\begin{equation}
+    G_{n}^{ij}(\bm{k}) = \mathrm{Re}~Q_{n}^{ij}(\bm{k}) = \mathrm{Re} \sum_{m(\neq n)}  A_{nm}^i A_{mn}^j
+\end{equation}
+Berry curvature tensor:
+\begin{equation}
+    \Omega_{n}^{ij}(\bm{k}) = -2\mathrm{Im}~Q_{n}^{ij}(\bm{k}) = -2\mathrm{Im} \sum_{m(\neq n)}  A_{nm}^i A_{mn}^j
+\end{equation}
+Berry curvature vector:
+\begin{equation}
+    \Omega_{n}^{i}(\bm{k}) = \frac{1}{2}\epsilon^{ijk}\Omega_{n}^{jk}(\bm{k}) = -\epsilon^{ijk}\mathrm{Im} \sum_{m(\neq n)}  A_{nm}^j A_{mn}^k = \epsilon^{ijk} \partial_j A_n^k
+\end{equation}
+
+\subsection{Berry connection polarizability (BCP)}
+
+Berry connection polarizability~\cite{GaoPRL2014FieldInducedPositional}: 
+\begin{equation}
+    \mathcal{G}_n^{ij}(\bm{k}) = \frac{1}{2} \sum_{m(\neq n)}  \frac{A_{nm}^i A_{mn}^j + A_{nm}^j A_{mn}^i}{\varepsilon_n - \varepsilon_m} = \mathrm{Re}\sum_{m(\neq n)}  \frac{A_{nm}^i A_{mn}^j}{\varepsilon_n - \varepsilon_m}
+\end{equation}
+
+\section{Covariant derivatives and Wannier interpolation scheme}
+
+\subsection{Covariant derivatives}
+
+See Ref~\cite{Liu2023CovariantderivativesBerry} for details, here we only summarize the key formulae. All the primed indices are assumed to be summed. $n$, $m$ are summed over set $A$, and $p$, $l$ are summed over set $B$. Under unitary transformation $U^A(\bm{k})\equiv U^A$ and $U^B(\bm{k})\equiv U^B$ inside the sets $A$ and $B$, the Bloch states transform are covariantly transformed as
+\begin{equation}
+    |n\rangle\stackrel{U^{A}}{\longrightarrow}\sum_{m}^{A}|m\rangle U_{mn}^{A}, \hspace{5pt} |l\rangle\stackrel{U^{B}}{\longrightarrow}\sum_{p}^{B}|p\rangle U_{pl}^{B}
+\end{equation}
+Here have used the shorthand notation $|n\rangle\equiv|u_n(\bm{k})\rangle$, $|l\rangle\equiv|u_l(\bm{k})\rangle$, etc. $X_{nl}=\langle n|\hat{X}|l\rangle$ is also covariantly transformed as
+\begin{equation}
+    X_{nl}\stackrel{U^{A}}{\longrightarrow}\sum_{m}^{A}\left(U^{A}\right)_{nm}^{\dagger}X_{ml},\hspace{5pt} X_{nl}\stackrel{U^{B}}{\longrightarrow}\sum_{p}^{B}X_{mp}U_{pl}^{B}
+\end{equation}
+However, the derivative $X_{nl}^{,d}\equiv\langle n|\partial_{d}\hat{X}|l\rangle$ is not covariantly transformed. To fix this, we introduce the connection matrices $D_{nn'}^{d}$ and $D_{ll'}^{d}$ as
+
+We can define the covariant derivative of $X_{nl}$ as
+\begin{align}
+    X_{nl}^{:d} &\equiv \partial_{d}X_{nl}+D_{nn'}^{d}X_{n'l}-X_{nl'}D_{l'l}^{d} \\
+     &= \langle n| \partial_d \hat{X} |l\rangle + \langle \partial_d n | \hat{X} | l \rangle + \langle n | \hat{X} | \partial_d l \rangle + \sum_{n''}^{A} D_{nn''}^d X_{n''l} - \sum_{l''}^{B} X_{nl''} D_{l''l}^d
+\end{align}
+Some useful formulae for covariant derivatives are summarized as follows:
+
+
+
+\begin{itemize}
+    \item For the matrix elements of a operator $\hat{X}$:
+         \begin{align}
+            X_{nl}^{:d} &=  X_{nl}^{,d} - D_{nl'}^d X_{l'l} + X_{nn'}D_{n'l}^d  \\
+            X_{ln}^{:d} &=  X_{ln}^{,d} - D_{ln'}^d X_{n'n} + X_{ll'}D_{l'n}^d  \\
+            X_{nm}^{:d} &=  X_{nm}^{,d} - D_{nl'}^d X_{l'm} + X_{nl'}D_{l'm}^d 
+        \end{align}
+    \item For the Hamiltonian $\mathcal{H}$:
+        \begin{equation}
+            \mathcal{H}_{nm}^{:d} = \mathcal{H}_{nm}^{,d}, \hspace{5pt} \mathcal{H}_{nl}^{:d} =0
+        \end{equation}
+        since $\mathcal{H}$ is diagonal in the eigenstate basis.
+    \item Trace Rule:
+        \begin{equation}
+            \partial_d ( X_{n'n'} ) = X_{n'n'}^{:d}
+        \end{equation}
+    \item Product Rule:
+        \begin{equation}
+            \left(X_{rs^{\prime}}Y_{s^{\prime}t}\right)^{:d}=X_{rs^{\prime}}^{:d}Y_{s^{\prime}t}+X_{rs^{\prime}}Y_{s^{\prime}t}^{:d}
+        \end{equation}
+    \item Chain Rule: In some cases equations may contain a scalar-valued smooth function of the electron energies $f(\varepsilon_n)$. We represent $f$ as a gauge-covariant matrix $\widetilde{f}_{nm} = \delta_{nm}f(\varepsilon_n)$. The chain rules is 
+        \begin{equation}
+            \widetilde{f}_{nm}^{:d}=H_{nm}^{:d}\times
+            \begin{cases}
+            \frac{df\left(\varepsilon\right)}{d\varepsilon} |_{\varepsilon = \varepsilon_n} & \mathrm{if}\ \varepsilon_{n}=\varepsilon_{m}\\
+            \frac{f\left(\varepsilon_{n}\right)-f\left(\varepsilon_{m}\right)}{\varepsilon_{n}-\varepsilon_{m}} & \mathrm{if}\ \varepsilon_{n}\neq\varepsilon_{m}
+            \end{cases}
+        \end{equation}
+        Details of the derivation can be found in Ref~\cite{Liu2023CovariantderivativesBerry}, Appendix B.
+\end{itemize}
+
+
+
+
+
+
+
+\bibliography{ref}
+
+\end{document}
