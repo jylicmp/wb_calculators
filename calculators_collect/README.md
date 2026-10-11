@@ -1,4 +1,4 @@
-# 新增／修改公式汇总：Metric 与 BCP
+# 新增／修改公式汇总：Metric、BCP、IMD 与 IMQ
 
 本目录只收录本轮核对后的自定义实现与数据需求检查，不复制完整 WannierBerri。静态入口统一叫 **Metric**，不保留历史 QMetric 别名。原始 v1.7、v1.8 归档不修改。
 
@@ -19,12 +19,19 @@
 | `formula/covariant.py` | `BCP`、`DerBCP`、`Der2BCP` | `mathcal G^(ab[:d[:e]])`；`eq:bcp-code-components`、`eq:sylvester1`、`eq:sylvester2` |
 | 同上 | `VelBCP`、`VelDerBCP` | 速度与 BCP／导数的子空间矩阵乘积；trace 非可加 |
 | `formula/covariant_basic.py` | `_BCPConnections`、`_bcp_product`、`_commutator` | 新的 Sylvester 连接导数和乘积求导辅助函数；不复制旧 basic 类 |
-| `calculators/static.py` | `BCPD_FermiSea`、`BCPQ_FermiSea` | BCP 一／二阶导数的几何海积分，默认 prefactor=1 |
+| `calculators/static.py` | `BCPD_FermiSea`、`BCPQ_FermiSea` | BCP 一／二阶导数的海积分；BCPQ 默认含三阶响应 SI 转换因子（tau=1 fs） |
 | 同上 | `BCPD_FermiSurf`、`BCPQ_FermiSurf` | 速度乘积核的非可加累积 trace 配合 `fder=1`；见下文定义边界 |
 | `calculators/tabulate.py` | `BCP`、`DerBCP`、`BCPQuadrupole` | 单带／简并组 trace 平均 |
 | `system/needed_data.py` | `bcp_required_matrices`、`validate_bcp_data` | 检查 Ham/AA；无 FF 需求 |
+| `formula/covariant.py` | `DerYln`、`Der2W`、`Der2V`、`Der4E` | 解析四阶能量导数；轴 `(a,b,c,d)` |
+| 同上 | `Der3EVel` | 三阶能量导数与能量梯度的 band/group 乘积；IMQ surface 核 |
+| `calculators/static.py` | `IMD_FermiSea/Surf`、`IMQ_FermiSea/Surf` | 二／三阶非线性 Drude 的海面实现和一飞秒 SI 因子 |
+| `calculators/tabulate.py` | `IMD`、`IMQ` | 三／四阶能量导数的单带／简并组 trace 平均 |
+| `system/needed_data.py` | `imd_required_matrices`、`imq_required_matrices` | 两者都只需要 `Ham`；分别生成至三／四阶导数 |
 
-`Formula_ln`、`FormulaProduct`、`Dcov`、`DerDcov`、`StaticCalculator`、`Tabulator` 等上游基础定义均通过 import 复用，没有复制进本目录。
+`Formula_ln`、`FormulaProduct`、`Matrix_GenDer_ln`、`Dcov`、`DerDcov`、
+`Der2Dcov`、`Der3E`、`InvMass`、`MassVel`、`StaticCalculator`、`Tabulator`
+等上游基础定义均通过 import 复用，没有复制进本目录。
 
 本轮不收录历史 `QuantumMetric`（与标准 G 的归一化／数据范围不一致）、`QMetric_test`、自定义 `tildeFab` 测试分支及轨道四极矩代码。BCP 独立收录，不作为 Metric 的同义入口。
 
@@ -103,7 +110,7 @@ python -m unittest discover -s calculators_collect/tests -v
 - `DerBCP` 修正旧的对角速度差分母导数，保留组内完整矩阵乘积。
 - `Der2BCP` 按 Sylvester 二阶规则重建，以有限差分和规范协变性验证；不复制旧的 bug TODO 实现。
 - `BCP`、`DerBCP`、`Der2BCP` 的 trace 可加，采用 `additive=True`；其速度乘积不可加，采用 `False`，不能套用统一开关。
-- BCP 静态入口默认 `constant_factor=1`，输出原始几何张量。这不同于归档 BCP 的电响应 prefactor 默认值；实际电响应系数应在明确归一化、指标组合和求和对象后显式传入。
+- `BCPQ_FermiSea` 默认使用 `factor_BCPQ3rd`，即把三维几何积分 Å/eV 转为 m/J，并乘以 `e^4 tau/hbar^2`，其中 `tau=1 fs`。其余 BCP 静态入口仍默认 `constant_factor=1`。
 - `BCPD/Q_FermiSurf` 当前定义为非可加速度子空间核的累积差分积分。它们不是自动成立的“孤立带响应”实现，不能未经核对就与相应 sea 类作积分分部等价比较。
 
 ```python
@@ -120,3 +127,36 @@ bcp_k = tabulate.BCP(kwargs_formula={'external_terms': False})
 ```
 
 一阶 sea 输出轴为 `(a,b,d)`，二阶 sea 输出轴为 `(a,b,d,e)`；转常用响应排列时只置换末尾 tensor 轴。BCP 的 AA 项仅覆盖已有 Wannier 空间，不能恢复空间外物理能带的分母贡献。全部公式的测试均使用实际上游基础类。
+`BCPQ_FermiSea` 返回 SI 缩放后的原始 `Q^(abde)`；具体三阶输运公式要求的三个指标排列仍需由该原始张量组合。
+
+## IMD 与 IMQ
+
+`IMD_FermiSea` / `IMD_FermiSurf` 分别使用上游已有的 `Der3E` 与
+`MassVel`。`IMQ_FermiSea` 使用本目录验证后的解析 `Der4E`，
+`IMQ_FermiSurf` 使用新增的 `Der3EVel`。原始张量轴统一为
+`(a,b,c)` 和 `(a,b,c,d)`：
+
+```python
+from calculators_collect.calculators import static, tabulate
+
+imd_sea = static.IMD_FermiSea(Efermi=ef)
+imd_surface = static.IMD_FermiSurf(Efermi=ef)
+imq_sea = static.IMQ_FermiSea(Efermi=ef)
+imq_surface = static.IMQ_FermiSurf(Efermi=ef)
+
+third_energy_derivative = tabulate.IMD()
+fourth_energy_derivative = tabulate.IMQ()
+```
+
+四个静态入口都按能带或精确简并组求和，保持公式默认的
+`additive=True`。`Der3E` 与 `Der4E` 的 group trace 本身满足加性；
+两个 surface product 则必须按物理定义逐 band/group 计算。把 surface
+product 强制改成 `additive=False` 会得到占据子空间矩阵乘积并引入组间交叉项，
+不再是 IMD/IMQ 的带求和。
+
+默认因子采用 `tau=1 fs`。`factor_IMD2nd` 与 WannierBerri 的
+`factor_nldrude` 完全相同；`factor_IMQ3rd` 将三维原始积分的
+`eV Angstrom` 转为 `J m`。二阶响应中由电场指标约定产生的数值对称化因子
+在组合最终电导张量时另行施加。若弛豫时间以 fs 给出，IMD 和 IMQ 的
+`constant_factor` 分别再乘 `tau_fs**2` 和 `tau_fs**3`。推导、量纲和验证见
+[IMDQ_VALIDATION.md](IMDQ_VALIDATION.md)。

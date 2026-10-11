@@ -1,9 +1,9 @@
 {
-  "date": "2026-10-05",
-  "scope": "Metric native nonadditive occupied-subspace integration; BCP full Sylvester derivatives and native trace-additive integration; velocity-product kernels nonadditive",
+  "date": "2026-10-11",
+  "scope": "Metric native nonadditive occupied-subspace integration; BCP full Sylvester derivatives; analytic IMD/IMQ band-group integration and SI factors",
   "theory_source": {
     "path": "notes/formulae_temp_clean.tex",
-    "sha256": "f723afcd8ca584bb3db3a3d381e78bc8e82f990559da4b559498cbb5ebb9ba65",
+    "sha256": "9080f6cadb0fde6b8f2475b77010447c6035a99e4d42af0aa2a54e64667d8c3e",
     "equation_labels": [
       "eq:Finterpolation-components",
       "eq:projected-geometry-components",
@@ -18,7 +18,12 @@
       "eq:bcp-derivative-components",
       "eq:bcp-second",
       "eq:sylvester-components",
-      "eq:product-components"
+      "eq:product-components",
+      "eq:energy-ingredients",
+      "eq:third-energy",
+      "eq:fourth-energy",
+      "eq:energy-derivative-components",
+      "eq:energy-traces"
     ]
   },
   "validation": {
@@ -64,21 +69,36 @@
     }
   },
   "collection_files_sha256": {
+    ".DS_Store": "9f653249bba10d1bcc6e8f80a4701bd0c17afa93f98ad784884664fef9c43529",
     ".gitignore": "6feaded4e28ea86e001a6751b4e3d960e8b7c31b9616ff9936b79297086e809b",
-    "BCP_VALIDATION.md": "ea1acd0038b9ca8db23fe1d674a3084ffc4a9233460c39c53286b6cac5974f98",
-    "README.md": "813bfe45c0a8f8a13ce77c9b611bca284e6d5789cf591940f46118f2c4966b95",
+    "BCP_VALIDATION.md": "99346a952ca8727f2947c3eebeb2e8f4fb13fd9b007cd94cf863ecc16b26a527",
+    "IMDQ_VALIDATION.md": "9162ed6552aaa2a75047622fe4556bc59ad044ada3b1fcd9f96ba1c8b70f0dd0",
+    "README.md": "42f82d3f84b9fc22639c7f818de3e245ccaf9cadc3f3bf2aea30b68d3c075942",
     "VALIDATION.md": "afa365d6c214ad87076e49ae824100580c28a55bf5a098529fc92eb9c1bb3591",
     "__init__.py": "8cc548ea3fad043931fd4d1b4ef2f7a9c405884bd856ef65d9b272d94ed21835",
     "calculators/__init__.py": "8cc548ea3fad043931fd4d1b4ef2f7a9c405884bd856ef65d9b272d94ed21835",
-    "calculators/static.py": "96ccda9e626a8e96f5b0bb6c7e73a3242fa959db57c98845345c4cb89f45de61",
-    "calculators/tabulate.py": "6df68ddce44f2ef073c4e76b096b98ca5674adc55fae09110d155305988dff56",
+    "calculators/static.py": "05161f1b227bb7bdd57f5561795c483b8fbd90f80009753db68bbc60beb51cd4",
+    "calculators/tabulate.py": "080c546b0e32fe671d2eb8872203c2e6170432e16aa219aabd19c1b4f7ae014d",
+    "factors.py": "a245596e408645cdc1af031375f968876ecd45de1db750247941e76f177a1e22",
     "formula/__init__.py": "8cc548ea3fad043931fd4d1b4ef2f7a9c405884bd856ef65d9b272d94ed21835",
-    "formula/covariant.py": "eaf7975b69ac4e1530031ec6bb78de89d6b08e5cf12fb9ab91137a5987fd5f46",
+    "formula/covariant.py": "e7eb5d7beca5d4538e0c5868db8bbd151d8ddbebc18d0681cafa0ea6c59683ab",
     "formula/covariant_basic.py": "db21852be382acfafdbab27772c4b3cbe6eda3c45c8e2a7b1609d38f84b9add0",
     "system/__init__.py": "8cc548ea3fad043931fd4d1b4ef2f7a9c405884bd856ef65d9b272d94ed21835",
-    "system/needed_data.py": "dce40ea7a64375d40f58d02b950d03d73335b5814ccea4b458a092aad15f0098",
-    "tests/test_bcp.py": "ca0cd83ffd94f8b6c860da12f311312d058cdb0d8b92573fbbbd604724852916",
+    "system/needed_data.py": "f913075d4f1258d2e33ef4fb290b84b8681a3bb8f565dc82869507cfd0df9c6f",
+    "tests/finalize_imdq.py": "312ff4aef8825083728af53c5abb0e2ed76df738d9f50b850c68a441cda3bc8a",
+    "tests/imdq.sbatch": "72ecb85577d219de9ee82584833c63b000d07c76b4cd869bf9d292a0a1ca443a",
+    "tests/imdq_fes121.sbatch": "5971509af7f76a512ca32f08c5d9e4161f0f035e5a50f31795ad8868dcff020e",
+    "tests/imdq_fes81.sbatch": "16fb8e2299da89b78e7eebb63b693f3eb7f397b08ce33f1b6dafd0b2cf1e2c77",
+    "tests/imdq_surface_additivity.sbatch": "e939fc3f2afbf9306d25e8a12772e3ed89d7ad45554c7e0a0a12465dc8cc519e",
+    "tests/plot_imdq.py": "ebbf257d3f5fae39ac98309226829b19c37f85e5abc6e44bdc6ad6c2c9d1f529",
+    "tests/test_bcp.py": "1a8316df44045c9a1c1dd24febb97769824731727c9952ab5d8e9e35a29f1293",
+    "tests/test_imdq.py": "6dbe21f6ad045b5cebeb7cb7947f72238d8198fb6899df575d02a40cf7802cb3",
     "tests/test_metric.py": "e2959edf7273ce0a9cec028fb82e6eb5e7eab3fa73fe9e93ac18937c8d44d50c",
+    "tests/validate_imdq_models.py": "b0a45a30f7632109fd1633c1ac6cb8e1b536ae2a0b5e1c23aade0cfcc11af1d3",
+    "tests/validate_imdq_surface_additivity.py": "043aee4dbb37ddf5586ca292592ad44e4940326ee1cf1362d4d91d3729f94109",
+    "tests/validation_bcpq_factor_v1.7.log": "ddc1db45131a983f5303a5635241d2157844a4e51d0e1be41f72f93a6e922d8f",
+    "tests/validation_imdq_v1.7.log": "8c924be5158dcc48522198eb6595a0967a6554a71a92ae7600a63bef14a3fa4e",
+    "tests/validation_imdq_v1.8.log": "4c158127e5c4bb037f4d30fae935e4268f0119acc5a793640bd53922d30150da",
     "tests/validation_v1.7.log": "81b485bb6a37b28f953157b274040671ccb53b3629042c5fb38cb1f5684f6c9b",
     "tests/validation_v1.8.log": "db892b0f0ca4f34db5e4c21c08b1a54bdd700f1ece9c476f48e1297b1d90f086"
   },
@@ -91,7 +111,9 @@
     "VelDerMetric fder=1 semantics tested; no general subspace second-k-derivative identity inferred",
     "Independent model Der2BCP reference is a finite difference of an independent first derivative, not an exact analytic reference",
     "BCP includes finite Wannier-space contributions only; excluded physical bands are not recovered",
-    "BCP default static prefactor 1 differs from archived electrical-response wrappers"
+    "BCPQ_FermiSea supplies the SI conversion for tau=1 fs but leaves the response-specific three-term index combination to the caller",
+    "IMD/IMQ numerical symmetrization factors associated with the external electric fields are intentionally left to the final response-tensor assembly",
+    "FeS IMD is symmetry-suppressed, so its sea/surface relative error becomes ill-conditioned near the zero signal; grid convergence is assessed primarily by absolute error"
   ],
   "integration_semantics": {
     "formula_additive": {
@@ -104,7 +126,11 @@
       "DerBCP": true,
       "Der2BCP": true,
       "VelBCP": false,
-      "VelDerBCP": false
+      "VelDerBCP": false,
+      "Der3E": true,
+      "MassVel": true,
+      "Der4E": true,
+      "Der3EVel": true
     },
     "static_base": "wannierberri.calculators.static.StaticCalculator",
     "removed_classes": [
@@ -113,14 +139,30 @@
     ],
     "reference": "direct occupied-subspace trace at each chemical potential",
     "default_hole_like": false,
-    "bcp_default_constant_factor": 1,
-    "bcp_surface": "fder=1 cumulative-subspace velocity-kernel trace differences; no isolated-band response identity assumed"
+    "bcp_default_constant_factor": {
+      "BCPQ_FermiSea": "factor_BCPQ3rd = e^4 tau hbar^-2 Angstrom/eV-to-m/J, tau=1 fs",
+      "other_BCP_static_classes": 1
+    },
+    "bcp_surface": "fder=1 cumulative-subspace velocity-kernel trace differences; no isolated-band response identity assumed",
+    "imdq_default_constant_factor": {
+      "IMD_FermiSea/Surf": "factor_IMD2nd = -e^3 tau^2 hbar^-3 eV-to-J, tau=1 fs",
+      "IMQ_FermiSea/Surf": "factor_IMQ3rd = e^4 tau^3 hbar^-4 eV-Angstrom-to-J-m, tau=1 fs"
+    },
+    "imdq_surface": "fder=1 direct band/exact-degeneracy-group sum with additive=True; additive=False introduces unphysical intergroup matrix-product terms"
   },
   "prior_remote_evidence": {
     "root": "/share/home/zhuhaiyuan/NLC/test_wb_calculators_v1.7",
     "report": "BERRY_CONTROL_REPORT.md",
     "status": "previous run; retained unchanged",
     "scope": "internal-only Haldane/FeS independent benchmarks and Berry-curvature controls"
+  },
+  "bcpq_factor_update": {
+    "date": "2026-10-11",
+    "environment": "SUSTech-Zhu existing WannierBerri 1.7 test environment",
+    "tests_passed": 26,
+    "log": "tests/validation_bcpq_factor_v1.7.log",
+    "factor_value_for_tau_1fs": 3.6981017741819896e-14,
+    "comparison": "bitwise-equal to archived v1.7 wannierberri.factors.factor_BCPQ3rd"
   },
   "remote_bcp_evidence": {
     "host": "SUSTech-Zhu",
@@ -342,6 +384,132 @@
           "legacy_DerBCP_matrix_max": 0.26448837089684485
         }
       ]
+    }
+  },
+  "remote_imdq_evidence": {
+    "host": "SUSTech-Zhu",
+    "root": "/share/home/zhuhaiyuan/NLC/test_wb_calculators_v1.7/imdq",
+    "report": "REPORT.md",
+    "checksum_manifest": "SHA256SUMS",
+    "scheduler": "all jobs COMPLETED, exit 0",
+    "job_ids": [
+      "993686_[0-1]",
+      "993703",
+      "993723",
+      "993760_[0-1]"
+    ],
+    "environments": {
+      "1.7": {
+        "tests_passed": 33,
+        "log": "tests/validation_imdq_v1.7.log"
+      },
+      "1.8": {
+        "tests_passed": 33,
+        "log": "tests/validation_imdq_v1.8.log"
+      }
+    },
+    "tau_1fs_factors": {
+      "factor_IMD2nd": -0.0005618405644456891,
+      "factor_IMQ3rd": 8.535860804600888e-14
+    },
+    "independent_point_derivatives": [
+      {
+        "model": "Haldane",
+        "order": 3,
+        "max_abs": 3.207627049528483e-07,
+        "max_relative": 1.8641707081940175e-06
+      },
+      {
+        "model": "Haldane",
+        "order": 4,
+        "max_abs": 1.828072476034448e-05,
+        "max_relative": 5.317916294239701e-05
+      },
+      {
+        "model": "FeS",
+        "order": 3,
+        "max_abs": 3.5844437362708703e-07,
+        "max_relative": 2.977373783981746e-07
+      },
+      {
+        "model": "FeS",
+        "order": 4,
+        "max_abs": 2.4372635468949966e-05,
+        "max_relative": 9.778433479927092e-06
+      }
+    ],
+    "sea_surface": [
+      {
+        "model": "Haldane",
+        "n": 21,
+        "IMD_max_abs": 4.9482532e-05,
+        "IMD_relative": 0.00235594,
+        "IMQ_max_abs": 0.0001074819,
+        "IMQ_relative": 0.000525633
+      },
+      {
+        "model": "Haldane",
+        "n": 41,
+        "IMD_max_abs": 1.4067143e-08,
+        "IMD_relative": 6.69752e-07,
+        "IMQ_max_abs": 3.7949496e-08,
+        "IMQ_relative": 1.85626e-07
+      },
+      {
+        "model": "FeS",
+        "n": 21,
+        "IMD_max_abs": 0.1029376,
+        "IMD_relative": 1.9617,
+        "IMQ_max_abs": 12.515,
+        "IMQ_relative": 8.2087
+      },
+      {
+        "model": "FeS",
+        "n": 41,
+        "IMD_max_abs": 0.0299285,
+        "IMD_relative": 1.71047,
+        "IMQ_max_abs": 3.024264,
+        "IMQ_relative": 1.40673
+      },
+      {
+        "model": "FeS",
+        "n": 81,
+        "IMD_max_abs": 0.0014806708720152425,
+        "IMD_relative": 0.386731,
+        "IMQ_max_abs": 0.12446077185636018,
+        "IMQ_relative": 0.0468396
+      },
+      {
+        "model": "FeS",
+        "n": 121,
+        "IMD_max_abs": 2.4757024297261503e-05,
+        "IMD_relative": 0.007742903011301697,
+        "IMQ_max_abs": 0.024653124491098133,
+        "IMQ_relative": 0.0093504083840432
+      }
+    ],
+    "actual_fder1_additivity": [
+      {
+        "model": "Haldane",
+        "n": 41,
+        "wrapper_vs_true_max_abs": 0.0,
+        "IMD_false_vs_true_relative": 4.200761978452758,
+        "IMQ_false_vs_true_relative": 1.4081126987765844
+      },
+      {
+        "model": "FeS",
+        "n": 81,
+        "wrapper_vs_true_max_abs": 0.0,
+        "IMD_false_vs_true_relative": 2.383441523297249,
+        "IMQ_false_vs_true_relative": 1.856486458952803
+      }
+    ],
+    "figure_qa": {
+      "source_validator": "21 PASS, 0 WARN, 0 FAIL",
+      "panel_alignment": "PASS for Haldane and FeS",
+      "minimum_pdf_font_pt": 5.04,
+      "collision_audit": "PASS, 0 fail and 0 warn for Haldane and FeS",
+      "visual_inspection": "PASS at final size"
     }
   }
 }

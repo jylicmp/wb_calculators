@@ -1,15 +1,25 @@
-"""Metric and BCP additions, checked against notes/formulae_temp_clean.tex.
+"""Metric, BCP and fourth-energy-derivative additions.
 
 This is an extension module, not a replacement for upstream covariant.py.
 G is the quantum metric; BCP uses calligraphic G.
 Cartesian axes: Metric (a,b), DerMetric (a,b,d).
 external_terms=False means the internal model only; cross_terms controls
 D-A cross terms within the enabled external contribution.
+Der3E, InvMass and MassVel are re-exported unchanged from upstream;
+Der4E and Der3EVel are the collected IMQ additions.
 """
 import numpy as np
 from wannierberri.utility import cached_einsum
-from wannierberri.formula.formula import Formula_ln, FormulaProduct
-from wannierberri.formula.covariant import Dcov, DerDcov
+from wannierberri.formula.formula import Formula_ln, FormulaProduct, Matrix_GenDer_ln
+from wannierberri.formula.covariant import (
+    Dcov,
+    DerDcov,
+    Der2Dcov,
+    Der3E,
+    DerWln,
+    InvMass,
+    MassVel,
+)
 from wannierberri.symmetry.point_symmetry import transform_ident, transform_odd
 from ..system.needed_data import validate_metric_data
 
@@ -271,3 +281,161 @@ class VelDerBCP(FormulaProduct):
     @property
     def additive(self):
         return False
+
+
+class DerYln(Matrix_GenDer_ln):
+    r"""Interblock covariant derivative :math:`\overline Y^{abc:d}`."""
+
+    def __init__(self, data_K):
+        super().__init__(
+            data_K.covariant('Ham', commader=3),
+            data_K.covariant('Ham', commader=4),
+            data_K.Dcov,
+        )
+        self.transformTR = transform_ident
+        self.transformInv = transform_ident
+
+
+class Der2W(Formula_ln):
+    r"""Second covariant derivative :math:`\overline W^{ab:cd}`."""
+
+    def __init__(self, data_K, **parameters):
+        super().__init__(data_K, **parameters)
+        self.dY = DerYln(data_K)
+        self.dW = DerWln(data_K)
+        self.W = data_K.covariant('Ham', commader=2)
+        self.D = Dcov(data_K)
+        self.dD = DerDcov(data_K)
+        self.ndim = 4
+        self.transformTR = transform_ident
+        self.transformInv = transform_ident
+
+    def nn(self, ik, inn, out):
+        result = self.dY.nn(ik, inn, out)
+        result += cached_einsum(
+            'mlabd,lnc->mnabcd',
+            self.dW.nl(ik, inn, out), self.D.ln(ik, inn, out))
+        result += cached_einsum(
+            'mlab,lncd->mnabcd',
+            self.W.nl(ik, inn, out), self.dD.ln(ik, inn, out))
+        result -= cached_einsum(
+            'mlcd,lnab->mnabcd',
+            self.dD.nl(ik, inn, out), self.W.ln(ik, inn, out))
+        result -= cached_einsum(
+            'mlc,lnabd->mnabcd',
+            self.D.nl(ik, inn, out), self.dW.ln(ik, inn, out))
+        return result
+
+    def ln(self, ik, inn, out):
+        raise NotImplementedError()
+
+
+class Der2V(Formula_ln):
+    r"""Second covariant derivative :math:`\overline V^{a:cd}`."""
+
+    def __init__(self, data_K, **parameters):
+        super().__init__(data_K, **parameters)
+        self.dW = DerWln(data_K)
+        self.dV = InvMass(data_K)
+        self.D = Dcov(data_K)
+        self.dD = DerDcov(data_K)
+        self.V = data_K.covariant('Ham', commader=1)
+        self.ndim = 3
+        self.transformTR = transform_odd
+        self.transformInv = transform_odd
+
+    def ln(self, ik, inn, out):
+        result = self.dW.ln(ik, inn, out)
+        result += cached_einsum(
+            'lpad,pnc->lnacd',
+            self.dV.ll(ik, inn, out), self.D.ln(ik, inn, out))
+        result += cached_einsum(
+            'lpa,pncd->lnacd',
+            self.V.ll(ik, inn, out), self.dD.ln(ik, inn, out))
+        result -= cached_einsum(
+            'lmcd,mna->lnacd',
+            self.dD.ln(ik, inn, out), self.V.nn(ik, inn, out))
+        result -= cached_einsum(
+            'lmc,mnad->lnacd',
+            self.D.ln(ik, inn, out), self.dV.nn(ik, inn, out))
+        return result
+
+    def nn(self, ik, inn, out):
+        raise NotImplementedError()
+
+
+class Der4E(Formula_ln):
+    r"""Fourth band-energy derivative :math:`\partial_a\partial_b\partial_c\partial_d\varepsilon`.
+
+    The trace over a smooth degenerate group is the fourth derivative of the
+    sum of its eigenenergies.  Cartesian axes are ``(a,b,c,d)``.
+    """
+
+    def __init__(self, data_K, **parameters):
+        super().__init__(data_K, **parameters)
+        self.ddW = Der2W(data_K)
+        self.ddV = Der2V(data_K)
+        self.D = Dcov(data_K)
+        self.dV = InvMass(data_K)
+        self.dD = DerDcov(data_K)
+        self.ddD = Der2Dcov(data_K)
+        self.V = data_K.covariant('Ham', commader=1)
+        self.ndim = 4
+        self.transformTR = transform_ident
+        self.transformInv = transform_ident
+
+    def nn(self, ik, inn, out):
+        result = self.ddW.nn(ik, inn, out)
+        result += cached_einsum(
+            'mlacd,lnb->mnabcd',
+            self.ddV.nl(ik, inn, out), self.D.ln(ik, inn, out))
+        result += cached_einsum(
+            'mlac,lnbd->mnabcd',
+            self.dV.nl(ik, inn, out), self.dD.ln(ik, inn, out))
+        result += cached_einsum(
+            'mlad,lnbc->mnabcd',
+            self.dV.nl(ik, inn, out), self.dD.ln(ik, inn, out))
+        result += cached_einsum(
+            'mla,lnbcd->mnabcd',
+            self.V.nl(ik, inn, out), self.ddD.ln(ik, inn, out))
+        result -= cached_einsum(
+            'mlbcd,lna->mnabcd',
+            self.ddD.nl(ik, inn, out), self.V.ln(ik, inn, out))
+        result -= cached_einsum(
+            'mlbc,lnad->mnabcd',
+            self.dD.nl(ik, inn, out), self.dV.ln(ik, inn, out))
+        result -= cached_einsum(
+            'mlbd,lnac->mnabcd',
+            self.dD.nl(ik, inn, out), self.dV.ln(ik, inn, out))
+        result -= cached_einsum(
+            'mlb,lnacd->mnabcd',
+            self.D.nl(ik, inn, out), self.ddV.ln(ik, inn, out))
+        return result
+
+    def ln(self, ik, inn, out):
+        raise NotImplementedError()
+
+    @property
+    def additive(self):
+        """Derivatives of disjoint band-group energy sums add."""
+        return True
+
+
+class Der3EVel(FormulaProduct):
+    r""":math:`(\partial_a\partial_b\partial_c\varepsilon)(\partial_d\varepsilon)`.
+
+    Cartesian axes are ``(a,b,c,d)``.  The formula is evaluated for each
+    band or exactly degenerate group, as required by the Fermi-surface IMQ.
+    """
+
+    def __init__(self, data_K, **kwargs_formula):
+        super().__init__(
+            [Der3E(data_K, **kwargs_formula),
+             data_K.covariant('Ham', commader=1)],
+            name='Der3EVel',
+        )
+
+    @property
+    def additive(self):
+        """IMQ is a direct sum over bands or exact degeneracy groups."""
+        return True

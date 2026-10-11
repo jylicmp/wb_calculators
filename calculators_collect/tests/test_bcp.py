@@ -8,6 +8,7 @@ from test_metric import Model, parameters
 from calculators_collect.formula import covariant as f
 from calculators_collect.formula.covariant_basic import _BCPConnections
 from calculators_collect.calculators import static, tabulate
+from calculators_collect.factors import factor_BCPQ3rd
 from calculators_collect.system.needed_data import bcp_required_matrices
 
 
@@ -110,16 +111,20 @@ class BCPTests(unittest.TestCase):
             self.close(formula(self.data).trace(0,*self.parts(range(4))),np.zeros_like(bands))
     def test_static_integrals_and_surface_weights(self):
         ef=np.linspace(-5,6,111)+1.234567e-6;h=ef[1]-ef[0]
-        pairs=[(static.BCPD_FermiSea,f.DerBCP,0),(static.BCPQ_FermiSea,f.Der2BCP,0),
-               (static.BCPD_FermiSurf,f.VelBCP,1),(static.BCPQ_FermiSurf,f.VelDerBCP,1)]
-        for calculator,formula,order in pairs:
+        pairs=[(static.BCPD_FermiSea,f.DerBCP,0,1.),
+               (static.BCPQ_FermiSea,f.Der2BCP,0,factor_BCPQ3rd),
+               (static.BCPD_FermiSurf,f.VelBCP,1,1.),
+               (static.BCPQ_FermiSurf,f.VelDerBCP,1,1.)]
+        for calculator,formula,order,default_factor in pairs:
             def trace(mu):
                 a,b=self.parts(np.flatnonzero(self.data.E_K[0]<mu))
                 return formula(self.data).trace(0,a,b)/self.data.cell_volume
             expected=np.array([trace(mu) for mu in ef]) if not order else np.array([(trace(mu+h)-trace(mu-h))/(2*h) for mu in ef])
-            self.close(calculator(Efermi=ef)(self.data).data,expected)
+            default_result=calculator(Efermi=ef)(self.data).data
+            self.close(default_result/default_factor,expected)
             self.close(calculator(Efermi=ef,constant_factor=2.3)(self.data).data,2.3*expected)
-            self.close(calculator(Efermi=ef[30:90])(self.data).data,expected[30:90])
+            narrow_result=calculator(Efermi=ef[30:90])(self.data).data
+            self.close(narrow_result/default_factor,expected[30:90])
     def test_tabulators(self):
         par=list(self.par);par[0]=np.diag([-2.,-2.,1.4,3.7]);d=BCPModel(np.zeros(3),*par)
         for tab,formula in [(tabulate.BCP,f.BCP),(tabulate.DerBCP,f.DerBCP),(tabulate.BCPQuadrupole,f.Der2BCP)]:

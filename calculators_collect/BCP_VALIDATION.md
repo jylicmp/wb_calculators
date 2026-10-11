@@ -23,7 +23,7 @@
 - `BCPD_FermiSea` / `BCPQ_FermiSea` 使用相应导数和 `fder=0`。
 - `BCPD_FermiSurf` / `BCPQ_FermiSurf` 使用速度矩阵乘积和上游 `fder=1`，因此是累积子空间 trace 差分的权重积分。**这些入口不自动等于固定单带 `sum_n (-f'_n) v_n mathcal G_n` 或对应的海积分。** 若用于某篇论文的具体电响应，需先匹配论文的求和对象及指标组合；本轮没有把这两种对象混成同一参考。
 
-默认 `constant_factor=1`，与本目录 Metric 的几何输出约定一致。这里明确不同于归档 BCP 静态类的电响应 prefactor 默认值；外部可传入已经核对的 `constant_factor`。未额外乘 2，未自动引入电荷、hbar、弛豫时间，也不把原始张量称为完整电导率。
+`BCPQ_FermiSea` 默认采用 `factor_BCPQ3rd`：将三维 BCPQ 几何积分从 Å/eV 转为 m/J，并乘以 `e^4 tau/hbar^2`，取 `tau=1 fs`。其余 BCP 静态类保持 `constant_factor=1`。BCPQ 的默认单位因此为 `A m/V^3`，但输出仍是原始 `Q^(abde)`；特定三阶输运表达式中的多个指标排列需要另行组合。外部仍可通过 `constant_factor` 覆盖默认值。
 
 BCP 核单位为 Å²/eV；一、二阶导数为 Å³/eV、Å⁴/eV。三维 k 积分后 dipole 为 eV⁻¹，quadrupole 为 Å/eV。Sea dipole 原始轴 `(a,b,d)`，转常用 `(d,a,b)` 用 `(2,0,1)`；sea quadrupole 转 `(d,a,b,e)` 用 `(2,0,1,3)`。这些置换不改前导 k/EF 轴。
 

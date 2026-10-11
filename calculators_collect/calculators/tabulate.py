@@ -19,6 +19,28 @@ class DerMetric(Tabulator):
         super().__init__(frml.DerMetric, **kwargs)
 
 
+class IMD(Tabulator):
+    r""":math:`\partial_a\partial_b\partial_c\varepsilon_n`, axes ``(a,b,c)``.
+
+    Exact degeneracies are represented by the trace average of the degenerate
+    band group, following the upstream tabulator convention.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(frml.Der3E, **kwargs)
+
+
+class IMQ(Tabulator):
+    r""":math:`\partial_a\partial_b\partial_c\partial_d\varepsilon_n`, axes ``(a,b,c,d)``.
+
+    Exact degeneracies are represented by the trace average of the degenerate
+    band group, following the upstream tabulator convention.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(frml.Der4E, **kwargs)
+
+
 class BCP(Tabulator):
     r"""mathcal G^{ab}, axes (a,b), angstrom^2/eV; degeneracy-group average."""
     def __init__(self, **kwargs):

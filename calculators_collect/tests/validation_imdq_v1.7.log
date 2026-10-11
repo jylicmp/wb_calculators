@@ -1,0 +1,38 @@
+test_analytic_two_band_and_term_switches (test_bcp.BCPTests.test_analytic_two_band_and_term_switches) ... ok
+test_data_requirements (test_bcp.BCPTests.test_data_requirements) ... ok
+test_degenerate_gauge_covariance (test_bcp.BCPTests.test_degenerate_gauge_covariance) ... ok
+test_first_second_derivatives_all_switches (test_bcp.BCPTests.test_first_second_derivatives_all_switches) ... ok
+test_full_matrix_parallel_transport_derivatives (test_bcp.BCPTests.test_full_matrix_parallel_transport_derivatives) ... ok
+test_second_derivative_direct_bcp_difference (test_bcp.BCPTests.test_second_derivative_direct_bcp_difference) ... ok
+test_spectral_matrix_and_normalization (test_bcp.BCPTests.test_spectral_matrix_and_normalization) ... ok
+test_static_integrals_and_surface_weights (test_bcp.BCPTests.test_static_integrals_and_surface_weights) ... ok
+test_tabulators (test_bcp.BCPTests.test_tabulators) ... ok
+test_trace_additivity_all_subsets (test_bcp.BCPTests.test_trace_additivity_all_subsets) ... ok
+test_velocity_products_and_nonadditivity (test_bcp.BCPTests.test_velocity_products_and_nonadditivity) ... ok
+test_calculator_wiring_and_axes (test_imdq.IMDQTests.test_calculator_wiring_and_axes) ... ok
+test_data_requirements (test_imdq.IMDQTests.test_data_requirements) ... ok
+test_directional_derivatives_against_independent_eigenvalues (test_imdq.IMDQTests.test_directional_derivatives_against_independent_eigenvalues) ... ok
+test_energy_derivative_trace_additivity_all_subsets (test_imdq.IMDQTests.test_energy_derivative_trace_additivity_all_subsets) ... ok
+test_exact_degenerate_group_gauge_covariance (test_imdq.IMDQTests.test_exact_degenerate_group_gauge_covariance) ... ok
+test_factors_match_dimensional_conversion (test_imdq.IMDQTests.test_factors_match_dimensional_conversion) ... ok
+test_fourth_derivative_is_permutation_symmetric (test_imdq.IMDQTests.test_fourth_derivative_is_permutation_symmetric) ... ok
+test_basic_reference_and_symmetries (test_metric.MetricTests.test_basic_reference_and_symmetries) ... ok
+test_derivative_all_switches_and_group_sizes (test_metric.MetricTests.test_derivative_all_switches_and_group_sizes) ... ok
+test_exact_degeneracy_covariance_and_finite_difference (test_metric.MetricTests.test_exact_degeneracy_covariance_and_finite_difference) ... ok
+test_metric_against_physical_state_geometry (test_metric.MetricTests.test_metric_against_physical_state_geometry) ... ok
+test_product_axes (test_metric.MetricTests.test_product_axes) ... ok
+test_static_degenerate_occupied_subspace (test_metric.MetricTests.test_static_degenerate_occupied_subspace) ... ok
+test_static_filled_sea_is_full_subspace (test_metric.MetricTests.test_static_filled_sea_is_full_subspace) ... ok
+test_static_occupied_subspace_and_window_invariance (test_metric.MetricTests.test_static_occupied_subspace_and_window_invariance) ... ok
+test_static_tetra_occupied_subspace (test_metric.MetricTests.test_static_tetra_occupied_subspace) ... ok
+test_subspace_formula_is_not_additive (test_metric.MetricTests.test_subspace_formula_is_not_additive) ... ok
+test_surface_sign_and_axes (test_metric.MetricTests.test_surface_sign_and_axes) ... ok
+test_switches_and_required_data (test_metric.MetricTests.test_switches_and_required_data) ... ok
+test_tabulators_and_degenerate_group_average (test_metric.MetricTests.test_tabulators_and_degenerate_group_average) ... ok
+test_two_band_occupied_metric_and_derivative (test_metric.MetricTests.test_two_band_occupied_metric_and_derivative) ... ok
+test_two_band_regression (test_metric.MetricTests.test_two_band_regression) ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 3.635s
+
+OK

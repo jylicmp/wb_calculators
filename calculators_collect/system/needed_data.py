@@ -1,8 +1,18 @@
-"""New Metric/BCP data-requirement helpers only; no copy of upstream NeededData.
+"""New Metric/BCP/IMD/IMQ data helpers only; no copy of upstream NeededData.
 
 AA=<uW|i*d uW>, FF=<d uW|d uW>; see eq:external-data.
 Declaring FF does not implement its construction in a System_w90 loader.
 """
+
+
+def imd_required_matrices():
+    """IMD uses Hamiltonian comma derivatives through third order."""
+    return frozenset({'Ham'})
+
+
+def imq_required_matrices():
+    """IMQ uses Hamiltonian comma derivatives through fourth order."""
+    return frozenset({'Ham'})
 
 def metric_required_matrices(*, external_terms=True, force_internal_terms_only=False):
     """Return required real-space matrix names for Metric and DerMetric.
